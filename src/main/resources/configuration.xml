@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+<config>
+	<actor>
+		<group name="system">
+			<role name="admin" show="管理员" />
+		</group>
+		<group name="hebut">
+			<role name="student" show="学生" />
+			<role name="teacher" show="教师" />
+		</group>
+	</actor>
+	<application>
+		<module name="manage" show="系统管理" roles="system-admin">
+			<function name="member" show="成员管理">
+				<constraint url="/framework/manage/member/**" index="index.zul" />
+				<constraint url="/framework/selector/userSelector.zul" />
+				<constraint url="/framework/imports/userImport.zul" />
+			</function>
+			<function name="actor" show="角色管理">
+				<constraint url="/framework/manage/actor/**" index="index.zul" />
+				<constraint url="/framework/selector/userSelector.zul" />
+				<constraint url="/framework/imports/userImport.zul" />
+			</function>
+			<function name="baidu" show="百度测试">
+				<constraint url="http://www.baidu.com" index="/" />
+				<constraint url="/framework/iframe.zul" />
+			</function>
+		</module>
+	</application>
+	<system>
+		<admin name="admin" password="admin" group="-1" roles="system-admin" />
+	</system>
+</config>

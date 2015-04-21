@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+<language-addon>
+	<addon-name>framework</addon-name>
+	<language-name>xul/html</language-name>
+	<component>
+		<component-name>button</component-name>
+		<extends>button</extends>
+		<property>
+			<property-name>style</property-name>
+			<property-value>cursor: pointer</property-value>
+		</property>
+	</component>
+	<component>
+		<component-name>image</component-name>
+		<extends>image</extends>
+		<property>
+			<property-name>style</property-name>
+			<property-value>cursor: pointer</property-value>
+		</property>
+	</component>
+	<component>
+		<component-name>listheader</component-name>
+		<extends>listheader</extends>
+		<property>
+			<property-name>align</property-name>
+			<property-value>center</property-value>
+		</property>
+		<property>
+			<property-name>style</property-name>
+			<property-value>text-align: center</property-value>
+		</property>
+	</component>
+	<component>
+		<component-name>treecol</component-name>
+		<extends>treecol</extends>
+		<property>
+			<property-name>style</property-name>
+			<property-value>text-align: center</property-value>
+		</property>
+	</component>
+	<component>
+		<component-name>row</component-name>
+		<extends>row</extends>
+		<property>
+			<property-name>style</property-name>
+			<property-value>cursor: default</property-value>
+		</property>
+	</component>
+	<component>
+		<component-name>south</component-name>
+		<extends>south</extends>
+		<property>
+			<property-name>style</property-name>
+			<property-value>text-align: center;padding-top: 4px;</property-value>
+		</property>
+		<property>
+			<property-name>size</property-name>
+			<property-value>28</property-value>
+		</property>
+	</component>
+</language-addon>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
+<zk>
+	<language-config>
+		<addon-uri>/WEB-INF/addon.xml</addon-uri>
+	</language-config>
+	<device-config>
+		<device-type>ajax</device-type>
+		<timeout-uri>/framework/timeout.zul</timeout-uri>
+	</device-config>
+	<system-config>
+		<disable-event-thread>false</disable-event-thread>
+	</system-config>
+	<desktop-config>
+		<theme-uri>/css/framework.css</theme-uri>
+	</desktop-config>
+	<session-config>
+		<session-timeout>300</session-timeout>
+	</session-config>
+</zk>

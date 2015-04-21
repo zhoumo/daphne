@@ -1,0 +1,50 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="导入用户" width="400px" height="170px" use="com.hebut.framework.ui.imports.UserImport">
+		<panel height="100%">
+			<panelchildren>
+				<vbox align="end">
+					<hbox id="step1" align="center" pack="center" width="380px" height="90px">
+						<label value="上传：" />
+						<textbox id="fileName" width="210px" readonly="true" />
+						<button id="upload" label="上传" />
+						<button id="example" label="样例" />
+					</hbox>
+					<hbox id="step2" align="center" pack="center" width="380px" height="90px" visible="false">
+						<grid height="100%">
+							<columns>
+								<column width="25%" align="center" />
+								<column width="75%" />
+							</columns>
+							<rows>
+								<row>
+									<label value="验证结果" />
+									<label id="validate" style="color:red" value="验证通过" />
+								</row>
+								<row id="roleRow">
+									<label value="选择角色" />
+								</row>
+								<row id="groupRow">
+									<label value="选择用户组" />
+								</row>
+							</rows>
+						</grid>
+					</hbox>
+					<hbox id="step3" align="center" pack="center" width="380px" height="90px" visible="false">
+						<label value="操作成功！共导入" />
+						<label id="number" style="color:red" value="0" />
+						<label value="条数据，耗时" />
+						<label id="time" style="color:red" value="0" />
+						<label value="毫秒..." />
+					</hbox>
+					<separator bar="true" spacing="1px" />
+					<hbox>
+						<button id="previous" label="上一步" visible="false" />
+						<button id="next" label="下一步" />
+						<button id="finish" label="完成" visible="false" />
+					</hbox>
+				</vbox>
+			</panelchildren>
+		</panel>
+	</window>
+</zk>

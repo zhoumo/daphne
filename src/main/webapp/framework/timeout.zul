@@ -1,0 +1,12 @@
+<?page title="登录超时" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window border="none" width="100%" height="100%" zclass="timeout_background">
+		<window border="normal" width="400px" height="200px" mode="overlapped" position="center,center" use="com.hebut.framework.ui.system.TimeoutWindow">
+			<div zclass="timeout_panel">
+				<timer id="timer" delay="1000" repeats="true" />
+				<separator spacing="130px" />
+				<progressmeter id="progressmeter" width="375px" value="0" />
+			</div>
+		</window>
+	</window>
+</zk>
