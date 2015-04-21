@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.hebut.rbac.model.RbacConfig;
 import com.hebut.rbac.model.application.Application;
 import com.hebut.rbac.model.application.Function;
@@ -16,6 +18,9 @@ public class RoleFactory {
 	private static Map<String, Application> authorityMap;
 
 	public static Application getApplication(String roleKey) {
+		if (StringUtils.isEmpty(roleKey)) {
+			return new Application();
+		}
 		return authorityMap.get(roleKey);
 	}
 

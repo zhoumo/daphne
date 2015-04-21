@@ -7,7 +7,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Toolbarbutton;
 
-import com.hebut.framework.ui.common.UrlManager;
+import com.hebut.framework.ui.common.BaseWindow;
 import com.hebut.framework.ui.desktop.Desktop;
 import com.hebut.framework.ui.desktop.MenuModel;
 import com.hebut.framework.util.SessionUtil;
@@ -62,6 +62,6 @@ public class DesktopWindow extends Desktop {
 
 	public void onClick$quit() {
 		Sessions.getCurrent().invalidate();
-		Executions.getCurrent().sendRedirect(UrlManager.SYSTEM_LOGIN);
+		Executions.getCurrent().sendRedirect(BaseWindow.SYSTEM_LOGIN);
 	}
 }

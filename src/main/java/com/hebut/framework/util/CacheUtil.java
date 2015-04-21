@@ -1,7 +1,7 @@
 package com.hebut.framework.util;
 
-import com.hebut.framework.factory.BeanFactory;
 import com.hebut.framework.service.BaseService;
+import com.hebut.framework.web.BeanFactory;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;

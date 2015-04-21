@@ -1,4 +1,4 @@
-package com.hebut.framework.factory;
+package com.hebut.framework.web;
 
 import org.springframework.web.context.WebApplicationContext;
 

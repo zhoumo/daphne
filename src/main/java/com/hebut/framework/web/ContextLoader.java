@@ -1,23 +1,20 @@
-package com.hebut.framework.listener;
+package com.hebut.framework.web;
 
 import javax.servlet.ServletContextEvent;
 import org.apache.log4j.Logger;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.hebut.framework.entity.FwkUser;
-import com.hebut.framework.factory.BeanFactory;
 import com.hebut.framework.util.CacheUtil;
 import com.hebut.rbac.core.RoleFactory;
 import com.hebut.rbac.core.XmlParser;
 
-public class ContextLoaderListener extends org.springframework.web.context.ContextLoaderListener {
+public class ContextLoader extends ContextLoaderListener {
 
-	private static Logger logger = Logger.getLogger(ContextLoaderListener.class);
+	private static Logger logger = Logger.getLogger(ContextLoader.class);
 
 	public void contextInitialized(ServletContextEvent event) {
-		if (logger.isDebugEnabled()) {
-			logger.debug("容器正在启动");
-		}
 		super.contextInitialized(event);
 		if (logger.isDebugEnabled()) {
 			logger.debug("容器启动完成");

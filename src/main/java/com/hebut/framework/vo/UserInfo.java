@@ -23,7 +23,7 @@ public class UserInfo implements Serializable {
 		this.roleMap = new HashMap<String, List<String>>();
 		for (String authoritySever : authority.split(",")) {
 			String[] groupSever = authoritySever.split("\\*");
-			if (groupSever.length == 0) {
+			if (groupSever.length < 2) {
 				continue;
 			}
 			List<String> roleList = new ArrayList<String>();

@@ -3,6 +3,8 @@ package com.hebut.rbac.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.hebut.rbac.model.application.Module;
 
 public class AuthorityParser {
@@ -20,11 +22,19 @@ public class AuthorityParser {
 	}
 
 	public static Object[] parseGetRoleKeys(String authority) {
-		List<String> roleKeys = new ArrayList<String>();
+		List<String> roles = new ArrayList<String>();
 		for (String authoritySever : authority.split(",")) {
-			roleKeys.add(authoritySever.substring(authoritySever.indexOf("*") + 1, authoritySever.length()));
+			if (StringUtils.isEmpty(authoritySever)) {
+				continue;
+			}
+			for (String role : authoritySever.split("\\+")) {
+				if (StringUtils.isEmpty(role)) {
+					continue;
+				}
+				roles.add(role.substring(role.indexOf("*") + 1, role.length()));
+			}
 		}
-		return roleKeys.toArray();
+		return roles.toArray();
 	}
 
 	public static String parseGetRoleKeysByGroup(String authority, String group) {

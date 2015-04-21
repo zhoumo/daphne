@@ -14,9 +14,9 @@ import com.hebut.rbac.core.Validator;
 
 @Aspect
 @Component
-public class RoleWeaver {
+public class AuthorityInjection {
 
-	@Before("execution(public * com.hebut.framework.service.BaseService.save*(..))")
+	@Before("execution(public * com.hebut.framework.service..save*(..))")
 	public void beforeSave(JoinPoint joinPoint) throws Throwable {
 		Object[] object = joinPoint.getArgs();
 		if (object[0] instanceof FwkUser) {

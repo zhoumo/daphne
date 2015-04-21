@@ -1,4 +1,4 @@
-package com.hebut.framework.filter;
+package com.hebut.framework.web;
 
 import java.io.IOException;
 
@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.hebut.framework.security.UrlCheck;
-import com.hebut.framework.ui.common.UrlManager;
+import com.hebut.framework.ui.common.BaseWindow;
 
-public class BaseFilter implements Filter {
+public class ZulFilter implements Filter {
 
 	private static String basePath;
 
@@ -28,7 +28,7 @@ public class BaseFilter implements Filter {
 		if (UrlCheck.check(httpRequest.getServletPath(), httpRequest.getSession())) {
 			chain.doFilter(request, response);
 		} else {
-			httpResponse.sendRedirect(basePath + UrlManager.SYSTEM_LOGIN);
+			httpResponse.sendRedirect(basePath + BaseWindow.SYSTEM_LOGIN);
 		}
 	}
 

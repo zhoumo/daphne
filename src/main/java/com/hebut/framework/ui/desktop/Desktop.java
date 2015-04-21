@@ -15,7 +15,6 @@ import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
 import com.hebut.framework.util.CookieUtil;
-import com.hebut.framework.util.JavaScriptUtil;
 import com.hebut.framework.util.SessionUtil;
 
 @SuppressWarnings("serial")
@@ -23,9 +22,9 @@ public abstract class Desktop extends Window implements AfterCompose {
 
 	private CssDiv toolPanel;
 
-	protected Map<String, String[]> shortcutModel = new HashMap<String, String[]>();;
+	protected Map<String, String[]> shortcutModel = new HashMap<String, String[]>();
 
-	protected List<MenuModel> menuModel = new ArrayList<MenuModel>();;
+	protected List<MenuModel> menuModel = new ArrayList<MenuModel>();
 
 	protected String[] portraitModel;
 
@@ -58,7 +57,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 
 	private void createDesktopArea() {
 		CssDiv desktopArea = null;
-		if (CookieUtil.getBrowserType().equals(JavaScriptUtil.IE6) || CookieUtil.getBrowserType().equals(JavaScriptUtil.FIREFOX)) {
+		if (CookieUtil.getBrowserType().equals("MSIE6.0") || CookieUtil.getBrowserType().equals("Firefox")) {
 			desktopArea = new CssDiv("desktop_special", this);
 		} else {
 			desktopArea = new CssDiv("desktop_standard", this);
@@ -96,7 +95,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 
 	private void createTaskbar() {
 		CssDiv taskbar = null;
-		if (CookieUtil.getBrowserType().equals(JavaScriptUtil.IE6) || CookieUtil.getBrowserType().equals(JavaScriptUtil.FIREFOX)) {
+		if (CookieUtil.getBrowserType().equals("MSIE6.0") || CookieUtil.getBrowserType().equals("Firefox")) {
 			taskbar = new CssDiv("taskbar_special", this);
 		} else {
 			taskbar = new CssDiv("taskbar_standard", this);
@@ -120,7 +119,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 		StartPanel startPanel = new StartPanel(this.menuModel, this.portraitModel);
 		startPanel.setPage(this.getPage());
 		startPanel.setId("startPanel");
-		if (!CookieUtil.getBrowserType().equals(JavaScriptUtil.FIREFOX)) {
+		if (!CookieUtil.getBrowserType().equals("Firefox")) {
 			startPanel.setVisible(false);
 		}
 		this.toolPanel = startPanel.getToolPanel();

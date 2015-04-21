@@ -24,9 +24,6 @@
 				</vbox>
 			</center>
 		</borderlayout>
-		<menupopup id="roleMenu">
-			<menuitem label="导入" id="userImport" image="/images/icon/menu/import.png" />
-		</menupopup>
 		<menupopup id="userMenu">
 			<menuitem label="加入" id="userIn" image="/images/icon/menu/add.png" />
 			<menuitem label="移出" id="userOut" image="/images/icon/menu/delete.png" />

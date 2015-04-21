@@ -15,6 +15,22 @@ import com.hebut.framework.vo.UserInfo;
 @SuppressWarnings("serial")
 public abstract class BaseWindow extends Window implements AfterCompose {
 
+	public static String SYSTEM_LOGIN = "/login.zul";
+
+	public static String SYSTEM_DESKTOP = "/index.zul";
+
+	public static String SYSTEM_IFRAME = "/framework/iframe.zul";
+
+	public static String SYSTEM_TIMEOUT = "/framework/timeout.zul";
+
+	public static String MANAGE_GROUP = "/framework/manage/member/group.zul";
+
+	public static String MANAGE_ROLE = "/framework/manage/member/role.zul";
+
+	public static String MANAGE_USER = "/framework/manage/member/user.zul";
+
+	public static String SELECTOR_USER = "/framework/selector/userSelector.zul";
+
 	private UserInfo userInfo = SessionUtil.getUserInfoSession();
 
 	public UserInfo getUserInfo() {

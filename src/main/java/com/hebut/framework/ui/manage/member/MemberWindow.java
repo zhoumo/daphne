@@ -9,18 +9,16 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 
 import com.hebut.framework.entity.FwkGroup;
 import com.hebut.framework.entity.FwkUser;
-import com.hebut.framework.factory.MessageFactory;
 import com.hebut.framework.security.ComponentCheck;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.ui.common.UrlManager;
-import com.hebut.framework.ui.imports.UserImport;
 import com.hebut.framework.ui.selector.UserSelector;
 import com.hebut.rbac.core.AuthorityParser;
 
@@ -71,13 +69,13 @@ public class MemberWindow extends BaseWindow {
 		this.createGroupWindow(true, new FwkGroup(), this.groupTree.getSelectedCount() != 0 ? this.groupTree.getSelectedItem().getValue() : null);
 	}
 
-	public void onClick$groupDelete() {
+	public void onClick$groupDelete() throws InterruptedException {
 		if (super.hasItemSelected(this.groupTree)) {
 			if (Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()) == 0) {
 				this.manageService.delete(this.groupTree.getSelectedItem().getValue());
 				this.initGroupTree();
 			} else {
-				MessageFactory.showMessage("当前组中存在用户，不能进行删除！");
+				Messagebox.show("当前组中存在用户，不能进行删除！");
 			}
 		}
 	}
@@ -88,25 +86,9 @@ public class MemberWindow extends BaseWindow {
 		}
 	}
 
-	public void onClick$groupImport() {
-		if (super.hasItemSelected(this.groupTree)) {
-			final UserImport window = (UserImport) ComponentCheck.createComponents(this, UrlManager.IMPORT_USER, null, null);
-			window.addEventListener(Events.ON_CHANGE, new EventListener() {
-
-				@Override
-				public void onEvent(Event event) throws Exception {
-					initGroupTree();
-					initUserListbox();
-				}
-			});
-			window.initWindow(UserImport.GROUP_TYPE, this.groupTree.getSelectedItem().getValue());
-			window.doHighlighted();
-		}
-	}
-
 	public void onClick$groupTransfer() {
 		if (super.hasItemSelected(this.groupTree)) {
-			final UserSelector window = (UserSelector) ComponentCheck.createComponents(this, UrlManager.SELECTOR_USER, null, null);
+			final UserSelector window = (UserSelector) ComponentCheck.createComponents(this, SELECTOR_USER, null, null);
 			window.addEventListener(Events.ON_CHANGE, new EventListener() {
 
 				@Override
@@ -161,7 +143,7 @@ public class MemberWindow extends BaseWindow {
 
 	public void onClick$userRole() {
 		if (super.hasItemSelected(this.userList)) {
-			final RoleWindow window = (RoleWindow) ComponentCheck.createComponents(this, UrlManager.MANAGE_ROLE, null, null);
+			final RoleWindow window = (RoleWindow) ComponentCheck.createComponents(this, MANAGE_ROLE, null, null);
 			if (this.userList.getSelectedCount() == 1) {
 				window.setAttribute("single", true);
 				window.setAttribute("group", this.groupTree.getSelectedItem().getValue());
@@ -209,7 +191,7 @@ public class MemberWindow extends BaseWindow {
 	}
 
 	private void createGroupWindow(boolean isNew, Object group, Object parent) {
-		final GroupWindow window = (GroupWindow) ComponentCheck.createComponents(this, UrlManager.MANAGE_GROUP, null, null);
+		final GroupWindow window = (GroupWindow) ComponentCheck.createComponents(this, MANAGE_GROUP, null, null);
 		window.setAttribute("isNew", isNew);
 		window.setAttribute("group", group);
 		window.setAttribute("parent", parent);
@@ -225,7 +207,7 @@ public class MemberWindow extends BaseWindow {
 	}
 
 	private void createUserWindow(boolean isNew, Object user, final Object group) {
-		final UserWindow window = (UserWindow) ComponentCheck.createComponents(this, UrlManager.MANAGE_USER, null, null);
+		final UserWindow window = (UserWindow) ComponentCheck.createComponents(this, MANAGE_USER, null, null);
 		window.setAttribute("isNew", isNew);
 		window.setAttribute("user", user);
 		window.setAttribute("group", group);

@@ -14,8 +14,6 @@ import com.hebut.framework.entity.FwkUser;
 import com.hebut.framework.security.ComponentCheck;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.ui.common.UrlManager;
-import com.hebut.framework.ui.imports.UserImport;
 import com.hebut.framework.ui.selector.UserSelector;
 import com.hebut.rbac.core.AuthorityParser;
 import com.hebut.rbac.core.CommonUtil;
@@ -53,7 +51,7 @@ public class ActorWindow extends BaseWindow {
 
 	public void onClick$userIn() {
 		if (super.hasItemSelected(this.roleTree)) {
-			final UserSelector window = (UserSelector) ComponentCheck.createComponents(this, UrlManager.SELECTOR_USER, null, null);
+			final UserSelector window = (UserSelector) ComponentCheck.createComponents(this, SELECTOR_USER, null, null);
 			window.addEventListener(Events.ON_CHANGE, new EventListener() {
 
 				@Override
@@ -80,22 +78,6 @@ public class ActorWindow extends BaseWindow {
 			}
 			initGroupTree();
 			initUserListbox();
-		}
-	}
-
-	public void onClick$userImport() {
-		if (super.hasItemSelected(this.roleTree)) {
-			final UserImport window = (UserImport) ComponentCheck.createComponents(this, UrlManager.IMPORT_USER, null, null);
-			window.addEventListener(Events.ON_CHANGE, new EventListener() {
-
-				@Override
-				public void onEvent(Event event) throws Exception {
-					initGroupTree();
-					initUserListbox();
-				}
-			});
-			window.initWindow(UserImport.ROLE_TYPE, this.roleTree.getSelectedItem().getValue());
-			window.doHighlighted();
 		}
 	}
 

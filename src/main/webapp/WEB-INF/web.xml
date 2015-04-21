@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-	<display-name>RbacFramework</display-name>
+	<display-name>daphne</display-name>
 	<!-- Listener -->
 	<listener>
-		<listener-class>com.hebut.framework.listener.ContextLoaderListener</listener-class>
+		<listener-class>com.hebut.framework.web.ContextLoader</listener-class>
 	</listener>
 	<!-- Listener End -->
 	<!-- Filter -->
 	<filter>
-		<filter-name>baseFilter</filter-name>
-		<filter-class>com.hebut.framework.filter.BaseFilter</filter-class>
+		<filter-name>zulFilter</filter-name>
+		<filter-class>com.hebut.framework.web.ZulFilter</filter-class>
 	</filter>
 	<filter-mapping>
-		<filter-name>baseFilter</filter-name>
+		<filter-name>zulFilter</filter-name>
 		<url-pattern>*.zul</url-pattern>
 	</filter-mapping>
 	<!-- Filter End -->

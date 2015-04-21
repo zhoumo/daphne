@@ -29,7 +29,6 @@
 			<menuitem label="删除组" id="groupDelete" image="/images/icon/menu/delete.png" />
 			<menuitem label="修改组" id="groupUpdate" image="/images/icon/menu/edit.png" />
 			<menuseparator />
-			<menuitem label="导入" id="groupImport" image="/images/icon/menu/import.png" />
 			<menuitem label="移入" id="groupTransfer" image="/images/icon/menu/transfer.png" />
 		</menupopup>
 		<menupopup id="userMenu">

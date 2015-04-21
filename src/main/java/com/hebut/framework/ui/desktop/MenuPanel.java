@@ -19,7 +19,6 @@ import org.zkoss.zul.Window;
 
 import com.hebut.framework.security.ComponentCheck;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.ui.common.UrlManager;
 import com.hebut.framework.util.SessionUtil;
 
 @SuppressWarnings("serial")
@@ -93,7 +92,7 @@ public class MenuPanel extends Window implements AfterCompose {
 								} else {
 									argMap.put("url", menu.getValue().toString());
 								}
-								baseWindow = (BaseWindow) ComponentCheck.createComponents(event.getTarget(), UrlManager.SYSTEM_IFRAME, null, argMap);
+								baseWindow = (BaseWindow) ComponentCheck.createComponents(event.getTarget(), BaseWindow.SYSTEM_IFRAME, null, argMap);
 							} else {
 								baseWindow = (BaseWindow) ComponentCheck.createComponents(event.getTarget(), menu.getValue().toString(), null, null);
 							}
