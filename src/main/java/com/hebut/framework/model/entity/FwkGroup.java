@@ -24,8 +24,6 @@ public class FwkGroup implements Serializable {
 
 	private Integer fgLevel;
 
-	private Short fgType;
-
 	private FwkGroup parent;
 
 	private List<FwkGroup> children;
@@ -56,14 +54,6 @@ public class FwkGroup implements Serializable {
 
 	public void setFgLevel(Integer fgLevel) {
 		this.fgLevel = fgLevel;
-	}
-
-	public Short getFgType() {
-		return fgType;
-	}
-
-	public void setFgType(Short fgType) {
-		this.fgType = fgType;
 	}
 
 	@ManyToOne

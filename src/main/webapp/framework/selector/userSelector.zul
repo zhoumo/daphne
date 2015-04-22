@@ -2,8 +2,8 @@
 <zk>
 	<window title="用户选择器" width="700px" height="506px" use="com.hebut.framework.ui.selector.UserSelector">
 		<borderlayout>
-			<west size="250" minsize="250" splittable="true">
-				<tree id="groupTree" height="430px" vflex="false">
+			<west minsize="250" splittable="true">
+				<tree id="groupTree" height="430px" width="250px" vflex="false">
 					<treecols>
 						<treecol label="用户组名称" />
 						<treecol label="人数" width="20%" align="center" />

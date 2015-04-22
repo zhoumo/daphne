@@ -3,7 +3,7 @@
 	<window width="600px" height="400px" use="com.hebut.framework.ui.manage.actor.ActorWindow">
 		<borderlayout>
 			<west size="200px" minsize="200" splittable="true">
-				<tree id="roleTree" height="428px" vflex="false" context="roleMenu">
+				<tree id="roleTree" height="428px" vflex="false" context="emptyMenu">
 					<treecols>
 						<treecol label="角色名称" />
 						<treecol label="人数" width="25%" align="center" />
@@ -24,6 +24,7 @@
 				</vbox>
 			</center>
 		</borderlayout>
+		<menupopup id="emptyMenu"></menupopup>
 		<menupopup id="userMenu">
 			<menuitem label="加入" id="userIn" image="/images/icon/menu/add.png" />
 			<menuitem label="移出" id="userOut" image="/images/icon/menu/delete.png" />

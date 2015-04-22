@@ -1,6 +1,6 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window title="用户组管理" width="380px" height="148px" use="com.hebut.framework.ui.manage.member.GroupWindow">
+	<window title="用户组管理" width="380px" height="106px" use="com.hebut.framework.ui.manage.member.GroupWindow">
 		<borderlayout>
 			<center border="none">
 				<grid>
@@ -12,13 +12,6 @@
 						<row>
 							<label value="用户组名称" />
 							<textbox id="groupName" width="200px" constraint="no empty" />
-						</row>
-						<row>
-							<label value="用户组类型" />
-							<listbox id="groupType" width="100px" mold="select">
-								<listitem label="部门" selected="true" />
-								<listitem label="单位" />
-							</listbox>
 						</row>
 					</rows>
 				</grid>
