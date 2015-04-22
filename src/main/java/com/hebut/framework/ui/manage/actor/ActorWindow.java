@@ -29,7 +29,7 @@ public class ActorWindow extends BaseWindow {
 
 	private Paging userPaging;
 
-	private EventListener clickEventListener = new EventListener() {
+	private EventListener<Event> clickEventListener = new EventListener<Event>() {
 
 		@Override
 		public void onEvent(Event event) throws Exception {
@@ -52,7 +52,7 @@ public class ActorWindow extends BaseWindow {
 	public void onClick$userIn() {
 		if (super.hasItemSelected(this.roleTree)) {
 			final UserSelector window = (UserSelector) ComponentCheck.createComponents(this, SELECTOR_USER, null, null);
-			window.addEventListener(Events.ON_CHANGE, new EventListener() {
+			window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -93,12 +93,12 @@ public class ActorWindow extends BaseWindow {
 	private void initUserListbox() {
 		this.userPaging.setActivePage(0);
 		this.userPaging.setTotalSize(Integer.parseInt(this.roleTree.getSelectedItem().getAttribute("number").toString()));
-		this.userPaging.addEventListener("onPaging", new EventListener() {
+		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				userList.setModel(new ListModelList(manageService.findUsersByRoleKey(userPaging.getActivePage(), userPaging.getPageSize(), ((String[]) (roleTree.getSelectedItem()).getValue())[1])));
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByRoleKey(userPaging.getActivePage(), userPaging.getPageSize(), ((String[]) (roleTree.getSelectedItem()).getValue())[1])));
 			}
 		});
-		this.userList.setModel(new ListModelList(this.manageService.findUsersByRoleKey(0, this.userPaging.getPageSize(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1])));
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByRoleKey(0, this.userPaging.getPageSize(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1])));
 	}
 }

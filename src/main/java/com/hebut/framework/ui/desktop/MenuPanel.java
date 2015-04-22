@@ -39,6 +39,7 @@ public class MenuPanel extends Window implements AfterCompose {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
@@ -78,7 +79,7 @@ public class MenuPanel extends Window implements AfterCompose {
 			this.addMouseEvent(hbox, Events.ON_MOUSE_OVER, "start_panel_menu_item_hover", menu.getChildren().size() == 0 ? true : false, "start_panel_menu_more_hidden_hover");
 			this.addMouseEvent(hbox, Events.ON_MOUSE_OUT, "start_panel_menu_item", menu.getChildren().size() == 0 ? true : false, "start_panel_menu_more_hidden");
 			if (menu.getValue() != null) {
-				hbox.addEventListener(Events.ON_CLICK, new EventListener() {
+				hbox.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 					@Override
 					public void onEvent(Event event) throws Exception {
@@ -111,7 +112,7 @@ public class MenuPanel extends Window implements AfterCompose {
 	}
 
 	private void addMouseEvent(Hbox hbox, final String eventName, final String css, final boolean isMore, final String cssMore) {
-		hbox.addEventListener(eventName, new EventListener() {
+		hbox.addEventListener(eventName, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -130,7 +131,7 @@ public class MenuPanel extends Window implements AfterCompose {
 	private void addParentMouseEvent(String eventName, final boolean b) {
 		try {
 			Method method = this.parent.getClass().getMethod("addEventListener", String.class, EventListener.class);
-			method.invoke(this.parent, eventName, new EventListener() {
+			method.invoke(this.parent, eventName, new EventListener<Event>() {
 
 				@Override
 				public void onEvent(Event event) throws Exception {

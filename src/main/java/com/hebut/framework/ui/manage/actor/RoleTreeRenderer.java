@@ -1,5 +1,6 @@
 package com.hebut.framework.ui.manage.actor;
 
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Label;
@@ -14,9 +15,9 @@ public class RoleTreeRenderer implements TreeitemRenderer<String[]> {
 
 	private ManageService manageService;
 
-	private EventListener<?> clickEventListener;
+	private EventListener<Event> clickEventListener;
 
-	public RoleTreeRenderer(ManageService manageService, EventListener<?> clickEventListener) {
+	public RoleTreeRenderer(ManageService manageService, EventListener<Event> clickEventListener) {
 		super();
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;

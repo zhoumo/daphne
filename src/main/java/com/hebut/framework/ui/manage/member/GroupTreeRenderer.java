@@ -1,5 +1,6 @@
 package com.hebut.framework.ui.manage.member;
 
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Label;
@@ -15,11 +16,11 @@ public class GroupTreeRenderer implements TreeitemRenderer<FwkGroup> {
 
 	private ManageService manageService;
 
-	private EventListener<?> clickEventListener;
+	private EventListener<Event> clickEventListener;
 
-	private EventListener<?> doubleClickEventListener;
+	private EventListener<Event> doubleClickEventListener;
 
-	public GroupTreeRenderer(ManageService manageService, EventListener<?> clickEventListener, EventListener<?> doubleClickEventListener) {
+	public GroupTreeRenderer(ManageService manageService, EventListener<Event> clickEventListener, EventListener<Event> doubleClickEventListener) {
 		super();
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;

@@ -1,5 +1,6 @@
 package com.hebut.framework.ui.manage.member;
 
+import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listcell;
@@ -12,9 +13,9 @@ import com.hebut.rbac.core.CommonUtil;
 
 public class UserListRenderer implements ListitemRenderer<FwkUser> {
 
-	private EventListener<?> doubleClickEventListener;
+	private EventListener<Event> doubleClickEventListener;
 
-	public UserListRenderer(EventListener<?> doubleClickEventListener) {
+	public UserListRenderer(EventListener<Event> doubleClickEventListener) {
 		super();
 		this.doubleClickEventListener = doubleClickEventListener;
 	}

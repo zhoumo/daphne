@@ -5,7 +5,7 @@ import org.zkoss.zul.AbstractTreeModel;
 import com.hebut.rbac.core.CommonUtil;
 
 @SuppressWarnings("serial")
-public class RoleTreeModel extends AbstractTreeModel {
+public class RoleTreeModel extends AbstractTreeModel<Object> {
 
 	private String selectedRoleKey;
 

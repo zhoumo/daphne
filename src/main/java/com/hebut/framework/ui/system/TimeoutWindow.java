@@ -17,6 +17,7 @@ public class TimeoutWindow extends Window implements AfterCompose {
 	private int counter = 5;
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);

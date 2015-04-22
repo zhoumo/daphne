@@ -29,6 +29,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 	protected String[] portraitModel;
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
@@ -49,19 +50,12 @@ public abstract class Desktop extends Window implements AfterCompose {
 	protected void appendToolbarbuttons(Toolbarbutton[] toolbarbuttons) {
 		for (Toolbarbutton toolbarbutton : toolbarbuttons) {
 			toolbarbutton.setParent(this.toolPanel);
-			toolbarbutton.setStyle("color: white");
-			this.addMouseEvent(toolbarbutton, Events.ON_MOUSE_OVER, "black");
-			this.addMouseEvent(toolbarbutton, Events.ON_MOUSE_OUT, "white");
+			toolbarbutton.setStyle("color: white; font-size: 12px");
 		}
 	}
 
 	private void createDesktopArea() {
-		CssDiv desktopArea = null;
-		if (CookieUtil.getBrowserType().equals("MSIE6.0") || CookieUtil.getBrowserType().equals("Firefox")) {
-			desktopArea = new CssDiv("desktop_special", this);
-		} else {
-			desktopArea = new CssDiv("desktop_standard", this);
-		}
+		CssDiv desktopArea = new CssDiv("desktop", this);
 		int index = 0, row = 0, column = -1;
 		for (String key : this.shortcutModel.keySet()) {
 			row = index % CookieUtil.getMaxRowNumber();
@@ -74,14 +68,14 @@ public abstract class Desktop extends Window implements AfterCompose {
 			index++;
 		}
 		desktopArea.setDroppable("true");
-		desktopArea.addEventListener(Events.ON_CLICK, new EventListener() {
+		desktopArea.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
 				event.getTarget().getPage().getFellow("startPanel").setVisible(false);
 			}
 		});
-		desktopArea.addEventListener(Events.ON_DROP, new EventListener() {
+		desktopArea.addEventListener(Events.ON_DROP, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -94,13 +88,8 @@ public abstract class Desktop extends Window implements AfterCompose {
 	}
 
 	private void createTaskbar() {
-		CssDiv taskbar = null;
-		if (CookieUtil.getBrowserType().equals("MSIE6.0") || CookieUtil.getBrowserType().equals("Firefox")) {
-			taskbar = new CssDiv("taskbar_special", this);
-		} else {
-			taskbar = new CssDiv("taskbar_standard", this);
-		}
-		new CssDiv("start_button", taskbar).addEventListener(Events.ON_CLICK, new EventListener() {
+		CssDiv taskbar = new CssDiv("taskbar", this);
+		new CssDiv("start_button", taskbar).addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -119,19 +108,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 		StartPanel startPanel = new StartPanel(this.menuModel, this.portraitModel);
 		startPanel.setPage(this.getPage());
 		startPanel.setId("startPanel");
-		if (!CookieUtil.getBrowserType().equals("Firefox")) {
-			startPanel.setVisible(false);
-		}
+		startPanel.setVisible(false);
 		this.toolPanel = startPanel.getToolPanel();
-	}
-
-	private void addMouseEvent(final Toolbarbutton toolbarbutton, String eventName, final String color) {
-		toolbarbutton.addEventListener(eventName, new EventListener() {
-
-			@Override
-			public void onEvent(Event event) throws Exception {
-				toolbarbutton.setStyle("color: " + color);
-			}
-		});
 	}
 }

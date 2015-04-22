@@ -40,6 +40,7 @@ public class Shortcut extends Div implements AfterCompose {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
@@ -53,7 +54,7 @@ public class Shortcut extends Div implements AfterCompose {
 		this.appendChild(vbox);
 		this.addMouseEvent(Events.ON_MOUSE_OVER, "cursor: pointer;opacity: 0.8;filter: alpha(opacity=80)");
 		this.addMouseEvent(Events.ON_MOUSE_OUT, "cursor: pointer;opacity: 1.0;filter: alpha(opacity=100)");
-		this.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener() {
+		this.addEventListener(Events.ON_DOUBLE_CLICK, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -82,7 +83,7 @@ public class Shortcut extends Div implements AfterCompose {
 	}
 
 	private void addMouseEvent(String eventName, final String css) {
-		this.icon.addEventListener(eventName, new EventListener() {
+		this.icon.addEventListener(eventName, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {

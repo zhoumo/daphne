@@ -32,7 +32,7 @@ public class UserSelector extends PopWindow {
 
 	private List<FwkUser> resultList = new ArrayList<FwkUser>();
 
-	private EventListener clickEventListener = new EventListener() {
+	private EventListener<Event> clickEventListener = new EventListener<Event>() {
 
 		@Override
 		public void onEvent(Event event) throws Exception {
@@ -75,12 +75,12 @@ public class UserSelector extends PopWindow {
 	private void initUserListbox() {
 		this.userPaging.setActivePage(0);
 		this.userPaging.setTotalSize(Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()));
-		this.userPaging.addEventListener("onPaging", new EventListener() {
+		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				userList.setModel(new ListModelList(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), (FwkGroup) ((Listitem) event.getTarget()).getValue())));
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), (FwkGroup) ((Listitem) event.getTarget()).getValue())));
 			}
 		});
-		this.userList.setModel(new ListModelList(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), (FwkGroup) this.groupTree.getSelectedItem().getValue())));
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), (FwkGroup) this.groupTree.getSelectedItem().getValue())));
 	}
 }

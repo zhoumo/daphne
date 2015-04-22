@@ -38,6 +38,7 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
@@ -45,7 +46,7 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 		this.setBorder("normal");
 		this.setPosition("center,center");
 		this.setZIndex(SessionUtil.getZindex());
-		this.addEventListener(Events.ON_CLOSE, new EventListener() {
+		this.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {

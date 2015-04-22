@@ -33,7 +33,7 @@ public class MemberWindow extends BaseWindow {
 
 	private Paging userPaging;
 
-	private EventListener clickEventListener = new EventListener() {
+	private EventListener<Event> clickEventListener = new EventListener<Event>() {
 
 		@Override
 		public void onEvent(Event event) throws Exception {
@@ -46,7 +46,7 @@ public class MemberWindow extends BaseWindow {
 		}
 	};
 
-	private EventListener doubleClickEventListener = new EventListener() {
+	private EventListener<Event> doubleClickEventListener = new EventListener<Event>() {
 
 		@Override
 		public void onEvent(Event event) throws Exception {
@@ -89,7 +89,7 @@ public class MemberWindow extends BaseWindow {
 	public void onClick$groupTransfer() {
 		if (super.hasItemSelected(this.groupTree)) {
 			final UserSelector window = (UserSelector) ComponentCheck.createComponents(this, SELECTOR_USER, null, null);
-			window.addEventListener(Events.ON_CHANGE, new EventListener() {
+			window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -157,7 +157,7 @@ public class MemberWindow extends BaseWindow {
 				window.setAttribute("group", this.groupTree.getSelectedItem().getValue());
 				window.setAttribute("user", userList);
 			}
-			window.addEventListener(Events.ON_CHANGE, new EventListener() {
+			window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 				@Override
 				public void onEvent(Event event) throws Exception {
@@ -181,13 +181,13 @@ public class MemberWindow extends BaseWindow {
 	private void initUserListbox() {
 		this.userPaging.setActivePage(0);
 		this.userPaging.setTotalSize(Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()));
-		this.userPaging.addEventListener("onPaging", new EventListener() {
+		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				userList.setModel(new ListModelList(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), (FwkGroup) ((Listitem) event.getTarget()).getValue())));
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), (FwkGroup) ((Listitem) event.getTarget()).getValue())));
 			}
 		});
-		this.userList.setModel(new ListModelList(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), (FwkGroup) this.groupTree.getSelectedItem().getValue())));
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), (FwkGroup) this.groupTree.getSelectedItem().getValue())));
 	}
 
 	private void createGroupWindow(boolean isNew, Object group, Object parent) {
@@ -195,7 +195,7 @@ public class MemberWindow extends BaseWindow {
 		window.setAttribute("isNew", isNew);
 		window.setAttribute("group", group);
 		window.setAttribute("parent", parent);
-		window.addEventListener(Events.ON_CHANGE, new EventListener() {
+		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -211,7 +211,7 @@ public class MemberWindow extends BaseWindow {
 		window.setAttribute("isNew", isNew);
 		window.setAttribute("user", user);
 		window.setAttribute("group", group);
-		window.addEventListener(Events.ON_CHANGE, new EventListener() {
+		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {

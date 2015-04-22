@@ -24,7 +24,6 @@ public class StartItem extends Hbox implements AfterCompose {
 	public StartItem(String icon, String label, MenuModel menuModel) {
 		super();
 		this.iconDiv.setWidth("30px");
-		this.iconDiv.setAlign("center");
 		this.iconDiv.appendChild(new Image(icon));
 		this.titleDiv.setWidth("85px");
 		this.titleDiv.appendChild(new Label(label));
@@ -36,6 +35,7 @@ public class StartItem extends Hbox implements AfterCompose {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
@@ -55,7 +55,7 @@ public class StartItem extends Hbox implements AfterCompose {
 	}
 
 	private void addMouseEvent(String eventName, final String css, final String cssMore, final Div moreDiv) {
-		this.addEventListener(eventName, new EventListener() {
+		this.addEventListener(eventName, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {

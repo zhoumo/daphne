@@ -18,6 +18,7 @@ public abstract class PopWindow extends Window implements AfterCompose {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
