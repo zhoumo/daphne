@@ -18,7 +18,6 @@ public class RoleTreeRenderer implements TreeitemRenderer<String[]> {
 	private EventListener<Event> clickEventListener;
 
 	public RoleTreeRenderer(ManageService manageService, EventListener<Event> clickEventListener) {
-		super();
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;
 	}

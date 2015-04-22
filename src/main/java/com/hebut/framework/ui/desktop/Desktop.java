@@ -14,8 +14,7 @@ import org.zkoss.zk.ui.ext.AfterCompose;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
-import com.hebut.framework.util.CookieUtil;
-import com.hebut.framework.util.SessionUtil;
+import com.hebut.framework.service.SessionService;
 
 @SuppressWarnings("serial")
 public abstract class Desktop extends Window implements AfterCompose {
@@ -33,7 +32,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
-		SessionUtil.clearWindowSessions();
+		SessionService.clearWindowSessions();
 		this.setWidth("100%");
 		this.setHeight("100%");
 		this.initModel();
@@ -58,7 +57,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 		CssDiv desktopArea = new CssDiv("desktop", this);
 		int index = 0, row = 0, column = -1;
 		for (String key : this.shortcutModel.keySet()) {
-			row = index % CookieUtil.getMaxRowNumber();
+			row = index % 5;
 			if (row == 0) {
 				column++;
 			}
@@ -97,7 +96,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 				if (startPanel.isVisible()) {
 					startPanel.setVisible(false);
 				} else {
-					startPanel.setZIndex(SessionUtil.getZindex());
+					startPanel.setZIndex(SessionService.getZindex());
 					startPanel.setVisible(true);
 				}
 			}
@@ -108,7 +107,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 		StartPanel startPanel = new StartPanel(this.menuModel, this.portraitModel);
 		startPanel.setPage(this.getPage());
 		startPanel.setId("startPanel");
-		startPanel.setVisible(false);
+		startPanel.setVisible(true);
 		this.toolPanel = startPanel.getToolPanel();
 	}
 }

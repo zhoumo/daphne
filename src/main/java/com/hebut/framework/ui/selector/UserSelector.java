@@ -12,8 +12,8 @@ import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Paging;
 import org.zkoss.zul.Tree;
 
-import com.hebut.framework.entity.FwkGroup;
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.PopWindow;
 import com.hebut.framework.ui.manage.member.GroupTreeModel;

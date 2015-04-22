@@ -1,4 +1,4 @@
-package com.hebut.framework.entity;
+package com.hebut.framework.model.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -31,20 +31,6 @@ public class FwkGroup implements Serializable {
 	private List<FwkGroup> children;
 
 	private Boolean selected;
-
-	public FwkGroup() {
-		super();
-	}
-
-	public FwkGroup(Long fgId, String fgName, Integer fgLevel, Short fgType, FwkGroup parent, List<FwkGroup> children) {
-		super();
-		this.fgId = fgId;
-		this.fgName = fgName;
-		this.fgLevel = fgLevel;
-		this.fgType = fgType;
-		this.parent = parent;
-		this.children = children;
-	}
 
 	@Id
 	@GeneratedValue

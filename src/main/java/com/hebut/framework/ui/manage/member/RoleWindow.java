@@ -6,8 +6,8 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 
-import com.hebut.framework.entity.FwkUser;
-import com.hebut.framework.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.PopWindow;
 import com.hebut.rbac.core.AuthorityParser;
@@ -47,13 +47,13 @@ public class RoleWindow extends PopWindow {
 		if (Boolean.parseBoolean(this.getAttribute("single").toString())) {
 			FwkUser user = (FwkUser) this.getAttribute("user");
 			user.setFuAuthority(AuthorityParser.appendRoleKeys(user.getFuAuthority(), group.getFgId().toString(), roles));
-			this.manageService.saveOrUpdateWithCache(user);
+			this.manageService.saveOrUpdate(user);
 		} else {
 			@SuppressWarnings("unchecked")
 			List<FwkUser> userList = (List<FwkUser>) this.getAttribute("user");
 			for (FwkUser user : userList) {
 				user.setFuAuthority(AuthorityParser.appendRoleKeys(user.getFuAuthority(), group.getFgId().toString(), roles));
-				this.manageService.saveOrUpdateWithCache(user);
+				this.manageService.saveOrUpdate(user);
 			}
 		}
 		Events.postEvent(Events.ON_CHANGE, this, null);

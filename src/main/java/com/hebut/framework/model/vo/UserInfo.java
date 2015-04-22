@@ -1,4 +1,4 @@
-package com.hebut.framework.vo;
+package com.hebut.framework.model.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkUser;
 
 @SuppressWarnings("serial")
 public class UserInfo implements Serializable {
@@ -18,7 +18,6 @@ public class UserInfo implements Serializable {
 	private Map<String, List<String>> roleMap;
 
 	public UserInfo(String authority) {
-		super();
 		this.authority = authority;
 		this.roleMap = new HashMap<String, List<String>>();
 		for (String authoritySever : authority.split(",")) {

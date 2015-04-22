@@ -9,7 +9,7 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 
-import com.hebut.framework.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkGroup;
 import com.hebut.framework.service.ManageService;
 
 public class GroupTreeRenderer implements TreeitemRenderer<FwkGroup> {
@@ -21,7 +21,6 @@ public class GroupTreeRenderer implements TreeitemRenderer<FwkGroup> {
 	private EventListener<Event> doubleClickEventListener;
 
 	public GroupTreeRenderer(ManageService manageService, EventListener<Event> clickEventListener, EventListener<Event> doubleClickEventListener) {
-		super();
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;
 		this.doubleClickEventListener = doubleClickEventListener;

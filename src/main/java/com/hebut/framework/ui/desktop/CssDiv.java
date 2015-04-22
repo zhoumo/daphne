@@ -7,7 +7,6 @@ import org.zkoss.zul.Div;
 public class CssDiv extends Div {
 
 	public CssDiv(String css, Object parent) {
-		super();
 		this.setZclass(css);
 		try {
 			parent.getClass().getMethod("appendChild", Component.class).invoke(parent, this);

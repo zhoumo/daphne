@@ -7,7 +7,7 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-import com.hebut.framework.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkGroup;
 import com.hebut.framework.service.ManageService;
 
 @SuppressWarnings("serial")
@@ -16,7 +16,6 @@ public class GroupSelector extends Listbox {
 	private ManageService manageService;
 
 	public GroupSelector(ManageService manageService, Component parent) {
-		super();
 		this.manageService = manageService;
 		this.setParent(parent);
 		this.setMold("select");

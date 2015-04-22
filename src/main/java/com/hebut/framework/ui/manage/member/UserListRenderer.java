@@ -7,7 +7,7 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.rbac.core.AuthorityParser;
 import com.hebut.rbac.core.CommonUtil;
 

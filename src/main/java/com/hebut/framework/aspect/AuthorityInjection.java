@@ -7,8 +7,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
-import com.hebut.framework.entity.FwkGroup;
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.rbac.core.CommonUtil;
 import com.hebut.rbac.core.Validator;
 

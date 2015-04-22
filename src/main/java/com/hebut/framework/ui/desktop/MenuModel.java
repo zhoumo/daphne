@@ -15,7 +15,6 @@ public class MenuModel implements Serializable {
 	private List<MenuModel> children;
 
 	public MenuModel(String name) {
-		super();
 		this.name = name;
 	}
 

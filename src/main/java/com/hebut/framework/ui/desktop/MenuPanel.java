@@ -18,8 +18,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
 import com.hebut.framework.security.ComponentCheck;
+import com.hebut.framework.service.SessionService;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.util.SessionUtil;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends Window implements AfterCompose {
@@ -48,7 +48,7 @@ public class MenuPanel extends Window implements AfterCompose {
 		hbox.appendChild(this.menuDiv);
 		this.appendChild(hbox);
 		this.setZclass("start_panel_menu");
-		this.setZindex(SessionUtil.getZindex());
+		this.setZindex(SessionService.getZindex());
 		this.addParentMouseEvent(Events.ON_MOUSE_OVER, true);
 		this.addParentMouseEvent(Events.ON_MOUSE_OUT, false);
 		this.menuLeft.setZclass("start_panel_menu_left");
@@ -84,12 +84,12 @@ public class MenuPanel extends Window implements AfterCompose {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						event.getTarget().getPage().getFellow("startPanel").setVisible(false);
-						BaseWindow baseWindow = SessionUtil.getWindowInSession(menu.getName());
+						BaseWindow baseWindow = SessionService.getWindowInSession(menu.getName());
 						if (baseWindow == null) {
 							if (menu.getValue().toString().startsWith("http://")) {
 								Map<Object, Object> argMap = new HashMap<Object, Object>();
 								if (menu.getValue().toString().endsWith("client")) {
-									argMap.put("url", menu.getValue().toString() + "?rbac=" + JSONObject.fromObject(SessionUtil.getUserInfoSession()).toString());
+									argMap.put("url", menu.getValue().toString() + "?rbac=" + JSONObject.fromObject(SessionService.getUserInfoSession()).toString());
 								} else {
 									argMap.put("url", menu.getValue().toString());
 								}
@@ -99,9 +99,9 @@ public class MenuPanel extends Window implements AfterCompose {
 							}
 							baseWindow.setTitle(menu.getName());
 							baseWindow.doOverlapped();
-							SessionUtil.createWindowSession(menu.getName(), baseWindow);
+							SessionService.createWindowSession(menu.getName(), baseWindow);
 						} else {
-							baseWindow.setZIndex(SessionUtil.getZindex());
+							baseWindow.setZIndex(SessionService.getZindex());
 						}
 					}
 				});

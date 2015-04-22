@@ -12,11 +12,11 @@ import org.zkoss.zul.Image;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkUser;
+import com.hebut.framework.model.vo.UserInfo;
 import com.hebut.framework.service.ManageService;
+import com.hebut.framework.service.SessionService;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.util.SessionUtil;
-import com.hebut.framework.vo.UserInfo;
 import com.hebut.rbac.core.Validator;
 
 @SuppressWarnings("serial")
@@ -53,8 +53,8 @@ public class LoginWindow extends Window implements AfterCompose {
 	private void login(String authority, FwkUser user) {
 		UserInfo userInfo = new UserInfo(authority);
 		userInfo.setUser(user);
-		SessionUtil.createUserInfoSession(userInfo);
-		SessionUtil.createLoginTimestampSession(new Date());
+		SessionService.createUserInfoSession(userInfo);
+		SessionService.createLoginTimestampSession(new Date());
 		Executions.sendRedirect(BaseWindow.SYSTEM_DESKTOP);
 	}
 }

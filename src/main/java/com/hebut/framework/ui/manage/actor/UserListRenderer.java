@@ -8,15 +8,11 @@ import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
-import com.hebut.framework.entity.FwkGroup;
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.rbac.core.AuthorityParser;
 
 public class UserListRenderer implements ListitemRenderer<FwkUser> {
-
-	public UserListRenderer() {
-		super();
-	}
 
 	@Override
 	public void render(Listitem item, FwkUser user, int index) throws Exception {

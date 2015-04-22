@@ -5,13 +5,13 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zk.ui.ext.AfterCompose;
 import org.zkoss.zul.Window;
 
-import com.hebut.framework.util.SessionUtil;
-import com.hebut.framework.vo.UserInfo;
+import com.hebut.framework.model.vo.UserInfo;
+import com.hebut.framework.service.SessionService;
 
 @SuppressWarnings("serial")
 public abstract class PopWindow extends Window implements AfterCompose {
 
-	private UserInfo userInfo = SessionUtil.getUserInfoSession();
+	private UserInfo userInfo = SessionService.getUserInfoSession();
 
 	public UserInfo getUserInfo() {
 		return userInfo;

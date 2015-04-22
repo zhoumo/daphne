@@ -6,8 +6,8 @@ import java.util.List;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Textbox;
 
-import com.hebut.framework.entity.FwkGroup;
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.PopWindow;
 
@@ -44,7 +44,7 @@ public class UserWindow extends PopWindow {
 			}
 		}
 		user.setGroups(groupList);
-		this.manageService.saveOrUpdateWithCache(user);
+		this.manageService.saveOrUpdate(user);
 		Events.postEvent(Events.ON_CHANGE, this, null);
 		this.detach();
 	}

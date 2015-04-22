@@ -3,7 +3,7 @@ package com.hebut.framework.ui.manage.member;
 import java.util.List;
 import org.zkoss.zul.AbstractTreeModel;
 
-import com.hebut.framework.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkGroup;
 
 @SuppressWarnings("serial")
 public class GroupTreeModel extends AbstractTreeModel<Object> {

@@ -9,8 +9,8 @@ import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Window;
 
-import com.hebut.framework.util.SessionUtil;
-import com.hebut.framework.vo.UserInfo;
+import com.hebut.framework.model.vo.UserInfo;
+import com.hebut.framework.service.SessionService;
 
 @SuppressWarnings("serial")
 public abstract class BaseWindow extends Window implements AfterCompose {
@@ -31,10 +31,10 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 
 	public static String SELECTOR_USER = "/framework/selector/userSelector.zul";
 
-	private UserInfo userInfo = SessionUtil.getUserInfoSession();
+	public abstract void initWindow();
 
 	public UserInfo getUserInfo() {
-		return userInfo;
+		return SessionService.getUserInfoSession();
 	}
 
 	@Override
@@ -45,19 +45,17 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 		this.setClosable(true);
 		this.setBorder("normal");
 		this.setPosition("center,center");
-		this.setZIndex(SessionUtil.getZindex());
+		this.setZIndex(SessionService.getZindex());
 		this.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Window window = (Window) event.getTarget();
-				SessionUtil.removeWindowSession(window.getTitle());
+				SessionService.removeWindowSession(window.getTitle());
 			}
 		});
 		this.initWindow();
 	}
-
-	public abstract void initWindow();
 
 	public boolean hasItemSelected(Object object) {
 		if (object instanceof Listbox) {

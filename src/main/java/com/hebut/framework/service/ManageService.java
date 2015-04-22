@@ -8,35 +8,27 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import com.hebut.framework.entity.FwkGroup;
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.framework.service.ManageService;
-import com.hebut.framework.util.CacheUtil;
 
 @Service("manageService")
 public class ManageService extends BaseService {
 
 	public FwkUser findByLoginNameAndPassword(String loginName, String password) {
-		FwkUser user = (FwkUser) this.loadEntity(CacheUtil.getCacheKey(FwkUser.class, loginName), null);
-		if (user != null) {
-			if (!user.getFuPassword().equals(password)) {
-				user = null;
-			}
-		} else {
-			String queryString = "from FwkUser u where u.fuLoginName=? and u.fuPassword=?";
-			user = (FwkUser) getHibernateTemplate().find(queryString, new Object[] { loginName, password }).get(0);
-		}
+		String queryString = "from FwkUser u where u.fuLoginName=? and u.fuPassword=?";
+		FwkUser user = (FwkUser) super.hibernateTemplate.find(queryString, new Object[] { loginName, password }).get(0);
 		for (FwkGroup group : user.getGroups()) {
 			group.setChildren(null);
 		}
 		return user;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<FwkGroup> findRootGroup(FwkGroup selectedGroup) {
 		String queryString = "from FwkGroup where fgPid is null order by fgName";
-		Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+		Session session = super.hibernateTemplate.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		@SuppressWarnings("unchecked")
 		List<FwkGroup> groupList = session.createQuery(queryString).list();
 		this.initialize(groupList, selectedGroup);
 		session.beginTransaction().commit();
@@ -59,7 +51,7 @@ public class ManageService extends BaseService {
 
 	public List<FwkGroup> buildGroupTree() {
 		String queryString = "from FwkGroup where fgPid is null order by fgName";
-		Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+		Session session = super.hibernateTemplate.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		Query query = session.createQuery(queryString);
 		List<FwkGroup> groupList = new ArrayList<FwkGroup>();
@@ -82,11 +74,11 @@ public class ManageService extends BaseService {
 		return count(queryString, group.getFgId());
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<FwkUser> findUsersByGroup(int pageNo, int pageSize, FwkGroup group) {
 		String queryString = "select u from FwkUser u inner join u.groups g where g.fgId=?";
-		Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+		Session session = super.hibernateTemplate.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		@SuppressWarnings("unchecked")
 		List<FwkUser> userList = session.createQuery(queryString).setParameter(0, group.getFgId()).setMaxResults(pageSize).setFirstResult(pageNo * pageSize).list();
 		for (FwkUser user : userList) {
 			user.setCurrentGroup(group.getFgId().toString());
@@ -100,11 +92,11 @@ public class ManageService extends BaseService {
 		return count(queryString);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<FwkUser> findUsersByRoleKey(int pageNo, int pageSize, String roleKey) {
 		String queryString = "select u from FwkUser u where u.fuAuthority like '%" + roleKey + "%'";
-		Session session = this.hibernateTemplate.getSessionFactory().getCurrentSession();
+		Session session = super.hibernateTemplate.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		@SuppressWarnings("unchecked")
 		List<FwkUser> userList = session.createQuery(queryString).setMaxResults(pageSize).setFirstResult(pageNo * pageSize).list();
 		for (FwkUser user : userList) {
 			user.setCurrentRoleKey(roleKey);

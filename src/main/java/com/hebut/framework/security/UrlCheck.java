@@ -10,8 +10,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.security.web.util.AntUrlPathMatcher;
 import org.springframework.security.web.util.UrlMatcher;
 
+import com.hebut.framework.model.vo.UserInfo;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.vo.UserInfo;
 import com.hebut.rbac.core.Validator;
 
 public class UrlCheck {

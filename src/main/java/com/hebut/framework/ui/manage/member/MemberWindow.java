@@ -14,8 +14,8 @@ import org.zkoss.zul.Paging;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 
-import com.hebut.framework.entity.FwkGroup;
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.framework.security.ComponentCheck;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.BaseWindow;
@@ -102,7 +102,7 @@ public class MemberWindow extends BaseWindow {
 							}
 						}
 						user.getGroups().addAll(groupList);
-						manageService.saveOrUpdateWithCache(user);
+						manageService.saveOrUpdate(user);
 					}
 					initGroupTree();
 					initUserListbox();
@@ -127,7 +127,7 @@ public class MemberWindow extends BaseWindow {
 					FwkGroup group = (FwkGroup) this.groupTree.getSelectedItem().getValue();
 					user.setFuAuthority(AuthorityParser.removeRoleKeyByGroup(user.getFuAuthority(), group.getFgId().toString()));
 					user.removeGroup(group);
-					this.manageService.saveOrUpdateWithCache(user);
+					this.manageService.saveOrUpdate(user);
 				}
 			}
 			this.initGroupTree();

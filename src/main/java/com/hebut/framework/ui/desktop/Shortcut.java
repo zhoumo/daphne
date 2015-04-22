@@ -16,8 +16,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Vbox;
 
 import com.hebut.framework.security.ComponentCheck;
+import com.hebut.framework.service.SessionService;
 import com.hebut.framework.ui.common.BaseWindow;
-import com.hebut.framework.util.SessionUtil;
 
 @SuppressWarnings("serial")
 public class Shortcut extends Div implements AfterCompose {
@@ -59,12 +59,12 @@ public class Shortcut extends Div implements AfterCompose {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Shortcut shortcut = (Shortcut) event.getTarget();
-				BaseWindow baseWindow = SessionUtil.getWindowInSession(shortcut.label.getValue());
+				BaseWindow baseWindow = SessionService.getWindowInSession(shortcut.label.getValue());
 				if (baseWindow == null) {
 					if (shortcut.path.startsWith("http://")) {
 						Map<Object, Object> argMap = new HashMap<Object, Object>();
 						if (shortcut.path.endsWith("client")) {
-							argMap.put("url", shortcut.path + "?rbac=" + JSONObject.fromObject(SessionUtil.getUserInfoSession()).toString());
+							argMap.put("url", shortcut.path + "?rbac=" + JSONObject.fromObject(SessionService.getUserInfoSession()).toString());
 						} else {
 							argMap.put("url", shortcut.path);
 						}
@@ -74,9 +74,9 @@ public class Shortcut extends Div implements AfterCompose {
 					}
 					baseWindow.setTitle(shortcut.label.getValue());
 					baseWindow.doOverlapped();
-					SessionUtil.createWindowSession(shortcut.label.getValue(), baseWindow);
+					SessionService.createWindowSession(shortcut.label.getValue(), baseWindow);
 				} else {
-					baseWindow.setZIndex(SessionUtil.getZindex());
+					baseWindow.setZIndex(SessionService.getZindex());
 				}
 			}
 		});

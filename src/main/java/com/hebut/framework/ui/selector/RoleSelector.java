@@ -11,7 +11,6 @@ import com.hebut.rbac.core.CommonUtil;
 public class RoleSelector extends Listbox {
 
 	public RoleSelector(Component parent) {
-		super();
 		this.setParent(parent);
 		this.setMold("select");
 		this.setWidth("250px");

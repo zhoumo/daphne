@@ -1,5 +1,6 @@
-package com.hebut.framework.entity;
+package com.hebut.framework.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,11 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Transient;
 
-import com.hebut.framework.util.CacheUtil;
-
 @Entity
 @SuppressWarnings("serial")
-public class FwkUser implements IEntityCache {
+public class FwkUser implements Serializable {
 
 	private Long fuId;
 
@@ -32,19 +31,6 @@ public class FwkUser implements IEntityCache {
 	private String currentGroup;
 
 	private String currentRoleKey;
-
-	public FwkUser() {
-	}
-
-	public FwkUser(Long fuId, String fuTrueName, String fuLoginName, String fuPassword, String fuAuthority, List<FwkGroup> groups) {
-		super();
-		this.fuId = fuId;
-		this.fuTrueName = fuTrueName;
-		this.fuLoginName = fuLoginName;
-		this.fuPassword = fuPassword;
-		this.fuAuthority = fuAuthority;
-		this.groups = groups;
-	}
 
 	@Id
 	@GeneratedValue
@@ -123,11 +109,5 @@ public class FwkUser implements IEntityCache {
 
 	public void setCurrentRoleKey(String currentRoleKey) {
 		this.currentRoleKey = currentRoleKey;
-	}
-
-	@Override
-	@Transient
-	public String getCacheKey() {
-		return CacheUtil.getCacheKey(FwkUser.class, this.fuLoginName);
 	}
 }

@@ -21,7 +21,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>com.hebut.framework.entity</value>
+				<value>com.hebut.framework.model.entity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -59,18 +59,5 @@
 	</aop:config>
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
-	</bean>
-	<bean id="defaultCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
-		<property name="configLocation">
-			<value>classpath:ehcache.xml</value>
-		</property>
-	</bean>
-	<bean id="defaultCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
-		<property name="cacheManager">
-			<ref local="defaultCacheManager" />
-		</property>
-		<property name="cacheName">
-			<value>DEFAULT_CACHE</value>
-		</property>
 	</bean>
 </beans>

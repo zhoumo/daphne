@@ -4,7 +4,7 @@ import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Textbox;
 
-import com.hebut.framework.entity.FwkGroup;
+import com.hebut.framework.model.entity.FwkGroup;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.PopWindow;
 

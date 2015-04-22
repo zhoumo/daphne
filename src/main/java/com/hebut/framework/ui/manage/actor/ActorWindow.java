@@ -10,7 +10,7 @@ import org.zkoss.zul.Paging;
 import org.zkoss.zul.Tree;
 import org.zkoss.zul.Treeitem;
 
-import com.hebut.framework.entity.FwkUser;
+import com.hebut.framework.model.entity.FwkUser;
 import com.hebut.framework.security.ComponentCheck;
 import com.hebut.framework.service.ManageService;
 import com.hebut.framework.ui.common.BaseWindow;
@@ -58,7 +58,7 @@ public class ActorWindow extends BaseWindow {
 				public void onEvent(Event event) throws Exception {
 					for (FwkUser user : window.getResultList()) {
 						user.setFuAuthority(AuthorityParser.appendRoleKey(user.getFuAuthority(), window.getAttribute("groupId").toString(), ((String[]) (roleTree.getSelectedItem()).getValue())[1]));
-						manageService.saveOrUpdateWithCache(user);
+						manageService.saveOrUpdate(user);
 					}
 					initGroupTree();
 					initUserListbox();
@@ -74,7 +74,7 @@ public class ActorWindow extends BaseWindow {
 			for (Object object : this.userList.getSelectedItems()) {
 				FwkUser user = (FwkUser) ((Listitem) object).getValue();
 				user.setFuAuthority(AuthorityParser.removeRoleKey(user.getFuAuthority(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1]));
-				manageService.saveOrUpdateWithCache(user);
+				manageService.saveOrUpdate(user);
 			}
 			initGroupTree();
 			initUserListbox();
