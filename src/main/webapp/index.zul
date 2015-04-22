@@ -1,5 +1,4 @@
 <?page title="桌面" contentType="text/html;charset=UTF-8"?>
-<?link href="css/desktop.css" rel="stylesheet" type="text/css"?>
 <?meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>

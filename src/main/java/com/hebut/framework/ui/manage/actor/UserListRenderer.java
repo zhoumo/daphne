@@ -12,15 +12,14 @@ import com.hebut.framework.entity.FwkGroup;
 import com.hebut.framework.entity.FwkUser;
 import com.hebut.rbac.core.AuthorityParser;
 
-public class UserListRenderer implements ListitemRenderer {
+public class UserListRenderer implements ListitemRenderer<FwkUser> {
 
 	public UserListRenderer() {
 		super();
 	}
 
 	@Override
-	public void render(Listitem item, Object data) throws Exception {
-		FwkUser user = (FwkUser) data;
+	public void render(Listitem item, FwkUser user, int index) throws Exception {
 		Listcell c0 = new Listcell();
 		Listcell c1 = new Listcell(user.getFuLoginName());
 		Listcell c2 = new Listcell(user.getFuTrueName());

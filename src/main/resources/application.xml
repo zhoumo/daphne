@@ -39,7 +39,7 @@
 				<prop key="hibernate.generate_statistics">false</prop>
 				<prop key="hibernate.connection.release_mode">auto</prop>
 				<prop key="hibernate.autoReconnect">true</prop>
-				<prop key="hibernate.cglib.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
 			</props>
 		</property>
 	</bean>

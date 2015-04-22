@@ -21,11 +21,10 @@ public class GroupSelector extends Listbox {
 		this.setParent(parent);
 		this.setMold("select");
 		this.setWidth("250px");
-		this.setItemRenderer(new ListitemRenderer() {
+		this.setItemRenderer(new ListitemRenderer<FwkGroup>() {
 
 			@Override
-			public void render(Listitem item, Object data) throws Exception {
-				FwkGroup group = (FwkGroup) data;
+			public void render(Listitem item, FwkGroup group, int index) throws Exception {
 				String blank = "| ";
 				for (int i = 0; i < group.getFgLevel(); i++) {
 					blank += "----";
@@ -36,6 +35,7 @@ public class GroupSelector extends Listbox {
 		});
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initAllGroup() {
 		this.setModel(new ListModelList(this.manageService.buildGroupTree()));
 		if (this.getItemCount() != 0) {

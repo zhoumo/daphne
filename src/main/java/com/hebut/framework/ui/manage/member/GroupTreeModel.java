@@ -6,7 +6,7 @@ import org.zkoss.zul.AbstractTreeModel;
 import com.hebut.framework.entity.FwkGroup;
 
 @SuppressWarnings("serial")
-public class GroupTreeModel extends AbstractTreeModel {
+public class GroupTreeModel extends AbstractTreeModel<Object> {
 
 	public GroupTreeModel(Object root) {
 		super(root);
@@ -37,7 +37,11 @@ public class GroupTreeModel extends AbstractTreeModel {
 	}
 
 	public boolean isLeaf(Object node) {
-		FwkGroup group = (FwkGroup) node;
-		return group.getChildren().size() > 0 ? false : true;
+		if (node instanceof FwkGroup) {
+			FwkGroup group = (FwkGroup) node;
+			return group.getChildren().size() > 0 ? false : true;
+		} else {
+			return false;
+		}
 	}
 }

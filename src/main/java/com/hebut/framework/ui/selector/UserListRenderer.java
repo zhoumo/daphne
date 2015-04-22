@@ -8,11 +8,10 @@ import com.hebut.framework.entity.FwkUser;
 import com.hebut.rbac.core.AuthorityParser;
 import com.hebut.rbac.core.CommonUtil;
 
-public class UserListRenderer implements ListitemRenderer {
+public class UserListRenderer implements ListitemRenderer<FwkUser> {
 
 	@Override
-	public void render(Listitem item, Object data) throws Exception {
-		FwkUser user = (FwkUser) data;
+	public void render(Listitem item, FwkUser user, int index) throws Exception {
 		Listcell c0 = new Listcell();
 		Listcell c1 = new Listcell(user.getFuLoginName());
 		Listcell c2 = new Listcell(user.getFuTrueName());

@@ -23,11 +23,7 @@ public class StartPanel extends Window {
 	public StartPanel(List<MenuModel> menuModel, String[] portraitModel) {
 		this.menuModel = menuModel;
 		this.portraitModel = portraitModel;
-		try {
-			this.setMode("overlapped");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		this.setMode("overlapped");
 		this.setWidth("250px");
 		this.setHeight("350px");
 		this.setZclass("start_panel");

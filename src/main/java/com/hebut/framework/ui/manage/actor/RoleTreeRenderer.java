@@ -10,21 +10,20 @@ import org.zkoss.zul.Treerow;
 
 import com.hebut.framework.service.ManageService;
 
-public class RoleTreeRenderer implements TreeitemRenderer {
+public class RoleTreeRenderer implements TreeitemRenderer<String[]> {
 
 	private ManageService manageService;
 
-	private EventListener clickEventListener;
+	private EventListener<?> clickEventListener;
 
-	public RoleTreeRenderer(ManageService manageService, EventListener clickEventListener) {
+	public RoleTreeRenderer(ManageService manageService, EventListener<?> clickEventListener) {
 		super();
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;
 	}
 
 	@Override
-	public void render(Treeitem item, Object data) throws Exception {
-		String[] roleInfo = (String[]) data;
+	public void render(Treeitem item, String[] roleInfo, int index) throws Exception {
 		Treerow row = new Treerow();
 		{
 			Treecell c0 = new Treecell();

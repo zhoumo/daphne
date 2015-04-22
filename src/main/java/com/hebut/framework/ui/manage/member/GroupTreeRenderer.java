@@ -11,15 +11,15 @@ import org.zkoss.zul.Treerow;
 import com.hebut.framework.entity.FwkGroup;
 import com.hebut.framework.service.ManageService;
 
-public class GroupTreeRenderer implements TreeitemRenderer {
+public class GroupTreeRenderer implements TreeitemRenderer<FwkGroup> {
 
 	private ManageService manageService;
 
-	private EventListener clickEventListener;
+	private EventListener<?> clickEventListener;
 
-	private EventListener doubleClickEventListener;
+	private EventListener<?> doubleClickEventListener;
 
-	public GroupTreeRenderer(ManageService manageService, EventListener clickEventListener, EventListener doubleClickEventListener) {
+	public GroupTreeRenderer(ManageService manageService, EventListener<?> clickEventListener, EventListener<?> doubleClickEventListener) {
 		super();
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;
@@ -27,8 +27,7 @@ public class GroupTreeRenderer implements TreeitemRenderer {
 	}
 
 	@Override
-	public void render(Treeitem item, Object data) throws Exception {
-		FwkGroup group = (FwkGroup) data;
+	public void render(Treeitem item, FwkGroup group, int index) throws Exception {
 		Treerow row = new Treerow();
 		{
 			Treecell c0 = new Treecell();
