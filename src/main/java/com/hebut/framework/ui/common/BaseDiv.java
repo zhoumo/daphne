@@ -1,12 +1,12 @@
-package com.hebut.framework.ui.desktop;
+package com.hebut.framework.ui.common;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zul.Div;
 
 @SuppressWarnings("serial")
-public class CssDiv extends Div {
+public class BaseDiv extends Div {
 
-	public CssDiv(String css, Object parent) {
+	public BaseDiv(String css, Object parent) {
 		this.setZclass(css);
 		try {
 			parent.getClass().getMethod("appendChild", Component.class).invoke(parent, this);

@@ -1,20 +1,20 @@
-package com.hebut.framework.ui.desktop;
+package com.hebut.framework.model.vo;
 
 import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class MenuModel implements Serializable {
+public class Menu implements Serializable {
 
 	private String name;
 
 	private Object value;
 
-	private MenuModel parent;
+	private Menu parent;
 
-	private List<MenuModel> children;
+	private List<Menu> children;
 
-	public MenuModel(String name) {
+	public Menu(String name) {
 		this.name = name;
 	}
 
@@ -34,19 +34,19 @@ public class MenuModel implements Serializable {
 		this.value = value;
 	}
 
-	public MenuModel getParent() {
+	public Menu getParent() {
 		return parent;
 	}
 
-	public void setParent(MenuModel parent) {
+	public void setParent(Menu parent) {
 		this.parent = parent;
 	}
 
-	public List<MenuModel> getChildren() {
+	public List<Menu> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<MenuModel> children) {
+	public void setChildren(List<Menu> children) {
 		this.children = children;
 	}
 }

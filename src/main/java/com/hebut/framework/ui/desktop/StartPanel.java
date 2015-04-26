@@ -9,20 +9,23 @@ import org.zkoss.zul.Separator;
 import org.zkoss.zul.Vbox;
 import org.zkoss.zul.Window;
 
+import com.hebut.framework.model.vo.Menu;
+import com.hebut.framework.ui.common.BaseDiv;
+
 @SuppressWarnings("serial")
 public class StartPanel extends Window {
 
-	private CssDiv modulePanel;
+	private BaseDiv modulePanel;
 
-	private CssDiv toolPanel;
+	private BaseDiv toolPanel;
 
-	private List<MenuModel> menuModel;
+	private List<Menu> menu;
 
-	private String[] portraitModel;
+	private String[] portrait;
 
-	public StartPanel(List<MenuModel> menuModel, String[] portraitModel) {
-		this.menuModel = menuModel;
-		this.portraitModel = portraitModel;
+	public StartPanel(List<Menu> menu, String[] portrait) {
+		this.menu = menu;
+		this.portrait = portrait;
 		this.setMode("overlapped");
 		this.setWidth("250px");
 		this.setHeight("350px");
@@ -31,26 +34,26 @@ public class StartPanel extends Window {
 		this.createModulePanel();
 	}
 
-	public CssDiv getToolPanel() {
+	public BaseDiv getToolPanel() {
 		return this.toolPanel;
 	}
 
 	private void createPanelFrame() {
-		new CssDiv("start_panel_top", this);
+		new BaseDiv("start_panel_top", this);
 		Hbox hbox = new Hbox();
 		hbox.setParent(this);
 		hbox.setZclass("start_panel_center");
 		{
-			new CssDiv("start_panel_left", hbox);
+			new BaseDiv("start_panel_left", hbox);
 			Vbox vbox = new Vbox();
 			vbox.setParent(hbox);
 			{
 				Hbox titleBox = new Hbox();
-				titleBox.setParent(new CssDiv("start_panel_title", vbox));
+				titleBox.setParent(new BaseDiv("start_panel_title", vbox));
 				titleBox.setAlign("center");
 				{
-					titleBox.appendChild(new Image(this.portraitModel[0]));
-					titleBox.appendChild(new Label(this.portraitModel[1]));
+					titleBox.appendChild(new Image(this.portrait[0]));
+					titleBox.appendChild(new Label(this.portrait[1]));
 				}
 				Separator separator = new Separator();
 				separator.setBar(true);
@@ -59,18 +62,18 @@ public class StartPanel extends Window {
 				Hbox mainPanel = new Hbox();
 				mainPanel.setParent(vbox);
 				{
-					this.modulePanel = new CssDiv("start_panel_module", mainPanel);
-					this.toolPanel = new CssDiv(null, mainPanel);
+					this.modulePanel = new BaseDiv("start_panel_module", mainPanel);
+					this.toolPanel = new BaseDiv(null, mainPanel);
 				}
 			}
-			new CssDiv("start_panel_right", hbox);
+			new BaseDiv("start_panel_right", hbox);
 		}
-		new CssDiv("start_panel_bottom", this);
+		new BaseDiv("start_panel_bottom", this);
 	}
 
 	private void createModulePanel() {
-		for (MenuModel menuModel : this.menuModel) {
-			this.modulePanel.appendChild(new StartItem("images/desktop/module.png", menuModel.getName(), menuModel));
+		for (Menu menu : this.menu) {
+			this.modulePanel.appendChild(new StartItem("images/desktop/module.png", menu.getName(), menu));
 		}
 	}
 }

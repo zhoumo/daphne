@@ -14,18 +14,20 @@ import org.zkoss.zk.ui.ext.AfterCompose;
 import org.zkoss.zul.Toolbarbutton;
 import org.zkoss.zul.Window;
 
+import com.hebut.framework.model.vo.Menu;
 import com.hebut.framework.service.SessionService;
+import com.hebut.framework.ui.common.BaseDiv;
 
 @SuppressWarnings("serial")
 public abstract class Desktop extends Window implements AfterCompose {
 
-	private CssDiv toolPanel;
+	private BaseDiv toolPanel;
 
-	protected Map<String, String[]> shortcutModel = new HashMap<String, String[]>();
+	protected Map<String, String[]> shortcut = new HashMap<String, String[]>();
 
-	protected List<MenuModel> menuModel = new ArrayList<MenuModel>();
+	protected List<Menu> menu = new ArrayList<Menu>();
 
-	protected String[] portraitModel;
+	protected String[] portrait;
 
 	@Override
 	@SuppressWarnings("deprecation")
@@ -35,14 +37,14 @@ public abstract class Desktop extends Window implements AfterCompose {
 		SessionService.clearWindowSessions();
 		this.setWidth("100%");
 		this.setHeight("100%");
-		this.initModel();
+		this.init();
 		this.createDesktopArea();
 		this.createTaskbar();
 		this.createStartPanel();
 		this.initToolbarbuttons();
 	}
 
-	protected abstract void initModel();
+	protected abstract void init();
 
 	protected abstract void initToolbarbuttons();
 
@@ -54,14 +56,14 @@ public abstract class Desktop extends Window implements AfterCompose {
 	}
 
 	private void createDesktopArea() {
-		CssDiv desktopArea = new CssDiv("desktop", this);
+		BaseDiv desktopArea = new BaseDiv("desktop", this);
 		int index = 0, row = 0, column = -1;
-		for (String key : this.shortcutModel.keySet()) {
+		for (String key : this.shortcut.keySet()) {
 			row = index % 5;
 			if (row == 0) {
 				column++;
 			}
-			String[] value = this.shortcutModel.get(key);
+			String[] value = this.shortcut.get(key);
 			String css = "position: absolute;left: " + (column * 90) + "px;top: " + (row * 85) + "px";
 			desktopArea.appendChild(new Shortcut("images/desktop/shortcut.png", value[0], value[1], css));
 			index++;
@@ -87,8 +89,8 @@ public abstract class Desktop extends Window implements AfterCompose {
 	}
 
 	private void createTaskbar() {
-		CssDiv taskbar = new CssDiv("taskbar", this);
-		new CssDiv("start_button", taskbar).addEventListener(Events.ON_CLICK, new EventListener<Event>() {
+		BaseDiv taskbar = new BaseDiv("taskbar", this);
+		new BaseDiv("start_button", taskbar).addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
@@ -104,7 +106,7 @@ public abstract class Desktop extends Window implements AfterCompose {
 	}
 
 	private void createStartPanel() {
-		StartPanel startPanel = new StartPanel(this.menuModel, this.portraitModel);
+		StartPanel startPanel = new StartPanel(this.menu, this.portrait);
 		startPanel.setPage(this.getPage());
 		startPanel.setId("startPanel");
 		startPanel.setVisible(true);

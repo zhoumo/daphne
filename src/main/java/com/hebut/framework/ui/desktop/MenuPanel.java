@@ -17,8 +17,10 @@ import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Window;
 
+import com.hebut.framework.model.vo.Menu;
 import com.hebut.framework.security.ComponentCheck;
 import com.hebut.framework.service.SessionService;
+import com.hebut.framework.ui.common.BaseDiv;
 import com.hebut.framework.ui.common.BaseWindow;
 
 @SuppressWarnings("serial")
@@ -30,9 +32,9 @@ public class MenuPanel extends Window implements AfterCompose {
 
 	private Object parent;
 
-	private List<MenuModel> menuList;
+	private List<Menu> menuList;
 
-	public MenuPanel(Object parent, List<MenuModel> menuList) {
+	public MenuPanel(Object parent, List<Menu> menuList) {
 		this.parent = parent;
 		this.menuList = menuList;
 		this.afterCompose();
@@ -56,15 +58,15 @@ public class MenuPanel extends Window implements AfterCompose {
 
 	public void createMenu() {
 		int counter = 0;
-		for (final MenuModel menu : this.menuList) {
+		for (final Menu menu : this.menuList) {
 			Hbox hbox = new Hbox();
 			hbox.setAlign("center");
 			hbox.setZclass("start_panel_menu_item");
 			hbox.setParent(this.menuDiv);
 			{
-				new CssDiv("start_panel_menu_icon", hbox);
-				new CssDiv("start_panel_menu_label", hbox).appendChild(new Label(menu.getName()));
-				CssDiv moreDiv = new CssDiv(null, hbox);
+				new BaseDiv("start_panel_menu_icon", hbox);
+				new BaseDiv("start_panel_menu_label", hbox).appendChild(new Label(menu.getName()));
+				BaseDiv moreDiv = new BaseDiv(null, hbox);
 				if (menu.getChildren().size() != 0) {
 					moreDiv.setZclass("start_panel_menu_more");
 					MenuPanel menuPanel = new MenuPanel(hbox, menu.getChildren());

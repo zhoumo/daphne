@@ -10,6 +10,8 @@ import org.zkoss.zul.Hbox;
 import org.zkoss.zul.Image;
 import org.zkoss.zul.Label;
 
+import com.hebut.framework.model.vo.Menu;
+
 @SuppressWarnings("serial")
 public class StartItem extends Hbox implements AfterCompose {
 
@@ -19,15 +21,15 @@ public class StartItem extends Hbox implements AfterCompose {
 
 	private Div moreDiv = new Div();
 
-	private MenuModel menuModel;
+	private Menu menu;
 
-	public StartItem(String icon, String label, MenuModel menuModel) {
+	public StartItem(String icon, String label, Menu menu) {
 		super();
 		this.iconDiv.setWidth("30px");
 		this.iconDiv.appendChild(new Image(icon));
 		this.titleDiv.setWidth("85px");
 		this.titleDiv.appendChild(new Label(label));
-		this.menuModel = menuModel;
+		this.menu = menu;
 		this.appendChild(this.iconDiv);
 		this.appendChild(this.titleDiv);
 		this.appendChild(this.moreDiv);
@@ -39,9 +41,9 @@ public class StartItem extends Hbox implements AfterCompose {
 	public void afterCompose() {
 		Components.wireVariables(this, this);
 		Components.addForwards(this, this);
-		if (this.menuModel.getChildren().size() != 0) {
+		if (this.menu.getChildren().size() != 0) {
 			this.moreDiv.setZclass("start_panel_module_more");
-			MenuPanel menuPanel = new MenuPanel(this, this.menuModel.getChildren());
+			MenuPanel menuPanel = new MenuPanel(this, this.menu.getChildren());
 			menuPanel.setVisible(false);
 			menuPanel.createMenu();
 			menuPanel.setParent(this);
@@ -61,7 +63,7 @@ public class StartItem extends Hbox implements AfterCompose {
 			public void onEvent(Event event) throws Exception {
 				StartItem startItem = (StartItem) event.getTarget();
 				startItem.setZclass(css);
-				if (startItem.menuModel.getChildren().size() == 0) {
+				if (startItem.menu.getChildren().size() == 0) {
 					moreDiv.setZclass(cssMore);
 				}
 			}
