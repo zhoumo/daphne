@@ -1,0 +1,42 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window width="700px" height="480px" use="mine.daphne.ui.manage.member.MemberWindow">
+		<borderlayout>
+			<west size="250px" minsize="250" splittable="true" border="none">
+				<tree id="groupTree" context="groupMenu" height="430px" vflex="false">
+					<treecols>
+						<treecol label="用户组名称" />
+						<treecol label="人数" align="center" width="25%" />
+					</treecols>
+				</tree>
+			</west>
+			<center>
+				<vbox>
+					<listbox id="userList" paginal="${userPaging}" checkmark="true" multiple="true" height="385px" context="userMenu" visible="false">
+						<listhead>
+							<listheader align="center" width="10%" />
+							<listheader label="登录号" width="20%" />
+							<listheader label="姓名" width="20%" />
+							<listheader label="角色" />
+						</listhead>
+					</listbox>
+					<paging id="userPaging" pageSize="12" detailed="true" visible="false" />
+				</vbox>
+			</center>
+		</borderlayout>
+		<menupopup id="groupMenu">
+			<menuitem label="添加组" id="groupAdd" image="/images/icon/menu/add.png" />
+			<menuitem label="删除组" id="groupDelete" image="/images/icon/menu/delete.png" />
+			<menuitem label="修改组" id="groupUpdate" image="/images/icon/menu/edit.png" />
+			<menuseparator />
+			<menuitem label="移入" id="groupTransfer" image="/images/icon/menu/transfer.png" />
+		</menupopup>
+		<menupopup id="userMenu">
+			<menuitem label="添加" id="userAdd" image="/images/icon/menu/add.png" />
+			<menuitem label="删除" id="userDelete" image="/images/icon/menu/delete.png" />
+			<menuitem label="修改" id="userUpdate" image="/images/icon/menu/edit.png" />
+			<menuseparator />
+			<menuitem label="赋予角色" id="userRole" image="/images/icon/menu/role.png" />
+		</menupopup>
+	</window>
+</zk>
