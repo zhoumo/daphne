@@ -6,7 +6,7 @@
 	</language-config>
 	<device-config>
 		<device-type>ajax</device-type>
-		<timeout-uri>/framework/timeout.zul</timeout-uri>
+		<timeout-uri>/content/timeout.zul</timeout-uri>
 	</device-config>
 	<system-config>
 		<disable-event-thread>false</disable-event-thread>

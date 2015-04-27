@@ -2,7 +2,7 @@
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>
 	<window border="none" width="100%" height="100%" zclass="login_background">
-		<window mode="overlapped" position="center,center" contentSclass="login_panel" use="com.hebut.framework.ui.system.LoginWindow">
+		<window mode="overlapped" position="center,center" contentSclass="login_panel" use="mine.daphne.ui.system.LoginWindow">
 			<separator height="160px" />
 			<hbox>
 				<space width="420px" />

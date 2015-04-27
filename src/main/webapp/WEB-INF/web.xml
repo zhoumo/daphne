@@ -3,13 +3,13 @@
 	<display-name>daphne</display-name>
 	<!-- Listener -->
 	<listener>
-		<listener-class>com.hebut.framework.web.ContextLoader</listener-class>
+		<listener-class>mine.daphne.web.ContextLoader</listener-class>
 	</listener>
 	<!-- Listener End -->
 	<!-- Filter -->
 	<filter>
 		<filter-name>zulFilter</filter-name>
-		<filter-class>com.hebut.framework.web.ZulFilter</filter-class>
+		<filter-class>mine.daphne.web.ZulFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>zulFilter</filter-name>
@@ -74,11 +74,11 @@
 	</welcome-file-list>
 	<error-page>
 		<error-code>404</error-code>
-		<location>/framework/error.zul</location>
+		<location>/content/error.zul</location>
 	</error-page>
 	<error-page>
 		<error-code>500</error-code>
-		<location>/framework/error.zul</location>
+		<location>/content/error.zul</location>
 	</error-page>
 	<!-- Page End -->
 </web-app>

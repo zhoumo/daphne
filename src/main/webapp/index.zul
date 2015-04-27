@@ -2,7 +2,7 @@
 <?meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>
-	<window use="com.hebut.framework.ui.system.DesktopWindow">
+	<window use="mine.daphne.ui.system.DesktopWindow">
 		<toolbarbutton id="setting" image="images/icon/tool/setting.png" label="设定系统参数" />
 		<toolbarbutton id="quit" image="images/icon/tool/logout.png" label="退出桌面" />
 	</window>

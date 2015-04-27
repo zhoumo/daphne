@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
 <language-addon>
-	<addon-name>framework</addon-name>
+	<addon-name>daphne</addon-name>
 	<language-name>xul/html</language-name>
 	<component>
 		<component-name>button</component-name>
