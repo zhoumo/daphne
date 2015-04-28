@@ -17,6 +17,7 @@ import mine.daphne.ui.common.CustomDiv;
 import mine.daphne.ui.desktop.Shortcut;
 import mine.daphne.ui.desktop.StartPanel;
 
+import org.apache.commons.lang.StringUtils;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.event.DropEvent;
@@ -59,7 +60,11 @@ public class DesktopWindow extends BaseWindow {
 		if (userInfo == null) {
 			onClick$quit();
 		}
-		for (Object key : AuthorityParser.parseGetRoleKeys(userInfo.getAuthority())) {
+		String authority = userInfo.getAuthority();
+		if (StringUtils.isEmpty(authority)) {
+			onClick$quit();
+		}
+		for (Object key : AuthorityParser.parseGetRoleKeys(authority)) {
 			for (Function function : CommonUtil.getFunctionList(key.toString())) {
 				this.shortcut.put(function.getName(), new String[] { function.getShow(), CommonUtil.getIndexByFunction(function) });
 			}
