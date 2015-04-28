@@ -26,7 +26,7 @@ public class StartItem extends Hbox implements AfterCompose {
 	public StartItem(String icon, String label, Menu menu) {
 		this.iconDiv.setWidth("30px");
 		this.iconDiv.appendChild(new Image(icon));
-		this.titleDiv.setWidth("85px");
+		this.titleDiv.setWidth("80px");
 		this.titleDiv.appendChild(new Label(label));
 		this.menu = menu;
 		this.appendChild(this.iconDiv);

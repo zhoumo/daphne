@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import mine.daphne.model.vo.Menu;
+import mine.daphne.model.vo.UserInfo;
 import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.security.core.CommonUtil;
 import mine.daphne.security.model.application.Function;
@@ -53,10 +54,13 @@ public class DesktopWindow extends BaseWindow {
 	}
 
 	private void initDesktop() {
-		this.setWidth("100%");
-		this.setHeight("100%");
-		for (Object roleKey : AuthorityParser.parseGetRoleKeys(SessionService.getUserInfoSession().getAuthority())) {
-			for (Function function : CommonUtil.getFunctionList(roleKey.toString())) {
+		this.setBorder(false);
+		UserInfo userInfo = SessionService.getUserInfoSession();
+		if (userInfo == null) {
+			onClick$quit();
+		}
+		for (Object key : AuthorityParser.parseGetRoleKeys(userInfo.getAuthority())) {
+			for (Function function : CommonUtil.getFunctionList(key.toString())) {
 				this.shortcut.put(function.getName(), new String[] { function.getShow(), CommonUtil.getIndexByFunction(function) });
 			}
 		}
@@ -81,7 +85,7 @@ public class DesktopWindow extends BaseWindow {
 				column++;
 			}
 			String[] value = this.shortcut.get(key);
-			String css = "position: absolute;left: " + (column * 90) + "px;top: " + (row * 85) + "px";
+			String css = "position:absolute;left:" + (column * 90) + "px;top:" + (row * 85) + "px";
 			desktopArea.appendChild(new Shortcut("images/desktop/shortcut.png", value[0], value[1], css));
 			index++;
 		}
@@ -99,7 +103,7 @@ public class DesktopWindow extends BaseWindow {
 			public void onEvent(Event event) throws Exception {
 				DropEvent dropEvent = (DropEvent) event;
 				if (dropEvent.getDragged() instanceof Shortcut) {
-					((Shortcut) dropEvent.getDragged()).setStyle("position: absolute;left: " + dropEvent.getPageX() + ";top: " + dropEvent.getPageY());
+					((Shortcut) dropEvent.getDragged()).setStyle("position:absolute;left:" + dropEvent.getPageX() + ";top:" + dropEvent.getPageY());
 				}
 			}
 		});
@@ -133,7 +137,7 @@ public class DesktopWindow extends BaseWindow {
 	private void appendToolbarbuttons(Toolbarbutton[] toolbarbuttons) {
 		for (Toolbarbutton toolbarbutton : toolbarbuttons) {
 			toolbarbutton.setParent(this.toolPanel);
-			toolbarbutton.setStyle("color: white; font-size: 12px");
+			toolbarbutton.setStyle("font-size:12px;color:white;text-shadow:0 0 0");
 		}
 	}
 

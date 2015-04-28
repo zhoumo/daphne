@@ -1,0 +1,9 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window width="850px" height="500px" use="mine.daphne.ui.scrum.planning.BacklogWindow">
+		<spreadsheet id="spreadsheet" width="825px" height="435px" maxrows="20" maxcolumns="12" showFormulabar="true" context="menu" />
+		<menupopup id="menu">
+			<menuitem label="合并单元格" id="mergeButton" image="/images/icon/menu/add.png" />
+		</menupopup>
+	</window>
+</zk>

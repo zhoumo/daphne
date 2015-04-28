@@ -12,7 +12,7 @@
 		<disable-event-thread>false</disable-event-thread>
 	</system-config>
 	<desktop-config>
-		<theme-uri>/css/desktop.css</theme-uri>
+		<theme-uri>/style/desktop.css</theme-uri>
 	</desktop-config>
 	<session-config>
 		<session-timeout>300</session-timeout>

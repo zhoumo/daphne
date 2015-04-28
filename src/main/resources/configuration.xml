@@ -5,9 +5,10 @@
 		<group name="system">
 			<role name="admin" show="管理员" />
 		</group>
-		<group name="hebut">
-			<role name="student" show="学生" />
-			<role name="teacher" show="教师" />
+		<group name="scrum">
+			<role name="manager" show="产品经理" />
+			<role name="developer" show="研发人员" />
+			<role name="tester" show="测试人员" />
 		</group>
 	</actor>
 	<application>
@@ -25,6 +26,11 @@
 			<function name="baidu" show="百度">
 				<constraint url="http://www.baidu.com" index="/" />
 				<constraint url="/content/iframe.zul" />
+			</function>
+		</module>
+		<module name="scrum" show="敏捷开发" roles="system-admin">
+			<function name="planning" show="计划会">
+				<constraint url="/content/scrum/planning/**" index="index.zul" />
 			</function>
 		</module>
 	</application>

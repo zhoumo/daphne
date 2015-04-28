@@ -24,11 +24,11 @@
 					</rows>
 				</grid>
 			</center>
-			<south>
-				<hbox>
+			<south border="none">
+				<div>
 					<button id="submit" label="保存" />
 					<button id="cancel" label="取消" />
-				</hbox>
+				</div>
 			</south>
 		</borderlayout>
 	</window>

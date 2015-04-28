@@ -24,10 +24,10 @@
 				</vbox>
 			</center>
 			<south border="none">
-				<hbox>
+				<div>
 					<button id="submit" label="确定" />
 					<button id="cancel" label="取消" />
-				</hbox>
+				</div>
 			</south>
 		</borderlayout>
 	</window>

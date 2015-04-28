@@ -15,9 +15,6 @@ public class ContextLoader extends ContextLoaderListener {
 
 	public void contextInitialized(ServletContextEvent event) {
 		super.contextInitialized(event);
-		if (logger.isDebugEnabled()) {
-			logger.debug("容器启动完成");
-		}
 		BeanFactory.setWebApplicationContext(WebApplicationContextUtils.getWebApplicationContext(event.getServletContext()));
 		try {
 			RoleFactory.createFactory(XmlParser.getRbacConfig());

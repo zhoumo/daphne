@@ -7,10 +7,10 @@
 					<listheader align="left" />
 				</listhead>
 			</listbox>
-			<hbox>
+			<div>
 				<button id="submit" label="确定" />
 				<button id="cancel" label="取消" />
-			</hbox>
+			</div>
 		</vbox>
 	</window>
 </zk>

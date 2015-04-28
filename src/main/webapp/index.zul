@@ -1,7 +1,9 @@
 <?page title="桌面" contentType="text/html;charset=UTF-8"?>
-<?meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"?>
 <?variable-resolver class="org.zkoss.zkplus.spring.DelegatingVariableResolver"?>
 <zk>
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 	<window use="mine.daphne.ui.system.DesktopWindow">
 		<toolbarbutton id="setting" image="images/icon/tool/setting.png" label="设定系统参数" />
 		<toolbarbutton id="quit" image="images/icon/tool/logout.png" label="退出桌面" />
