@@ -34,13 +34,32 @@ public class ActorWindow extends BaseWindow {
 		@Override
 		public void onEvent(Event event) throws Exception {
 			((String[]) ((Treeitem) event.getTarget()).getValue())[2] = "true";
-			if (!userList.isVisible()) {
-				userList.setVisible(true);
-				userPaging.setVisible(true);
-			}
 			initUserListbox();
 		}
 	};
+
+	private void initGroupTree() {
+		String selectedRoleKey = "";
+		if (super.hasItemSelected(this.roleTree)) {
+			selectedRoleKey = ((String[]) (this.roleTree.getSelectedItem()).getValue())[1];
+		}
+		RoleTreeModel model = new RoleTreeModel(CommonUtil.getRoleKeySet().toArray(), selectedRoleKey);
+		this.roleTree.setModel(model);
+	}
+
+	private void initUserListbox() {
+		this.userPaging.setActivePage(0);
+		this.userPaging.setTotalSize(Integer.parseInt(this.roleTree.getSelectedItem().getAttribute("number").toString()));
+		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
+
+			public void onEvent(Event event) throws Exception {
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByRoleKey(userPaging.getActivePage(), userPaging.getPageSize(), ((String[]) (roleTree.getSelectedItem()).getValue())[1])));
+			}
+		});
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByRoleKey(0, this.userPaging.getPageSize(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1])));
+		this.userList.setMultiple(true);
+		this.userList.setCheckmark(true);
+	}
 
 	@Override
 	public void initWindow() {
@@ -79,26 +98,5 @@ public class ActorWindow extends BaseWindow {
 			initGroupTree();
 			initUserListbox();
 		}
-	}
-
-	private void initGroupTree() {
-		String selectedRoleKey = "";
-		if (super.hasItemSelected(this.roleTree)) {
-			selectedRoleKey = ((String[]) (this.roleTree.getSelectedItem()).getValue())[1];
-		}
-		RoleTreeModel model = new RoleTreeModel(CommonUtil.getRoleKeySet().toArray(), selectedRoleKey);
-		this.roleTree.setModel(model);
-	}
-
-	private void initUserListbox() {
-		this.userPaging.setActivePage(0);
-		this.userPaging.setTotalSize(Integer.parseInt(this.roleTree.getSelectedItem().getAttribute("number").toString()));
-		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
-
-			public void onEvent(Event event) throws Exception {
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByRoleKey(userPaging.getActivePage(), userPaging.getPageSize(), ((String[]) (roleTree.getSelectedItem()).getValue())[1])));
-			}
-		});
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByRoleKey(0, this.userPaging.getPageSize(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1])));
 	}
 }

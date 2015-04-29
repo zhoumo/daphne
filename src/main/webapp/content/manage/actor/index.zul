@@ -1,9 +1,9 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window width="600px" height="400px" use="mine.daphne.ui.manage.actor.ActorWindow">
+	<window width="600px" height="450px" use="mine.daphne.ui.manage.actor.ActorWindow">
 		<borderlayout>
 			<west size="200px" minsize="200" splittable="true">
-				<tree id="roleTree" height="428px" vflex="false" context="emptyMenu">
+				<tree id="roleTree" height="100%" vflex="false" context="emptyMenu">
 					<treecols>
 						<treecol label="角色名称" />
 						<treecol label="人数" width="25%" align="center" />
@@ -12,7 +12,7 @@
 			</west>
 			<center>
 				<vbox>
-					<listbox id="userList" paginal="${userPaging}" checkmark="true" multiple="true" height="385px" context="userMenu" visible="false">
+					<listbox id="userList" paginal="${userPaging}" checkmark="true" multiple="true" height="355px" context="userMenu">
 						<listhead>
 							<listheader align="center" width="10%" />
 							<listheader label="编号" width="25%" />
@@ -20,7 +20,7 @@
 							<listheader label="用户组" />
 						</listhead>
 					</listbox>
-					<paging id="userPaging" pageSize="12" detailed="true" visible="false" />
+					<paging id="userPaging" pageSize="10" detailed="true" />
 				</vbox>
 			</center>
 		</borderlayout>

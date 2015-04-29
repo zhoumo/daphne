@@ -57,10 +57,7 @@ public class DesktopWindow extends BaseWindow {
 	private void initDesktop() {
 		this.setBorder(false);
 		UserInfo userInfo = SessionService.getUserInfoSession();
-		if (userInfo == null) {
-			onClick$quit();
-		}
-		String authority = userInfo.getAuthority();
+		String authority = (userInfo == null ? "" : userInfo.getAuthority());
 		if (StringUtils.isEmpty(authority)) {
 			onClick$quit();
 		}

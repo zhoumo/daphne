@@ -38,30 +38,14 @@ public class MemberWindow extends BaseWindow {
 		@Override
 		public void onEvent(Event event) throws Exception {
 			((Group) ((Treeitem) event.getTarget()).getValue()).setSelected(true);
-			if (!userList.isVisible()) {
-				userList.setVisible(true);
-				userPaging.setVisible(true);
-			}
 			initUserListbox();
-		}
-	};
-
-	private EventListener<Event> doubleClickEventListener = new EventListener<Event>() {
-
-		@Override
-		public void onEvent(Event event) throws Exception {
-			if (event.getTarget() instanceof Treeitem) {
-				onClick$groupUpdate();
-			} else if (event.getTarget() instanceof Listitem) {
-				onClick$userUpdate();
-			}
 		}
 	};
 
 	@Override
 	public void initWindow() {
-		this.groupTree.setItemRenderer(new GroupTreeRenderer(this.manageService, this.clickEventListener, this.doubleClickEventListener));
-		this.userList.setItemRenderer(new UserListRenderer(this.doubleClickEventListener));
+		this.groupTree.setItemRenderer(new GroupTreeRenderer(this.manageService, this.clickEventListener));
+		this.userList.setItemRenderer(new UserListRenderer());
 		this.initGroupTree();
 	}
 
@@ -184,10 +168,14 @@ public class MemberWindow extends BaseWindow {
 		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), (Group) ((Listitem) event.getTarget()).getValue())));
+				Group group = groupTree.getSelectedItem().getValue();
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
 			}
 		});
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), (Group) this.groupTree.getSelectedItem().getValue())));
+		Group group = this.groupTree.getSelectedItem().getValue();
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
+		this.userList.setMultiple(true);
+		this.userList.setCheckmark(true);
 	}
 
 	private void createGroupWindow(boolean isNew, Object group, Object parent) {

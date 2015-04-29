@@ -36,17 +36,13 @@ public class UserSelector extends PopWindow {
 
 		@Override
 		public void onEvent(Event event) throws Exception {
-			if (!userList.isVisible()) {
-				userList.setVisible(true);
-				userPaging.setVisible(true);
-			}
 			initUserListbox();
 		}
 	};
 
 	@Override
 	public void initPop() {
-		this.groupTree.setItemRenderer(new GroupTreeRenderer(this.manageService, this.clickEventListener, null));
+		this.groupTree.setItemRenderer(new GroupTreeRenderer(this.manageService, this.clickEventListener));
 		this.userList.setItemRenderer(new UserListRenderer());
 		this.initGroupTree();
 	}
@@ -79,9 +75,13 @@ public class UserSelector extends PopWindow {
 		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), (Group) ((Listitem) event.getTarget()).getValue())));
+				Group group = groupTree.getSelectedItem().getValue();
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
 			}
 		});
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), (Group) this.groupTree.getSelectedItem().getValue())));
+		Group group = (Group) this.groupTree.getSelectedItem().getValue();
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
+		this.userList.setMultiple(true);
+		this.userList.setCheckmark(true);
 	}
 }

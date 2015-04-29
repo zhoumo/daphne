@@ -18,12 +18,9 @@ public class GroupTreeRenderer implements TreeitemRenderer<Group> {
 
 	private EventListener<Event> clickEventListener;
 
-	private EventListener<Event> doubleClickEventListener;
-
-	public GroupTreeRenderer(ManageService manageService, EventListener<Event> clickEventListener, EventListener<Event> doubleClickEventListener) {
+	public GroupTreeRenderer(ManageService manageService, EventListener<Event> clickEventListener) {
 		this.manageService = manageService;
 		this.clickEventListener = clickEventListener;
-		this.doubleClickEventListener = doubleClickEventListener;
 	}
 
 	@Override
@@ -47,9 +44,6 @@ public class GroupTreeRenderer implements TreeitemRenderer<Group> {
 		}
 		if (this.clickEventListener != null) {
 			item.addEventListener(Events.ON_CLICK, this.clickEventListener);
-		}
-		if (this.doubleClickEventListener != null) {
-			item.addEventListener(Events.ON_DOUBLE_CLICK, this.doubleClickEventListener);
 		}
 	}
 }
