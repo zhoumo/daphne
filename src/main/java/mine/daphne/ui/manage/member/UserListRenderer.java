@@ -4,6 +4,7 @@ import mine.daphne.model.entity.User;
 import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.security.core.CommonUtil;
 
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
@@ -21,5 +22,7 @@ public class UserListRenderer implements ListitemRenderer<User> {
 		item.appendChild(new Listcell(user.getLoginName()));
 		item.appendChild(new Listcell(user.getTrueName()));
 		item.appendChild(new Listcell(roles));
+		((Listbox) item.getParent()).setMultiple(true);
+		((Listbox) item.getParent()).setCheckmark(true);
 	}
 }

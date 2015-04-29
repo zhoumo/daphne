@@ -57,8 +57,6 @@ public class ActorWindow extends BaseWindow {
 			}
 		});
 		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByRoleKey(0, this.userPaging.getPageSize(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1])));
-		this.userList.setMultiple(true);
-		this.userList.setCheckmark(true);
 	}
 
 	@Override

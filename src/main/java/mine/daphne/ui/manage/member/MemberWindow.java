@@ -42,6 +42,62 @@ public class MemberWindow extends BaseWindow {
 		}
 	};
 
+	private void initGroupTree() {
+		Group group = null;
+		if (super.hasItemSelected(this.groupTree)) {
+			group = (Group) this.groupTree.getSelectedItem().getValue();
+		}
+		GroupTreeModel model = new GroupTreeModel(this.manageService.findRootGroup(group));
+		this.groupTree.setModel(model);
+	}
+
+	private void initUserListbox() {
+		this.userPaging.setActivePage(0);
+		this.userPaging.setTotalSize(Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()));
+		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
+
+			public void onEvent(Event event) throws Exception {
+				Group group = groupTree.getSelectedItem().getValue();
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
+			}
+		});
+		Group group = this.groupTree.getSelectedItem().getValue();
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
+	}
+
+	private void createGroupWindow(boolean isNew, Object group, Object parent) {
+		final GroupWindow window = (GroupWindow) ComponentCheck.createComponents(this, MANAGE_GROUP, null, null);
+		window.setAttribute("isNew", isNew);
+		window.setAttribute("group", group);
+		window.setAttribute("parent", parent);
+		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				initGroupTree();
+			}
+		});
+		window.initPop();
+		window.doHighlighted();
+	}
+
+	private void createUserWindow(boolean isNew, Object user, final Object group) {
+		final UserWindow window = (UserWindow) ComponentCheck.createComponents(this, MANAGE_USER, null, null);
+		window.setAttribute("isNew", isNew);
+		window.setAttribute("user", user);
+		window.setAttribute("group", group);
+		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				initGroupTree();
+				initUserListbox();
+			}
+		});
+		window.initPop();
+		window.doHighlighted();
+	}
+
 	@Override
 	public void initWindow() {
 		this.groupTree.setItemRenderer(new GroupTreeRenderer(this.manageService, this.clickEventListener));
@@ -151,63 +207,5 @@ public class MemberWindow extends BaseWindow {
 			window.initPop();
 			window.doHighlighted();
 		}
-	}
-
-	private void initGroupTree() {
-		Group group = null;
-		if (super.hasItemSelected(this.groupTree)) {
-			group = (Group) this.groupTree.getSelectedItem().getValue();
-		}
-		GroupTreeModel model = new GroupTreeModel(this.manageService.findRootGroup(group));
-		this.groupTree.setModel(model);
-	}
-
-	private void initUserListbox() {
-		this.userPaging.setActivePage(0);
-		this.userPaging.setTotalSize(Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()));
-		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
-
-			public void onEvent(Event event) throws Exception {
-				Group group = groupTree.getSelectedItem().getValue();
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
-			}
-		});
-		Group group = this.groupTree.getSelectedItem().getValue();
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
-		this.userList.setMultiple(true);
-		this.userList.setCheckmark(true);
-	}
-
-	private void createGroupWindow(boolean isNew, Object group, Object parent) {
-		final GroupWindow window = (GroupWindow) ComponentCheck.createComponents(this, MANAGE_GROUP, null, null);
-		window.setAttribute("isNew", isNew);
-		window.setAttribute("group", group);
-		window.setAttribute("parent", parent);
-		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-
-			@Override
-			public void onEvent(Event event) throws Exception {
-				initGroupTree();
-			}
-		});
-		window.initPop();
-		window.doHighlighted();
-	}
-
-	private void createUserWindow(boolean isNew, Object user, final Object group) {
-		final UserWindow window = (UserWindow) ComponentCheck.createComponents(this, MANAGE_USER, null, null);
-		window.setAttribute("isNew", isNew);
-		window.setAttribute("user", user);
-		window.setAttribute("group", group);
-		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
-
-			@Override
-			public void onEvent(Event event) throws Exception {
-				initGroupTree();
-				initUserListbox();
-			}
-		});
-		window.initPop();
-		window.doHighlighted();
 	}
 }

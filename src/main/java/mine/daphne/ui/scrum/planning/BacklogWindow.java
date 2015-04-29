@@ -47,10 +47,6 @@ public class BacklogWindow extends BaseWindow {
 		}
 	}
 
-	public void onClick$mergeButton() {
-		CellOperationUtil.merge(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()), false);
-	}
-
 	@Override
 	public void initWindow() {
 		Importer importer = Importers.getImporter();
@@ -61,5 +57,15 @@ public class BacklogWindow extends BaseWindow {
 			e.printStackTrace();
 		}
 		createMemberMenu();
+		Ranges.range(spreadsheet.getSelectedSheet()).setFreezePanel(1, 0);
+	}
+
+	public void onClick$mergeButton() {
+		CellOperationUtil.merge(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()), false);
+	}
+
+	public void onClick$insertLine() {
+		spreadsheet.setMaxVisibleRows(spreadsheet.getMaxVisibleRows() + 1);
+		CellOperationUtil.insertRow(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
 	}
 }

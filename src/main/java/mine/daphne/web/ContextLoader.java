@@ -18,7 +18,7 @@ public class ContextLoader extends ContextLoaderListener {
 		BeanFactory.setWebApplicationContext(WebApplicationContextUtils.getWebApplicationContext(event.getServletContext()));
 		try {
 			RoleFactory.createFactory(XmlParser.getRbacConfig());
-		} catch (CloneNotSupportedException e) {
+		} catch (Exception e) {
 			logger.error("配置文件解析失败", e);
 		}
 	}

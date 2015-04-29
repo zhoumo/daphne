@@ -25,6 +25,14 @@ public class LoginWindow extends BaseWindow {
 
 	private Image loginButton;
 
+	private void login(String authority, User user) {
+		UserInfo userInfo = new UserInfo(authority);
+		userInfo.setUser(user);
+		SessionService.createUserInfoSession(userInfo);
+		SessionService.createLoginTimestampSession(new Date());
+		Executions.sendRedirect(BaseWindow.SYSTEM_DESKTOP);
+	}
+
 	@Override
 	public void initWindow() {
 		this.addForward(Events.ON_OK, this.loginButton, Events.ON_CLICK);
@@ -42,13 +50,5 @@ public class LoginWindow extends BaseWindow {
 				throw new WrongValueException(this.username, "用户名或密码错误！");
 			}
 		}
-	}
-
-	private void login(String authority, User user) {
-		UserInfo userInfo = new UserInfo(authority);
-		userInfo.setUser(user);
-		SessionService.createUserInfoSession(userInfo);
-		SessionService.createLoginTimestampSession(new Date());
-		Executions.sendRedirect(BaseWindow.SYSTEM_DESKTOP);
 	}
 }

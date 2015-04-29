@@ -2,7 +2,7 @@
 <zk>
 	<window width="700px" height="450px" use="mine.daphne.ui.manage.member.MemberWindow">
 		<borderlayout>
-			<west size="250px" minsize="250" splittable="true" border="none">
+			<west size="200px" minsize="200" splittable="true" border="none">
 				<tree id="groupTree" context="groupMenu" height="100%" vflex="false">
 					<treecols>
 						<treecol label="用户组名称" />

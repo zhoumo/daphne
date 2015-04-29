@@ -33,6 +33,38 @@ public class MenuPanel extends Div implements AfterCompose {
 
 	private List<Menu> menuList;
 
+	private void addMouseEvent(Hbox hbox, final String eventName, final String css, final boolean isMore, final String cssMore) {
+		hbox.addEventListener(eventName, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				Hbox hbox = (Hbox) event.getTarget();
+				hbox.setZclass(css);
+				if (eventName.equals(Events.ON_MOUSE_OVER)) {
+					setVisible(true);
+				}
+				if (isMore) {
+					((Div) hbox.getLastChild()).setZclass(cssMore);
+				}
+			}
+		});
+	}
+
+	private void addParentMouseEvent(String eventName, final boolean b) {
+		try {
+			Method method = this.parent.getClass().getMethod("addEventListener", String.class, EventListener.class);
+			method.invoke(this.parent, eventName, new EventListener<Event>() {
+
+				@Override
+				public void onEvent(Event event) throws Exception {
+					setVisible(b);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public MenuPanel(Object parent, List<Menu> menuList) {
 		this.parent = parent;
 		this.menuList = menuList;
@@ -109,41 +141,5 @@ public class MenuPanel extends Div implements AfterCompose {
 			counter++;
 		}
 		this.menuLeft.setHeight(counter * 25 + "px");
-	}
-
-	private void addMouseEvent(Hbox hbox, final String eventName, final String css, final boolean isMore, final String cssMore) {
-		hbox.addEventListener(eventName, new EventListener<Event>() {
-
-			@Override
-			public void onEvent(Event event) throws Exception {
-				Hbox hbox = (Hbox) event.getTarget();
-				hbox.setZclass(css);
-				if (eventName.equals(Events.ON_MOUSE_OVER)) {
-					visible(true);
-				}
-				if (isMore) {
-					((Div) hbox.getLastChild()).setZclass(cssMore);
-				}
-			}
-		});
-	}
-
-	private void addParentMouseEvent(String eventName, final boolean b) {
-		try {
-			Method method = this.parent.getClass().getMethod("addEventListener", String.class, EventListener.class);
-			method.invoke(this.parent, eventName, new EventListener<Event>() {
-
-				@Override
-				public void onEvent(Event event) throws Exception {
-					visible(b);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void visible(boolean b) {
-		this.setVisible(b);
 	}
 }

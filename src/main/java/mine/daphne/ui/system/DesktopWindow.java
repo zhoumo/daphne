@@ -105,7 +105,8 @@ public class DesktopWindow extends BaseWindow {
 			public void onEvent(Event event) throws Exception {
 				DropEvent dropEvent = (DropEvent) event;
 				if (dropEvent.getDragged() instanceof Shortcut) {
-					((Shortcut) dropEvent.getDragged()).setStyle("position:absolute;left:" + dropEvent.getPageX() + ";top:" + dropEvent.getPageY());
+					String css = "position:absolute;left:" + dropEvent.getPageX() + "px;top:" + dropEvent.getPageY() + "px";
+					((Shortcut) dropEvent.getDragged()).setStyle(css);
 				}
 			}
 		});

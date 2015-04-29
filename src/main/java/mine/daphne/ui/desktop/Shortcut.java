@@ -38,6 +38,10 @@ public class Shortcut extends Div implements AfterCompose {
 		this.afterCompose();
 	}
 
+	public Label getLabel() {
+		return label;
+	}
+
 	@Override
 	public void afterCompose() {
 		ConventionWires.wireVariables(this, this);

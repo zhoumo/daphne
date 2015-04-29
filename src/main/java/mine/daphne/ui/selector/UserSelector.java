@@ -40,6 +40,25 @@ public class UserSelector extends PopWindow {
 		}
 	};
 
+	private void initGroupTree() {
+		GroupTreeModel model = new GroupTreeModel(this.manageService.findRootGroup(null));
+		this.groupTree.setModel(model);
+	}
+
+	private void initUserListbox() {
+		this.userPaging.setActivePage(0);
+		this.userPaging.setTotalSize(Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()));
+		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
+
+			public void onEvent(Event event) throws Exception {
+				Group group = groupTree.getSelectedItem().getValue();
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
+			}
+		});
+		Group group = (Group) this.groupTree.getSelectedItem().getValue();
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
+	}
+
 	@Override
 	public void initPop() {
 		this.groupTree.setItemRenderer(new GroupTreeRenderer(this.manageService, this.clickEventListener));
@@ -62,26 +81,5 @@ public class UserSelector extends PopWindow {
 
 	public void onClick$cancel() {
 		this.detach();
-	}
-
-	private void initGroupTree() {
-		GroupTreeModel model = new GroupTreeModel(this.manageService.findRootGroup(null));
-		this.groupTree.setModel(model);
-	}
-
-	private void initUserListbox() {
-		this.userPaging.setActivePage(0);
-		this.userPaging.setTotalSize(Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()));
-		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
-
-			public void onEvent(Event event) throws Exception {
-				Group group = groupTree.getSelectedItem().getValue();
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
-			}
-		});
-		Group group = (Group) this.groupTree.getSelectedItem().getValue();
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
-		this.userList.setMultiple(true);
-		this.userList.setCheckmark(true);
 	}
 }

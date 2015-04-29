@@ -16,7 +16,11 @@ public class ManageService extends BaseService {
 
 	public User findByLoginNameAndPassword(String loginName, String password) {
 		String queryString = "from User u where u.loginName=? and u.password=?";
-		User user = (User) super.hibernateTemplate.find(queryString, new Object[] { loginName, password }).get(0);
+		List<?> userList = super.hibernateTemplate.find(queryString, new Object[] { loginName, password });
+		if (userList.size() == 0) {
+			return null;
+		}
+		User user = (User) userList.get(0);
 		for (Group group : user.getGroups()) {
 			group.setChildren(null);
 		}

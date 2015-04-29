@@ -17,6 +17,15 @@ public class RoleFactory {
 
 	private static Map<String, Application> authorityMap;
 
+	private static void formatFunction(Function function, String roles) {
+		if ("".equals(function.getRoles())) {
+			function.setRoles(roles);
+		}
+		for (Function childFunction : function.getFunctions()) {
+			formatFunction(childFunction, function.getRoles());
+		}
+	}
+
 	public static Application getApplication(String roleKey) {
 		if (StringUtils.isEmpty(roleKey)) {
 			return new Application();
@@ -24,7 +33,7 @@ public class RoleFactory {
 		return authorityMap.get(roleKey);
 	}
 
-	public static void createFactory(RbacConfig config) throws CloneNotSupportedException {
+	public static void createFactory(RbacConfig config) throws Exception {
 		if (authorityMap == null) {
 			authorityMap = new HashMap<String, Application>();
 			for (Module module : config.getApplication().getModule()) {
@@ -41,34 +50,11 @@ public class RoleFactory {
 					Module module = application.getModule().get(i);
 					if (!module.getRoles().contains(roleKey)) {
 						removeList.add(module);
-					} else {
-						for (Function function : module.getFunctions()) {
-							removeFunction(function, module.getFunctions(), roleKey);
-						}
 					}
 				}
 				application.getModule().removeAll(removeList);
 				authorityMap.put(roleKey, application);
 			}
-		}
-	}
-
-	private static void formatFunction(Function function, String roles) {
-		if ("".equals(function.getRoles())) {
-			function.setRoles(roles);
-		}
-		for (Function childFunction : function.getFunctions()) {
-			formatFunction(childFunction, function.getRoles());
-		}
-	}
-
-	private static <T> void removeFunction(Function function, List<T> functionList, String roleKey) {
-		if (!function.getRoles().equals(roleKey)) {
-			functionList.remove(function);
-			return;
-		}
-		for (Function childFunction : function.getFunctions()) {
-			removeFunction(childFunction, function.getFunctions(), roleKey);
 		}
 	}
 }

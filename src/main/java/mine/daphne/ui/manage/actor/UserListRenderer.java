@@ -8,24 +8,12 @@ import mine.daphne.model.entity.User;
 import mine.daphne.security.core.AuthorityParser;
 
 import org.apache.commons.lang.StringUtils;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listcell;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.ListitemRenderer;
 
 public class UserListRenderer implements ListitemRenderer<User> {
-
-	@Override
-	public void render(Listitem item, User user, int index) throws Exception {
-		Listcell c0 = new Listcell();
-		Listcell c1 = new Listcell(user.getLoginName());
-		Listcell c2 = new Listcell(user.getTrueName());
-		Listcell c3 = new Listcell(this.getGroups(AuthorityParser.parseGetGroupByRoleKey(user.getAuthority(), user.getCurrentRoleKey()), user));
-		item.setValue(user);
-		item.appendChild(c0);
-		item.appendChild(c1);
-		item.appendChild(c2);
-		item.appendChild(c3);
-	}
 
 	private String getGroups(List<String> groupList, User user) {
 		List<String> groupFgNames = new ArrayList<String>();
@@ -37,5 +25,16 @@ public class UserListRenderer implements ListitemRenderer<User> {
 			}
 		}
 		return StringUtils.join(groupFgNames.toArray(), ",");
+	}
+
+	@Override
+	public void render(Listitem item, User user, int index) throws Exception {
+		item.setValue(user);
+		item.appendChild(new Listcell());
+		item.appendChild(new Listcell(user.getLoginName()));
+		item.appendChild(new Listcell(user.getTrueName()));
+		item.appendChild(new Listcell(this.getGroups(AuthorityParser.parseGetGroupByRoleKey(user.getAuthority(), user.getCurrentRoleKey()), user)));
+		((Listbox) item.getParent()).setMultiple(true);
+		((Listbox) item.getParent()).setCheckmark(true);
 	}
 }
