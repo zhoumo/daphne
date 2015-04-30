@@ -31,6 +31,7 @@
 		<module name="scrum" show="敏捷开发" roles="system-admin,scrum-manager,scrum-developer,scrum-tester">
 			<function name="planning" show="计划会">
 				<constraint url="/content/scrum/planning/**" index="index.zul" />
+				<constraint url="/content/scrum/settings/jira-config.zul" />
 			</function>
 		</module>
 	</application>

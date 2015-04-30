@@ -26,7 +26,7 @@ public class BacklogWindow extends BaseWindow {
 
 	private Spreadsheet spreadsheet;
 
-	private Menupopup memberMenu;
+	private Menupopup operateMenu, contextMenu, memberMenu;
 
 	private void createMemberMenu() {
 		List<String> memberList = new ArrayList<String>();
@@ -57,15 +57,48 @@ public class BacklogWindow extends BaseWindow {
 			e.printStackTrace();
 		}
 		createMemberMenu();
-		Ranges.range(spreadsheet.getSelectedSheet()).setFreezePanel(1, 0);
+		int index = 0;
+		for (Object menuitem : operateMenu.getChildren()) {
+			EventListener<? extends Event> listener = ((Menuitem) menuitem).getEventListeners(Events.ON_CLICK).iterator().next();
+			contextMenu.getChildren().get(index++).addEventListener(Events.ON_CLICK, listener);
+		}
 	}
 
-	public void onClick$mergeButton() {
-		CellOperationUtil.merge(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()), false);
+	public void onClick$create() {
+		System.out.println("create");
+	}
+
+	public void onClick$save() {
+		System.out.println("save");
 	}
 
 	public void onClick$insertLine() {
 		spreadsheet.setMaxVisibleRows(spreadsheet.getMaxVisibleRows() + 1);
 		CellOperationUtil.insertRow(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
+	}
+
+	public void onClick$removeLine() {
+		spreadsheet.setMaxVisibleRows(spreadsheet.getMaxVisibleRows() - 1);
+		CellOperationUtil.deleteRow(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
+	}
+
+	public void onClick$mergeCells() {
+		CellOperationUtil.merge(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()), false);
+	}
+
+	public void onClick$unmergeCells() {
+		CellOperationUtil.unmerge(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
+	}
+
+	public void onClick$jiraSync() {
+		System.out.println("sync");
+	}
+
+	public void onClick$jiraConfig() {
+		System.out.println("config");
+	}
+
+	public void onClick$point() {
+		System.out.println("point");
 	}
 }

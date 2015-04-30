@@ -3,24 +3,38 @@
 	<window width="850px" height="500px" use="mine.daphne.ui.scrum.planning.BacklogWindow" maximizable="true">
 		<menubar autodrop="true">
 			<menu label="文件">
-				<menupopup style="width:100px">
-					<menuitem label="重置" />
-					<menuitem label="保存" />
+				<menupopup style="width:120px">
+					<menuitem id="create" label="新建" />
+					<menuitem id="save" label="保存" />
+					<menuseparator />
+					<menuitem id="jiraSync" label="同步到JIRA" />
 				</menupopup>
 			</menu>
 			<menu label="操作">
-				<menupopup style="width:150px">
-					<menuitem label="合并单元格" />
-					<menuitem label="插入行" />
-					<menuseparator />
-					<menuitem label="同步到JIRA" />
+				<menupopup id="operateMenu" style="width:120px">
+					<menuitem id="insertLine" label="插入行" />
+					<menuitem id="removeLine" label="删除行" />
+					<menuitem id="mergeCells" label="合并单元格" />
+					<menuitem id="unmergeCells" label="拆分单元格" />
+				</menupopup>
+			</menu>
+			<menu label="设置">
+				<menupopup style="width:120px">
+					<menuitem id="jiraConfig" label="JIRA配置" />
+				</menupopup>
+			</menu>
+			<menu label="统计">
+				<menupopup style="width:120px">
+					<menuitem id="point" label="估点清单" />
 				</menupopup>
 			</menu>
 		</menubar>
-		<spreadsheet id="spreadsheet" width="100%" height="100%" maxrows="20" maxcolumns="8" showFormulabar="true" context="menu" />
-		<menupopup id="menu">
-			<menuitem label="合并单元格" id="mergeButton" image="/images/icon/menu/transfer.png" />
-			<menuitem label="插入行" id="insertLine" image="/images/icon/menu/add.png" />
+		<spreadsheet id="spreadsheet" width="100%" height="100%" maxrows="20" maxcolumns="8" showFormulabar="true" context="contextMenu" />
+		<menupopup id="contextMenu">
+			<menuitem label="插入行" image="/images/icon/menu/add.png" />
+			<menuitem label="删除行" image="/images/icon/menu/delete.png" />
+			<menuitem label="合并单元格" image="/images/icon/menu/transfer.png" />
+			<menuitem label="拆分单元格" image="/images/icon/menu/delete.png" />
 			<menuseparator />
 			<menu label="成员" image="/images/icon/menu/role.png">
 				<menupopup id="memberMenu" />
