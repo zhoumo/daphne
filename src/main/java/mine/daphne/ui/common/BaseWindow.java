@@ -31,6 +31,8 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 
 	public static String SELECTOR_USER = "/content/selector/userSelector.zul";
 
+	public static String SYNC_JIRA = "/content/scrum/planning/syncJira.zul";
+
 	public abstract void initWindow();
 
 	@Override

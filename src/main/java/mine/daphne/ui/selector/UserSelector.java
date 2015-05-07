@@ -52,11 +52,11 @@ public class UserSelector extends PopWindow {
 
 			public void onEvent(Event event) throws Exception {
 				Group group = groupTree.getSelectedItem().getValue();
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group.getId())));
 			}
 		});
 		Group group = (Group) this.groupTree.getSelectedItem().getValue();
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group.getId())));
 	}
 
 	@Override
@@ -76,10 +76,6 @@ public class UserSelector extends PopWindow {
 		}
 		this.setAttribute("groupId", ((Group) this.groupTree.getSelectedItem().getValue()).getId());
 		Events.postEvent(Events.ON_CHANGE, this, null);
-		this.detach();
-	}
-
-	public void onClick$cancel() {
 		this.detach();
 	}
 }

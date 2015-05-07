@@ -78,13 +78,13 @@ public class ManageService extends BaseService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<User> findUsersByGroup(int pageNo, int pageSize, Group group) {
-		String queryString = "select u from User u inner join u.groups g where g.id=?";
+	public List<User> findUsersByGroup(int pageNo, int pageSize, Long groupId) {
+		String queryString = "select u from User u inner join u.groups g where g.id=? order by u.loginName";
 		Session session = super.hibernateTemplate.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
-		List<User> userList = session.createQuery(queryString).setParameter(0, group.getId()).setMaxResults(pageSize).setFirstResult(pageNo * pageSize).list();
+		List<User> userList = session.createQuery(queryString).setParameter(0, groupId).setMaxResults(pageSize).setFirstResult(pageNo * pageSize).list();
 		for (User user : userList) {
-			user.setCurrentGroup(group.getId().toString());
+			user.setCurrentGroup(groupId.toString());
 		}
 		session.beginTransaction().commit();
 		return userList;

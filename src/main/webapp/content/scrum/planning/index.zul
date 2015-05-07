@@ -1,13 +1,13 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window width="850px" height="500px" use="mine.daphne.ui.scrum.planning.BacklogWindow" maximizable="true">
+	<window width="995px" height="500px" use="mine.daphne.ui.scrum.planning.PlanningWindow" maximizable="true">
 		<menubar autodrop="true">
 			<menu label="文件">
 				<menupopup style="width:120px">
 					<menuitem id="create" label="新建" />
 					<menuitem id="save" label="保存" />
 					<menuseparator />
-					<menuitem id="jiraSync" label="同步到JIRA" />
+					<menuitem id="syncJira" label="同步到JIRA" />
 				</menupopup>
 			</menu>
 			<menu label="操作">
@@ -16,11 +16,6 @@
 					<menuitem id="removeLine" label="删除行" />
 					<menuitem id="mergeCells" label="合并单元格" />
 					<menuitem id="unmergeCells" label="拆分单元格" />
-				</menupopup>
-			</menu>
-			<menu label="设置">
-				<menupopup style="width:120px">
-					<menuitem id="jiraConfig" label="JIRA配置" />
 				</menupopup>
 			</menu>
 			<menu label="统计">

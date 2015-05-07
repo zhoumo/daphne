@@ -20,7 +20,8 @@ public class UserWindow extends PopWindow {
 
 	@Override
 	public void initPop() {
-		if (!Boolean.parseBoolean(this.getAttribute("isNew").toString())) {
+		Object isNew = this.getAttribute("isNew");
+		if (!Boolean.parseBoolean(isNew == null ? "true" : isNew.toString())) {
 			User user = (User) this.getAttribute("user");
 			this.userLoginName.setValue(user.getLoginName());
 			this.userName.setValue(user.getTrueName());
@@ -44,10 +45,6 @@ public class UserWindow extends PopWindow {
 		}
 		this.manageService.saveOrUpdate(user);
 		Events.postEvent(Events.ON_CHANGE, this, null);
-		this.detach();
-	}
-
-	public void onClick$cancel() {
 		this.detach();
 	}
 }

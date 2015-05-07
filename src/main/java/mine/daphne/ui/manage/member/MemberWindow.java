@@ -58,11 +58,11 @@ public class MemberWindow extends BaseWindow {
 
 			public void onEvent(Event event) throws Exception {
 				Group group = groupTree.getSelectedItem().getValue();
-				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group)));
+				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group.getId())));
 			}
 		});
 		Group group = this.groupTree.getSelectedItem().getValue();
-		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group)));
+		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group.getId())));
 	}
 
 	private void createGroupWindow(boolean isNew, Object group, Object parent) {

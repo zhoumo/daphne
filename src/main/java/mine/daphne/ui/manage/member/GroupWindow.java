@@ -16,7 +16,8 @@ public class GroupWindow extends PopWindow {
 
 	@Override
 	public void initPop() {
-		if (!Boolean.parseBoolean(this.getAttribute("isNew").toString())) {
+		Object isNew = this.getAttribute("isNew");
+		if (!Boolean.parseBoolean(isNew == null ? "true" : isNew.toString())) {
 			Group group = (Group) this.getAttribute("group");
 			this.groupName.setValue(group.getName());
 		}
@@ -36,10 +37,6 @@ public class GroupWindow extends PopWindow {
 		}
 		this.manageService.saveOrUpdate(group);
 		Events.postEvent(Events.ON_CHANGE, this, null);
-		this.detach();
-	}
-
-	public void onClick$cancel() {
 		this.detach();
 	}
 }

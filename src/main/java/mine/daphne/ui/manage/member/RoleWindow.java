@@ -60,8 +60,4 @@ public class RoleWindow extends PopWindow {
 		Events.postEvent(Events.ON_CHANGE, this, null);
 		this.detach();
 	}
-
-	public void onClick$cancel() {
-		this.detach();
-	}
 }
