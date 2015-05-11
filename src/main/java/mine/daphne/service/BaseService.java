@@ -40,6 +40,15 @@ public class BaseService {
 		this.hibernateTemplate.delete(entity);
 	}
 
+	public void deleteAll(List<Object> entities) {
+		this.hibernateTemplate.deleteAll(entities);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> List<T> query(String queryString, Object... values) {
+		return this.hibernateTemplate.find(queryString, values);
+	}
+
 	public int count(final String queryString, final Object... object) {
 		return ((Long) this.hibernateTemplate.execute(new HibernateCallback<Object>() {
 

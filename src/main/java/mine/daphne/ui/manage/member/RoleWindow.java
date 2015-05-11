@@ -2,8 +2,8 @@ package mine.daphne.ui.manage.member;
 
 import java.util.List;
 
-import mine.daphne.model.entity.Group;
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysGroup;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.security.core.CommonUtil;
 import mine.daphne.service.ManageService;
@@ -24,7 +24,7 @@ public class RoleWindow extends PopWindow {
 	public void initPop() {
 		String[] roleKeys = new String[] {};
 		if (Boolean.parseBoolean(this.getAttribute("single").toString())) {
-			roleKeys = AuthorityParser.parseGetRoleKeysByGroup(((User) this.getAttribute("user")).getAuthority(), ((Group) this.getAttribute("group")).getId().toString()).split("\\+");
+			roleKeys = AuthorityParser.parseGetRoleKeysByGroup(((SysUser) this.getAttribute("user")).getAuthority(), ((SysGroup) this.getAttribute("group")).getId().toString()).split("\\+");
 		}
 		for (String roleKey : CommonUtil.getRoleKeySet()) {
 			Listitem item = new Listitem();
@@ -41,18 +41,18 @@ public class RoleWindow extends PopWindow {
 
 	public void onClick$submit() {
 		String roles = "";
-		Group group = (Group) this.getAttribute("group");
+		SysGroup group = (SysGroup) this.getAttribute("group");
 		for (Object object : this.roleList.getSelectedItems()) {
 			roles += ((Listitem) object).getValue().toString() + "+";
 		}
 		if (Boolean.parseBoolean(this.getAttribute("single").toString())) {
-			User user = (User) this.getAttribute("user");
+			SysUser user = (SysUser) this.getAttribute("user");
 			user.setAuthority(AuthorityParser.appendRoleKeys(user.getAuthority(), group.getId().toString(), roles));
 			this.manageService.saveOrUpdate(user);
 		} else {
 			@SuppressWarnings("unchecked")
-			List<User> userList = (List<User>) this.getAttribute("user");
-			for (User user : userList) {
+			List<SysUser> userList = (List<SysUser>) this.getAttribute("user");
+			for (SysUser user : userList) {
 				user.setAuthority(AuthorityParser.appendRoleKeys(user.getAuthority(), group.getId().toString(), roles));
 				this.manageService.saveOrUpdate(user);
 			}

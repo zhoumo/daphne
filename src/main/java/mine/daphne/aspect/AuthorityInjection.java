@@ -2,8 +2,8 @@ package mine.daphne.aspect;
 
 import java.util.List;
 
-import mine.daphne.model.entity.Group;
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysGroup;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.security.core.CommonUtil;
 import mine.daphne.security.core.Validator;
 
@@ -19,16 +19,16 @@ public class AuthorityInjection {
 	@Before("execution(public * mine.daphne.service..save*(..))")
 	public void beforeSave(JoinPoint joinPoint) throws Throwable {
 		Object[] object = joinPoint.getArgs();
-		if (object[0] instanceof User) {
-			User user = (User) object[0];
+		if (object[0] instanceof SysUser) {
+			SysUser user = (SysUser) object[0];
 			user.setAuthority(Validator.authorityValidate(user.getAuthority(), CommonUtil.getRoleKeySet().toArray(), this.groupsCreator(user.getGroups())));
 		}
 	}
 
-	private String[] groupsCreator(List<Group> groupList) {
+	private String[] groupsCreator(List<SysGroup> groupList) {
 		int index = 0;
 		String[] groupIdList = new String[groupList.size()];
-		for (Group group : groupList) {
+		for (SysGroup group : groupList) {
 			groupIdList[index++] = group.getId().toString();
 		}
 		return groupIdList;

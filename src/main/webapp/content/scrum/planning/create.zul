@@ -1,6 +1,6 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window title="同步到JIRA" width="300px" height="185px" use="mine.daphne.ui.scrum.planning.SyncJiraWindow">
+	<window title="新建" width="300px" height="150px" use="mine.daphne.ui.scrum.planning.CreateWindow">
 		<borderlayout>
 			<center border="none">
 				<grid>
@@ -10,16 +10,12 @@
 					</columns>
 					<rows>
 						<row>
-							<label value="用户" />
-							<textbox id="userName" width="150px" constraint="no empty" value="zhoumo1" />
+							<label value="选择项目组" />
+							<listbox id="project" mold="select" height="25px" width="120px" />
 						</row>
 						<row>
-							<label value="密码" />
-							<textbox id="password" width="150px" constraint="no empty" value="zhou@1234" />
-						</row>
-						<row>
-							<label value="模块" />
-							<listbox id="module" mold="select" height="25px" width="100px">
+							<label value="选择模块" />
+							<listbox id="module" mold="select" height="25px" width="120px">
 								<listitem label="AM" selected="true" />
 								<listitem label="DE" />
 								<listitem label="BI" />

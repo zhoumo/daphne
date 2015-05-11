@@ -1,35 +1,28 @@
 <?page contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window width="995px" height="500px" use="mine.daphne.ui.scrum.planning.PlanningWindow" maximizable="true">
+	<window width="1000px" height="490px" use="mine.daphne.ui.scrum.planning.PlanningWindow" maximizable="true">
 		<menubar autodrop="true">
 			<menu label="文件">
 				<menupopup style="width:120px">
 					<menuitem id="create" label="新建" />
-					<menuitem id="save" label="保存" />
+					<menuitem id="load" label="载入" />
+					<menuitem id="save" label="保存" disabled="true" />
 					<menuseparator />
-					<menuitem id="syncJira" label="同步到JIRA" />
-				</menupopup>
-			</menu>
-			<menu label="操作">
-				<menupopup id="operateMenu" style="width:120px">
-					<menuitem id="insertLine" label="插入行" />
-					<menuitem id="removeLine" label="删除行" />
-					<menuitem id="mergeCells" label="合并单元格" />
-					<menuitem id="unmergeCells" label="拆分单元格" />
+					<menuitem id="syncJira" label="同步到JIRA" disabled="true" />
 				</menupopup>
 			</menu>
 			<menu label="统计">
 				<menupopup style="width:120px">
-					<menuitem id="point" label="估点清单" />
+					<menuitem id="point" label="估点清单" disabled="true" />
 				</menupopup>
 			</menu>
 		</menubar>
-		<spreadsheet id="spreadsheet" width="100%" height="100%" maxrows="20" maxcolumns="8" showFormulabar="true" context="contextMenu" />
+		<spreadsheet id="spreadsheet" width="100%" height="93%" maxrows="20" maxcolumns="8" visible="false" />
 		<menupopup id="contextMenu">
-			<menuitem label="插入行" image="/images/icon/menu/add.png" />
-			<menuitem label="删除行" image="/images/icon/menu/delete.png" />
-			<menuitem label="合并单元格" image="/images/icon/menu/transfer.png" />
-			<menuitem label="拆分单元格" image="/images/icon/menu/delete.png" />
+			<menuitem id="insertLine" label="插入行" image="/images/icon/menu/add.png" />
+			<menuitem id="removeLine" label="删除行" image="/images/icon/menu/delete.png" />
+			<menuitem id="mergeCells" label="合并单元格" image="/images/icon/menu/transfer.png" />
+			<menuitem id="unmergeCells" label="拆分单元格" image="/images/icon/menu/delete.png" />
 			<menuseparator />
 			<menu label="成员" image="/images/icon/menu/role.png">
 				<menupopup id="memberMenu" />

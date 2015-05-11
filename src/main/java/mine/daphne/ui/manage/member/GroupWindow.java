@@ -1,6 +1,6 @@
 package mine.daphne.ui.manage.member;
 
-import mine.daphne.model.entity.Group;
+import mine.daphne.model.entity.SysGroup;
 import mine.daphne.service.ManageService;
 import mine.daphne.ui.common.PopWindow;
 
@@ -18,16 +18,16 @@ public class GroupWindow extends PopWindow {
 	public void initPop() {
 		Object isNew = this.getAttribute("isNew");
 		if (!Boolean.parseBoolean(isNew == null ? "true" : isNew.toString())) {
-			Group group = (Group) this.getAttribute("group");
+			SysGroup group = (SysGroup) this.getAttribute("group");
 			this.groupName.setValue(group.getName());
 		}
 	}
 
 	public void onClick$submit() {
-		Group group = (Group) this.getAttribute("group");
+		SysGroup group = (SysGroup) this.getAttribute("group");
 		group.setName(this.groupName.getValue());
 		if (Boolean.parseBoolean(this.getAttribute("isNew").toString())) {
-			Group parent = (Group) this.getAttribute("parent");
+			SysGroup parent = (SysGroup) this.getAttribute("parent");
 			group.setParent(parent);
 			if (parent == null) {
 				group.setLevel(0);

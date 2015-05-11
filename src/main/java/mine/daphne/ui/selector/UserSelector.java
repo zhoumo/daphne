@@ -3,8 +3,8 @@ package mine.daphne.ui.selector;
 import java.util.ArrayList;
 import java.util.List;
 
-import mine.daphne.model.entity.Group;
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysGroup;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.service.ManageService;
 import mine.daphne.ui.common.PopWindow;
 import mine.daphne.ui.manage.member.GroupTreeModel;
@@ -30,7 +30,7 @@ public class UserSelector extends PopWindow {
 
 	private Paging userPaging;
 
-	private List<User> resultList = new ArrayList<User>();
+	private List<SysUser> resultList = new ArrayList<SysUser>();
 
 	private EventListener<Event> clickEventListener = new EventListener<Event>() {
 
@@ -51,11 +51,11 @@ public class UserSelector extends PopWindow {
 		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				Group group = groupTree.getSelectedItem().getValue();
+				SysGroup group = groupTree.getSelectedItem().getValue();
 				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group.getId())));
 			}
 		});
-		Group group = (Group) this.groupTree.getSelectedItem().getValue();
+		SysGroup group = (SysGroup) this.groupTree.getSelectedItem().getValue();
 		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group.getId())));
 	}
 
@@ -66,15 +66,15 @@ public class UserSelector extends PopWindow {
 		this.initGroupTree();
 	}
 
-	public List<User> getResultList() {
+	public List<SysUser> getResultList() {
 		return resultList;
 	}
 
 	public void onClick$submit() {
 		for (Object object : this.userList.getSelectedItems()) {
-			resultList.add((User) ((Listitem) object).getValue());
+			resultList.add((SysUser) ((Listitem) object).getValue());
 		}
-		this.setAttribute("groupId", ((Group) this.groupTree.getSelectedItem().getValue()).getId());
+		this.setAttribute("groupId", ((SysGroup) this.groupTree.getSelectedItem().getValue()).getId());
 		Events.postEvent(Events.ON_CHANGE, this, null);
 		this.detach();
 	}

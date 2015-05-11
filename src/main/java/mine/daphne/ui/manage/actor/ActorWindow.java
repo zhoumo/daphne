@@ -1,6 +1,6 @@
 package mine.daphne.ui.manage.actor;
 
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.security.ComponentCheck;
 import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.security.core.CommonUtil;
@@ -73,7 +73,7 @@ public class ActorWindow extends BaseWindow {
 
 				@Override
 				public void onEvent(Event event) throws Exception {
-					for (User user : window.getResultList()) {
+					for (SysUser user : window.getResultList()) {
 						user.setAuthority(AuthorityParser.appendRoleKey(user.getAuthority(), window.getAttribute("groupId").toString(), ((String[]) (roleTree.getSelectedItem()).getValue())[1]));
 						manageService.saveOrUpdate(user);
 					}
@@ -89,7 +89,7 @@ public class ActorWindow extends BaseWindow {
 	public void onClick$userOut() {
 		if (super.hasItemSelected(this.userList)) {
 			for (Object object : this.userList.getSelectedItems()) {
-				User user = (User) ((Listitem) object).getValue();
+				SysUser user = (SysUser) ((Listitem) object).getValue();
 				user.setAuthority(AuthorityParser.removeRoleKey(user.getAuthority(), ((String[]) (this.roleTree.getSelectedItem()).getValue())[1]));
 				manageService.saveOrUpdate(user);
 			}

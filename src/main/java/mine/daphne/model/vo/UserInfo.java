@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysUser;
 
 @SuppressWarnings("serial")
 public class UserInfo implements Serializable {
 
-	private User user;
+	private SysUser user;
 
 	private String authority;
 
@@ -33,11 +33,11 @@ public class UserInfo implements Serializable {
 		}
 	}
 
-	public User getUser() {
+	public SysUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(SysUser user) {
 		this.user = user;
 	}
 

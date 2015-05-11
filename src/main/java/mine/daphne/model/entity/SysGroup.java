@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,22 +17,28 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "sys_group")
 @SuppressWarnings("serial")
-public class Group implements Serializable {
-
-	private Long id;
-
-	private String name;
-
-	private Integer level;
-
-	private Group parent;
-
-	private List<Group> children;
-
-	private Boolean selected;
+public class SysGroup implements Serializable {
 
 	@Id
 	@GeneratedValue
+	private Long id;
+
+	@Column
+	private String name;
+
+	@Column
+	private Integer level;
+
+	@ManyToOne
+	@JoinColumn(name = "pid")
+	private SysGroup parent;
+
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+	private List<SysGroup> children;
+
+	@Transient
+	private Boolean selected;
+
 	public Long getId() {
 		return id;
 	}
@@ -56,26 +63,22 @@ public class Group implements Serializable {
 		this.level = level;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "pid")
-	public Group getParent() {
+	public SysGroup getParent() {
 		return parent;
 	}
 
-	public void setParent(Group parent) {
+	public void setParent(SysGroup parent) {
 		this.parent = parent;
 	}
 
-	@OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-	public List<Group> getChildren() {
+	public List<SysGroup> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Group> children) {
+	public void setChildren(List<SysGroup> children) {
 		this.children = children;
 	}
 
-	@Transient
 	public Boolean getSelected() {
 		return selected;
 	}

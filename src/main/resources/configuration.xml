@@ -15,23 +15,22 @@
 		<module name="manage" show="系统管理" roles="system-admin">
 			<function name="member" show="成员管理">
 				<constraint url="/content/manage/member/**" index="index.zul" />
-				<constraint url="/content/selector/userSelector.zul" />
+				<constraint url="/content/selector/user.zul" />
 			</function>
 			<function name="actor" show="角色管理">
 				<constraint url="/content/manage/actor/**" index="index.zul" />
-				<constraint url="/content/selector/userSelector.zul" />
+				<constraint url="/content/selector/user.zul" />
 			</function>
 		</module>
-		<module name="website" show="网址收藏" roles="scrum-manager,scrum-developer,scrum-tester">
+		<module name="website" show="网址收藏" roles="scrum-manager">
 			<function name="baidu" show="百度">
 				<constraint url="http://www.baidu.com" index="/" />
 				<constraint url="/content/iframe.zul" />
 			</function>
 		</module>
-		<module name="scrum" show="敏捷开发" roles="system-admin,scrum-manager,scrum-developer,scrum-tester">
+		<module name="scrum" show="敏捷开发" roles="scrum-manager">
 			<function name="planning" show="计划会">
 				<constraint url="/content/scrum/planning/**" index="index.zul" />
-				<constraint url="/content/scrum/settings/jira-config.zul" />
 			</function>
 		</module>
 	</application>

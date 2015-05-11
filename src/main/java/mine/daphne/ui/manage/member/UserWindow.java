@@ -3,8 +3,8 @@ package mine.daphne.ui.manage.member;
 import java.util.ArrayList;
 import java.util.List;
 
-import mine.daphne.model.entity.Group;
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysGroup;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.service.ManageService;
 import mine.daphne.ui.common.PopWindow;
 
@@ -22,7 +22,7 @@ public class UserWindow extends PopWindow {
 	public void initPop() {
 		Object isNew = this.getAttribute("isNew");
 		if (!Boolean.parseBoolean(isNew == null ? "true" : isNew.toString())) {
-			User user = (User) this.getAttribute("user");
+			SysUser user = (SysUser) this.getAttribute("user");
 			this.userLoginName.setValue(user.getLoginName());
 			this.userName.setValue(user.getTrueName());
 			this.userPassword.setValue(user.getPassword());
@@ -30,12 +30,12 @@ public class UserWindow extends PopWindow {
 	}
 
 	public void onClick$submit() {
-		User user = (User) this.getAttribute("user");
-		Group group = (Group) this.getAttribute("group");
+		SysUser user = (SysUser) this.getAttribute("user");
+		SysGroup group = (SysGroup) this.getAttribute("group");
 		user.setLoginName(this.userLoginName.getValue());
 		user.setTrueName(this.userName.getValue());
 		user.setPassword(this.userPassword.getValue());
-		List<Group> groupList = new ArrayList<Group>();
+		List<SysGroup> groupList = new ArrayList<SysGroup>();
 		if (group != null) {
 			groupList.add(group);
 			user.setGroups(groupList);

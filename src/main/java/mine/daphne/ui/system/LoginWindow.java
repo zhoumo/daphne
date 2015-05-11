@@ -2,7 +2,7 @@ package mine.daphne.ui.system;
 
 import java.util.Date;
 
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.model.vo.UserInfo;
 import mine.daphne.security.core.Validator;
 import mine.daphne.service.ManageService;
@@ -25,7 +25,7 @@ public class LoginWindow extends BaseWindow {
 
 	private Image loginButton;
 
-	private void login(String authority, User user) {
+	private void login(String authority, SysUser user) {
 		UserInfo userInfo = new UserInfo(authority);
 		userInfo.setUser(user);
 		SessionService.createUserInfoSession(userInfo);
@@ -43,7 +43,7 @@ public class LoginWindow extends BaseWindow {
 		if (!StringUtils.isEmpty(admin)) {
 			this.login(admin, null);
 		} else {
-			User user = this.manageService.findByLoginNameAndPassword(this.username.getValue().trim(), this.password.getValue().trim());
+			SysUser user = this.manageService.findByLoginNameAndPassword(this.username.getValue().trim(), this.password.getValue().trim());
 			if (user != null) {
 				this.login(user.getAuthority(), user);
 			} else {

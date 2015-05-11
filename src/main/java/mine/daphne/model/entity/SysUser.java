@@ -3,6 +3,7 @@ package mine.daphne.model.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,26 +17,34 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "sys_user")
 @SuppressWarnings("serial")
-public class User implements Serializable {
-
-	private Long id;
-
-	private String trueName;
-
-	private String loginName;
-
-	private String password;
-
-	private String authority;
-
-	private List<Group> groups;
-
-	private String currentGroup;
-
-	private String currentRoleKey;
+public class SysUser implements Serializable {
 
 	@Id
 	@GeneratedValue
+	private Long id;
+
+	@Column(name = "true_name")
+	private String trueName;
+
+	@Column(name = "login_name")
+	private String loginName;
+
+	@Column
+	private String password;
+
+	@Column
+	private String authority;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "sys_user_group", joinColumns = { @JoinColumn(name = "uid") }, inverseJoinColumns = { @JoinColumn(name = "gid") })
+	private List<SysGroup> groups;
+
+	@Transient
+	private String currentGroup;
+
+	@Transient
+	private String currentRoleKey;
+
 	public Long getId() {
 		return id;
 	}
@@ -76,26 +85,14 @@ public class User implements Serializable {
 		this.authority = authority;
 	}
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "sys_user_group", joinColumns = { @JoinColumn(name = "uid") }, inverseJoinColumns = { @JoinColumn(name = "gid") })
-	public List<Group> getGroups() {
+	public List<SysGroup> getGroups() {
 		return groups;
 	}
 
-	public void setGroups(List<Group> groups) {
+	public void setGroups(List<SysGroup> groups) {
 		this.groups = groups;
 	}
 
-	public void removeGroup(Group removeGroup) {
-		for (Group group : this.getGroups()) {
-			if (group.getId().equals(removeGroup.getId())) {
-				this.getGroups().remove(group);
-				break;
-			}
-		}
-	}
-
-	@Transient
 	public String getCurrentGroup() {
 		return currentGroup;
 	}
@@ -104,12 +101,20 @@ public class User implements Serializable {
 		this.currentGroup = currentGroup;
 	}
 
-	@Transient
 	public String getCurrentRoleKey() {
 		return currentRoleKey;
 	}
 
 	public void setCurrentRoleKey(String currentRoleKey) {
 		this.currentRoleKey = currentRoleKey;
+	}
+
+	public void removeGroup(SysGroup removeGroup) {
+		for (SysGroup group : this.getGroups()) {
+			if (group.getId().equals(removeGroup.getId())) {
+				this.getGroups().remove(group);
+				break;
+			}
+		}
 	}
 }

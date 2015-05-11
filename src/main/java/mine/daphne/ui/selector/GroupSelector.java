@@ -1,6 +1,6 @@
 package mine.daphne.ui.selector;
 
-import mine.daphne.model.entity.Group;
+import mine.daphne.model.entity.SysGroup;
 import mine.daphne.service.ManageService;
 
 import org.zkoss.zk.ui.Component;
@@ -20,10 +20,10 @@ public class GroupSelector extends Listbox {
 		this.setParent(parent);
 		this.setMold("select");
 		this.setWidth("250px");
-		this.setItemRenderer(new ListitemRenderer<Group>() {
+		this.setItemRenderer(new ListitemRenderer<SysGroup>() {
 
 			@Override
-			public void render(Listitem item, Group group, int index) throws Exception {
+			public void render(Listitem item, SysGroup group, int index) throws Exception {
 				String blank = "| ";
 				for (int i = 0; i < group.getLevel(); i++) {
 					blank += "----";

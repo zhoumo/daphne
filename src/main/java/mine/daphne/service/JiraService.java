@@ -3,7 +3,8 @@ package mine.daphne.service;
 import java.net.URI;
 import java.util.Arrays;
 
-import mine.daphne.model.vo.Story;
+import mine.daphne.model.entity.ScrumBacklog;
+import mine.daphne.model.entity.ScrumStory;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.domain.BasicIssue;
@@ -26,44 +27,46 @@ public class JiraService {
 		return null;
 	}
 
-	public static BasicIssue createTask(JiraRestClient client, Story story) {
-		IssueInputBuilder builder = new IssueInputBuilder(story.getProject(), Story.STORY, story.getSummary());
-		builder.setFieldValue("customfield_10008", story.getDesignPoint() + story.getCodePoint() + story.getTestPoint());
-		builder.setFieldValue("customfield_10101", ComplexIssueInputFieldValue.with("name", story.getAssignee()));
-		builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getAssignee()));
-		builder.setFieldValue("customfield_10200", Arrays.asList(new ComplexIssueInputFieldValue[] { ComplexIssueInputFieldValue.with("value", "业务相关") }));
-		builder.setFieldValue("customfield_10401", ImmutableList.of("产品人员"));
-		builder.setAssigneeName(story.getAssignee());
-		builder.setReporterName(story.getAssignee());
-		builder.setComponentsNames(Arrays.asList(new String[] { story.getModule() }));
-		builder.setDescription(story.getDescription());
-		BasicIssue issue = client.getIssueClient().createIssue(builder.build()).claim();
-		return issue;
+	public static void createStories(JiraRestClient client, ScrumBacklog backlog) {
+		for (ScrumStory story : backlog.getStories()) {
+			IssueInputBuilder builder = new IssueInputBuilder(backlog.getProject(), ScrumStory.STORY, story.getSummary());
+			builder.setFieldValue("customfield_10008", story.getDesignPoint() + story.getCodePoint() + story.getTestPoint());
+			builder.setFieldValue("customfield_10101", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
+			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
+			builder.setFieldValue("customfield_10200", Arrays.asList(new ComplexIssueInputFieldValue[] { ComplexIssueInputFieldValue.with("value", "业务相关") }));
+			builder.setFieldValue("customfield_10401", ImmutableList.of("产品人员"));
+			builder.setAssigneeName(story.getBacklog().getAssignee());
+			builder.setReporterName(story.getBacklog().getAssignee());
+			builder.setComponentsNames(Arrays.asList(new String[] { story.getBacklog().getModule() }));
+			builder.setDescription(story.getDescription());
+			BasicIssue issue = client.getIssueClient().createIssue(builder.build()).claim();
+			createSubTask(client, issue.getKey(), story);
+		}
 	}
 
-	public static void createSubTask(JiraRestClient client, String issueKey, Story story) {
+	public static void createSubTask(JiraRestClient client, String issueKey, ScrumStory story) {
 		for (String taker : story.getTestTaker().split(",")) {
-			IssueInputBuilder builder = new IssueInputBuilder(story.getProject(), Story.SUBTASK, "TDR");
+			IssueInputBuilder builder = new IssueInputBuilder(story.getBacklog().getProject(), ScrumStory.SUBTASK, "TDR");
 			builder.setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueKey));
-			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getAssignee()));
+			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
 			builder.setFieldValue("timetracking", ComplexIssueInputFieldValue.with("originalEstimate", story.getDesignPoint() * 4 + "h"));
 			builder.setAssigneeName(taker);
 			builder.setReporterName(taker);
 			client.getIssueClient().createIssue(builder.build()).claim();
 		}
 		for (String taker : story.getCodeTaker().split(",")) {
-			IssueInputBuilder builder = new IssueInputBuilder(story.getProject(), Story.SUBTASK, "CODE");
+			IssueInputBuilder builder = new IssueInputBuilder(story.getBacklog().getProject(), ScrumStory.SUBTASK, "CODE");
 			builder.setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueKey));
-			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getAssignee()));
+			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
 			builder.setFieldValue("timetracking", ComplexIssueInputFieldValue.with("originalEstimate", story.getCodePoint() * 4 + "h"));
 			builder.setAssigneeName(taker);
 			builder.setReporterName(taker);
 			client.getIssueClient().createIssue(builder.build()).claim();
 		}
 		for (String taker : story.getTestTaker().split(",")) {
-			IssueInputBuilder builder = new IssueInputBuilder(story.getProject(), Story.SUBTASK, "TEST");
+			IssueInputBuilder builder = new IssueInputBuilder(story.getBacklog().getProject(), ScrumStory.SUBTASK, "TEST");
 			builder.setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueKey));
-			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getAssignee()));
+			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
 			builder.setFieldValue("timetracking", ComplexIssueInputFieldValue.with("originalEstimate", story.getTestPoint() * 4 + "h"));
 			builder.setAssigneeName(taker);
 			builder.setReporterName(taker);

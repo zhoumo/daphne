@@ -3,8 +3,8 @@ package mine.daphne.ui.manage.member;
 import java.util.ArrayList;
 import java.util.List;
 
-import mine.daphne.model.entity.Group;
-import mine.daphne.model.entity.User;
+import mine.daphne.model.entity.SysGroup;
+import mine.daphne.model.entity.SysUser;
 import mine.daphne.security.ComponentCheck;
 import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.service.ManageService;
@@ -37,15 +37,15 @@ public class MemberWindow extends BaseWindow {
 
 		@Override
 		public void onEvent(Event event) throws Exception {
-			((Group) ((Treeitem) event.getTarget()).getValue()).setSelected(true);
+			((SysGroup) ((Treeitem) event.getTarget()).getValue()).setSelected(true);
 			initUserListbox();
 		}
 	};
 
 	private void initGroupTree() {
-		Group group = null;
+		SysGroup group = null;
 		if (super.hasItemSelected(this.groupTree)) {
-			group = (Group) this.groupTree.getSelectedItem().getValue();
+			group = (SysGroup) this.groupTree.getSelectedItem().getValue();
 		}
 		GroupTreeModel model = new GroupTreeModel(this.manageService.findRootGroup(group));
 		this.groupTree.setModel(model);
@@ -57,11 +57,11 @@ public class MemberWindow extends BaseWindow {
 		this.userPaging.addEventListener("onPaging", new EventListener<Event>() {
 
 			public void onEvent(Event event) throws Exception {
-				Group group = groupTree.getSelectedItem().getValue();
+				SysGroup group = groupTree.getSelectedItem().getValue();
 				userList.setModel(new ListModelList<Object>(manageService.findUsersByGroup(userPaging.getActivePage(), userPaging.getPageSize(), group.getId())));
 			}
 		});
-		Group group = this.groupTree.getSelectedItem().getValue();
+		SysGroup group = this.groupTree.getSelectedItem().getValue();
 		this.userList.setModel(new ListModelList<Object>(this.manageService.findUsersByGroup(0, this.userPaging.getPageSize(), group.getId())));
 	}
 
@@ -106,7 +106,7 @@ public class MemberWindow extends BaseWindow {
 	}
 
 	public void onClick$groupAdd() {
-		this.createGroupWindow(true, new Group(), this.groupTree.getSelectedCount() != 0 ? this.groupTree.getSelectedItem().getValue() : null);
+		this.createGroupWindow(true, new SysGroup(), this.groupTree.getSelectedCount() != 0 ? this.groupTree.getSelectedItem().getValue() : null);
 	}
 
 	public void onClick$groupDelete() throws InterruptedException {
@@ -133,10 +133,10 @@ public class MemberWindow extends BaseWindow {
 
 				@Override
 				public void onEvent(Event event) throws Exception {
-					Group currentGroup = (Group) groupTree.getSelectedItem().getValue();
-					for (User user : window.getResultList()) {
-						List<Group> groupList = new ArrayList<Group>();
-						for (Group group : user.getGroups()) {
+					SysGroup currentGroup = (SysGroup) groupTree.getSelectedItem().getValue();
+					for (SysUser user : window.getResultList()) {
+						List<SysGroup> groupList = new ArrayList<SysGroup>();
+						for (SysGroup group : user.getGroups()) {
 							if (group.getId().longValue() != currentGroup.getId().longValue()) {
 								groupList.add(currentGroup);
 							}
@@ -154,17 +154,17 @@ public class MemberWindow extends BaseWindow {
 	}
 
 	public void onClick$userAdd() {
-		this.createUserWindow(true, new User(), this.groupTree.getSelectedCount() != 0 ? this.groupTree.getSelectedItem().getValue() : null);
+		this.createUserWindow(true, new SysUser(), this.groupTree.getSelectedCount() != 0 ? this.groupTree.getSelectedItem().getValue() : null);
 	}
 
 	public void onClick$userDelete() {
 		if (super.hasItemSelected(this.userList)) {
 			for (Object item : this.userList.getSelectedItems()) {
-				User user = (User) ((Listitem) item).getValue();
+				SysUser user = (SysUser) ((Listitem) item).getValue();
 				if (user.getGroups().size() == 1) {
 					this.manageService.delete(user);
 				} else {
-					Group group = (Group) this.groupTree.getSelectedItem().getValue();
+					SysGroup group = (SysGroup) this.groupTree.getSelectedItem().getValue();
 					user.setAuthority(AuthorityParser.removeRoleKeyByGroup(user.getAuthority(), group.getId().toString()));
 					user.removeGroup(group);
 					this.manageService.saveOrUpdate(user);
@@ -189,9 +189,9 @@ public class MemberWindow extends BaseWindow {
 				window.setAttribute("group", this.groupTree.getSelectedItem().getValue());
 				window.setAttribute("user", this.userList.getSelectedItem().getValue());
 			} else {
-				List<User> userList = new ArrayList<User>();
+				List<SysUser> userList = new ArrayList<SysUser>();
 				for (Object object : this.userList.getSelectedItems()) {
-					userList.add((User) ((Listitem) object).getValue());
+					userList.add((SysUser) ((Listitem) object).getValue());
 				}
 				window.setAttribute("single", false);
 				window.setAttribute("group", this.groupTree.getSelectedItem().getValue());

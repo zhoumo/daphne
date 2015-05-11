@@ -1,51 +1,72 @@
-package mine.daphne.model.vo;
+package mine.daphne.model.entity;
 
-public class Story {
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "scrum_story")
+@SuppressWarnings("serial")
+public class ScrumStory implements Serializable {
 
 	public static final Long STORY = 7L, SUBTASK = 8L;
 
-	private String project;
+	@Id
+	@GeneratedValue
+	private Long id;
 
-	private String module;
+	@Column
+	private String product;
 
+	@Column
 	private String summary;
 
+	@Column
 	private String description;
 
-	private String assignee;
-
+	@Column(name = "design_point")
 	private Float designPoint;
 
+	@Column(name = "code_point")
 	private Float codePoint;
 
+	@Column(name = "test_point")
 	private Float testPoint;
 
+	@Column(name = "design_taker")
 	private String designTaker;
 
+	@Column(name = "code_taker")
 	private String codeTaker;
 
+	@Column(name = "test_taker")
 	private String testTaker;
 
-	public Story(String project, String module, String assignee) {
-		this.project = project;
-		this.module = module;
-		this.assignee = assignee;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "backlog")
+	private ScrumBacklog backlog;
+
+	public Long getId() {
+		return id;
 	}
 
-	public String getProject() {
-		return project;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setProject(String project) {
-		this.project = project;
+	public String getProduct() {
+		return product;
 	}
 
-	public String getModule() {
-		return module;
-	}
-
-	public void setModule(String module) {
-		this.module = module;
+	public void setProduct(String product) {
+		this.product = product;
 	}
 
 	public String getSummary() {
@@ -62,14 +83,6 @@ public class Story {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getAssignee() {
-		return assignee;
-	}
-
-	public void setAssignee(String assignee) {
-		this.assignee = assignee;
 	}
 
 	public Float getDesignPoint() {
@@ -118,5 +131,13 @@ public class Story {
 
 	public void setTestTaker(String testTaker) {
 		this.testTaker = testTaker;
+	}
+
+	public ScrumBacklog getBacklog() {
+		return backlog;
+	}
+
+	public void setBacklog(ScrumBacklog backlog) {
+		this.backlog = backlog;
 	}
 }

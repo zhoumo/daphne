@@ -12,7 +12,6 @@ public abstract class PopWindow extends BaseWindow {
 		if (this.getFellowIfAny("cancel") != null) {
 			this.addForward(Events.ON_CANCEL, this.getFellow("cancel"), Events.ON_CLICK);
 		}
-		initPop();
 	}
 
 	public void onClick$cancel() {

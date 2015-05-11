@@ -1,6 +1,6 @@
 package mine.daphne.ui.manage.member;
 
-import mine.daphne.model.entity.Group;
+import mine.daphne.model.entity.SysGroup;
 import mine.daphne.service.ManageService;
 
 import org.zkoss.zk.ui.event.Event;
@@ -12,7 +12,7 @@ import org.zkoss.zul.Treeitem;
 import org.zkoss.zul.TreeitemRenderer;
 import org.zkoss.zul.Treerow;
 
-public class GroupTreeRenderer implements TreeitemRenderer<Group> {
+public class GroupTreeRenderer implements TreeitemRenderer<SysGroup> {
 
 	private ManageService manageService;
 
@@ -24,7 +24,7 @@ public class GroupTreeRenderer implements TreeitemRenderer<Group> {
 	}
 
 	@Override
-	public void render(Treeitem item, Group group, int index) throws Exception {
+	public void render(Treeitem item, SysGroup group, int index) throws Exception {
 		Treerow row = new Treerow();
 		{
 			Treecell c0 = new Treecell();
