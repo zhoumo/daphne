@@ -1,8 +1,8 @@
 package mine.daphne.ui.scrum.planning;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,21 +19,26 @@ import mine.daphne.ui.common.BaseWindow;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.WebApps;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zss.api.AreaRef;
 import org.zkoss.zss.api.CellOperationUtil;
+import org.zkoss.zss.api.Exporters;
 import org.zkoss.zss.api.Importers;
 import org.zkoss.zss.api.Range;
 import org.zkoss.zss.api.Range.ApplyBorderType;
 import org.zkoss.zss.api.Ranges;
 import org.zkoss.zss.api.model.CellStyle.BorderType;
 import org.zkoss.zss.ui.Spreadsheet;
+import org.zkoss.zul.Filedownload;
 import org.zkoss.zul.Menuitem;
 import org.zkoss.zul.Menupopup;
+import org.zkoss.zul.Messagebox;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 
@@ -44,9 +49,7 @@ public class PlanningWindow extends BaseWindow {
 
 	private Spreadsheet spreadsheet;
 
-	private Map<String, String> trueNameToLoginName = new HashMap<String, String>();
-
-	private Map<String, String> loginNameToTrueName = new HashMap<String, String>();
+	private Map<String, String> userNamesMap;
 
 	private ScrumBacklog backlog;
 
@@ -59,18 +62,19 @@ public class PlanningWindow extends BaseWindow {
 	private ScrumService scrumService;
 
 	private void initSpreadsheet() {
+		userNamesMap = new HashMap<String, String>();
+		userNamesMap.put("", "");
 		for (SysUser user : manageService.findUsersByGroupName(backlog.getProject())) {
-			trueNameToLoginName.put(user.getTrueName(), user.getLoginName());
-			loginNameToTrueName.put(user.getLoginName(), user.getTrueName());
+			userNamesMap.put(user.getTrueName(), user.getLoginName());
+			userNamesMap.put(user.getLoginName(), user.getTrueName());
 			Menuitem menuitem = new Menuitem(user.getTrueName());
 			menuitem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
 
 				@Override
 				public void onEvent(Event event) throws Exception {
 					Menuitem menuitem = (Menuitem) event.getTarget();
-					int row = spreadsheet.getSelection().getRow();
-					int column = spreadsheet.getSelection().getColumn();
-					Ranges.range(spreadsheet.getSelectedSheet(), row, column).setCellEditText(menuitem.getLabel());
+					AreaRef areaRef = spreadsheet.getSelection();
+					Ranges.range(spreadsheet.getSelectedSheet(), areaRef.getRow(), areaRef.getColumn()).setCellEditText(menuitem.getLabel());
 				}
 			});
 			memberMenu.appendChild(menuitem);
@@ -129,14 +133,14 @@ public class PlanningWindow extends BaseWindow {
 			Ranges.range(spreadsheet.getSelectedSheet(), index, 5).setCellEditText(story.getTestPoint().toString());
 			String codeTakers = "";
 			for (String codeTaker : story.getCodeTaker().split(",")) {
-				codeTakers += loginNameToTrueName.get(codeTaker) + ",";
+				codeTakers += userNamesMap.get(codeTaker) + ",";
 			}
-			Ranges.range(spreadsheet.getSelectedSheet(), index, 6).setCellEditText(StringUtils.isEmpty(codeTakers) ? "" : codeTakers.substring(0, codeTakers.length() - 1));
+			Ranges.range(spreadsheet.getSelectedSheet(), index, 6).setCellEditText(codeTakers.replace(",", " ").trim().replace(" ", ","));
 			String testTakers = "";
 			for (String testTaker : story.getTestTaker().split(",")) {
-				testTakers += loginNameToTrueName.get(testTaker) + ",";
+				testTakers += userNamesMap.get(testTaker) + ",";
 			}
-			Ranges.range(spreadsheet.getSelectedSheet(), index, 7).setCellEditText(StringUtils.isEmpty(testTakers) ? "" : testTakers.substring(0, testTakers.length() - 1));
+			Ranges.range(spreadsheet.getSelectedSheet(), index, 7).setCellEditText(testTakers.replace(",", " ").trim().replace(" ", ","));
 			index++;
 		}
 	}
@@ -147,50 +151,42 @@ public class PlanningWindow extends BaseWindow {
 		}
 	}
 
-	private void validateEmpty(ScrumStory story, String methodName, int row, int column) throws Exception {
-		Range range = Ranges.range(spreadsheet.getSelectedSheet(), row, column);
+	private void validateEmpty(ScrumStory story, String methodName, Range range) throws Exception {
 		CellOperationUtil.clearStyles(range);
-		if (StringUtils.isEmpty(range.getCellEditText())) {
-			CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
+		if (StringUtils.isEmpty(range.getCellEditText().trim())) {
 			throw new Exception();
 		}
 		try {
-			Method method = ScrumStory.class.getMethod(methodName, String.class);
-			method.invoke(story, new Object[] { range.getCellEditText() });
+			ScrumStory.class.getMethod(methodName, String.class).invoke(story, new Object[] { range.getCellEditText() });
 		} catch (Exception e) {
-			CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
 			throw new Exception();
 		}
 	}
 
-	private void validateNumber(ScrumStory story, String methodName, int row, int column) throws Exception {
-		Range range = Ranges.range(spreadsheet.getSelectedSheet(), row, column);
+	private void validateNumber(ScrumStory story, String methodName, Range range) throws Exception {
 		CellOperationUtil.clearStyles(range);
 		try {
-			Method method = ScrumStory.class.getMethod(methodName, Float.class);
-			method.invoke(story, new Object[] { Float.parseFloat(range.getCellEditText()) });
+			ScrumStory.class.getMethod(methodName, Float.class).invoke(story, new Object[] { Float.parseFloat(range.getCellEditText()) });
 		} catch (Exception e) {
-			CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
 			throw new Exception();
 		}
 	}
 
-	private void validateNames(ScrumStory story, String methodName, int row, int column) throws Exception {
-		Range range = Ranges.range(spreadsheet.getSelectedSheet(), row, column);
+	private void validateNames(ScrumStory story, String methodName, Range range) throws Exception {
 		CellOperationUtil.clearStyles(range);
+		if (StringUtils.isEmpty(range.getCellEditText().trim())) {
+			return;
+		}
 		String names = "";
 		for (String name : range.getCellEditText().replace("，", ",").split(",")) {
-			if (!trueNameToLoginName.containsKey(name)) {
-				CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
+			if (!userNamesMap.containsKey(name)) {
 				throw new Exception();
 			}
-			names += trueNameToLoginName.get(name) + ",";
+			names += userNamesMap.get(name) + ",";
 		}
 		try {
-			Method method = ScrumStory.class.getMethod(methodName, String.class);
-			method.invoke(story, new Object[] { names.substring(0, names.length() - 1) });
+			ScrumStory.class.getMethod(methodName, String.class).invoke(story, new Object[] { names.substring(0, names.length() - 1) });
 		} catch (Exception e) {
-			CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
 			throw new Exception();
 		}
 	}
@@ -200,20 +196,20 @@ public class PlanningWindow extends BaseWindow {
 		for (int row = 1; row <= spreadsheet.getSelectedSheet().getLastRow(); row++) {
 			ScrumStory story = new ScrumStory();
 			story.setDescription(Ranges.range(spreadsheet.getSelectedSheet(), row, 2).getCellEditText());
+			Range range = null;
 			try {
-				validateEmpty(story, "setProduct", row, 0);
-				validateEmpty(story, "setSummary", row, 1);
-				validateNumber(story, "setDesignPoint", row, 3);
-				validateNumber(story, "setCodePoint", row, 4);
-				validateNumber(story, "setTestPoint", row, 5);
-				validateEmpty(story, "setCodeTaker", row, 6);
-				validateNames(story, "setCodeTaker", row, 6);
-				validateEmpty(story, "setTestTaker", row, 7);
-				validateNames(story, "setTestTaker", row, 7);
+				validateEmpty(story, "setProduct", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 0));
+				validateEmpty(story, "setSummary", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 1));
+				validateNumber(story, "setDesignPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 3));
+				validateNumber(story, "setCodePoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 4));
+				validateNumber(story, "setTestPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 5));
+				validateNames(story, "setCodeTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 6));
+				validateNames(story, "setTestTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 7));
 				story.setDesignTaker(story.getTestTaker());
 				story.setBacklog(backlog);
 				stories.add(story);
 			} catch (Exception e) {
+				CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
 				return false;
 			}
 		}
@@ -221,12 +217,22 @@ public class PlanningWindow extends BaseWindow {
 		return true;
 	}
 
-	public void onClick$syncJira() throws Exception {
+	public void onClick$sync() throws IOException {
 		if (this.buildBacklog()) {
 			JiraRestClient client = JiraService.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
 			JiraService.createStories(client, backlog);
 			client.close();
+			Messagebox.show("导入成功.");
+			this.detach();
 		}
+	}
+
+	public void onClick$export() throws IOException {
+		File file = File.createTempFile(Long.toString(System.currentTimeMillis()), "temp");
+		FileOutputStream outputStream = new FileOutputStream(file);
+		Exporters.getExporter().export(spreadsheet.getBook(), outputStream);
+		outputStream.close();
+		Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".xlsx", null, null, file, true));
 	}
 
 	public void onClick$insertLine() {

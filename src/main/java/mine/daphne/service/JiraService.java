@@ -3,6 +3,8 @@ package mine.daphne.service;
 import java.net.URI;
 import java.util.Arrays;
 
+import org.apache.commons.lang.StringUtils;
+
 import mine.daphne.model.entity.ScrumBacklog;
 import mine.daphne.model.entity.ScrumStory;
 
@@ -46,6 +48,9 @@ public class JiraService {
 
 	public static void createSubTask(JiraRestClient client, String issueKey, ScrumStory story) {
 		for (String taker : story.getTestTaker().split(",")) {
+			if (StringUtils.isEmpty(taker)) {
+				continue;
+			}
 			IssueInputBuilder builder = new IssueInputBuilder(story.getBacklog().getProject(), ScrumStory.SUBTASK, "TDR");
 			builder.setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueKey));
 			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
@@ -55,6 +60,9 @@ public class JiraService {
 			client.getIssueClient().createIssue(builder.build()).claim();
 		}
 		for (String taker : story.getCodeTaker().split(",")) {
+			if (StringUtils.isEmpty(taker)) {
+				continue;
+			}
 			IssueInputBuilder builder = new IssueInputBuilder(story.getBacklog().getProject(), ScrumStory.SUBTASK, "CODE");
 			builder.setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueKey));
 			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));
@@ -64,6 +72,9 @@ public class JiraService {
 			client.getIssueClient().createIssue(builder.build()).claim();
 		}
 		for (String taker : story.getTestTaker().split(",")) {
+			if (StringUtils.isEmpty(taker)) {
+				continue;
+			}
 			IssueInputBuilder builder = new IssueInputBuilder(story.getBacklog().getProject(), ScrumStory.SUBTASK, "TEST");
 			builder.setFieldValue("parent", ComplexIssueInputFieldValue.with("key", issueKey));
 			builder.setFieldValue("customfield_10104", ComplexIssueInputFieldValue.with("name", story.getBacklog().getAssignee()));

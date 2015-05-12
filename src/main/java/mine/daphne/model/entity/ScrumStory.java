@@ -118,7 +118,7 @@ public class ScrumStory implements Serializable {
 	}
 
 	public String getCodeTaker() {
-		return codeTaker;
+		return codeTaker == null ? "" : codeTaker;
 	}
 
 	public void setCodeTaker(String codeTaker) {
@@ -126,7 +126,7 @@ public class ScrumStory implements Serializable {
 	}
 
 	public String getTestTaker() {
-		return testTaker;
+		return testTaker == null ? "" : testTaker;
 	}
 
 	public void setTestTaker(String testTaker) {

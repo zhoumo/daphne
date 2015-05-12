@@ -3,17 +3,18 @@
 	<window width="1000px" height="490px" use="mine.daphne.ui.scrum.planning.PlanningWindow" maximizable="true">
 		<menubar autodrop="true">
 			<menu label="文件">
-				<menupopup style="width:120px">
+				<menupopup style="width:90px">
 					<menuitem id="create" label="新建" />
 					<menuitem id="load" label="载入" />
 					<menuitem id="save" label="保存" disabled="true" />
-					<menuseparator />
-					<menuitem id="syncJira" label="同步到JIRA" disabled="true" />
 				</menupopup>
 			</menu>
-			<menu label="统计">
-				<menupopup style="width:120px">
+			<menu label="工具">
+				<menupopup>
 					<menuitem id="point" label="估点清单" disabled="true" />
+					<menuseparator />
+					<menuitem id="sync" label="同步到JIRA" disabled="true" />
+					<menuitem id="export" label="导出到Excel" disabled="true" />
 				</menupopup>
 			</menu>
 		</menubar>
