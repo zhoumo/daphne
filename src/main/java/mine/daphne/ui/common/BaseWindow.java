@@ -31,7 +31,9 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 
 	public static String SELECTOR_USER = "/content/selector/user.zul";
 
-	public static String CREATE_BACKLOG = "/content/scrum/planning/create.zul";
+	public static String PLANNING_CREATE = "/content/scrum/planning/create.zul";
+
+	public static String PLANNING_POINT = "/content/scrum/planning/point.zul";
 
 	public abstract void initWindow();
 

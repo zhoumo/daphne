@@ -105,7 +105,7 @@ public class PlanningWindow extends BaseWindow {
 	}
 
 	public void onClick$create() {
-		final CreateWindow window = (CreateWindow) Executions.createComponents(CREATE_BACKLOG, null, null);
+		final CreateWindow window = (CreateWindow) Executions.createComponents(PLANNING_CREATE, null, null);
 		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 			@Override
@@ -223,7 +223,6 @@ public class PlanningWindow extends BaseWindow {
 			JiraService.createStories(client, backlog);
 			client.close();
 			Messagebox.show("导入成功.");
-			this.detach();
 		}
 	}
 
@@ -253,7 +252,36 @@ public class PlanningWindow extends BaseWindow {
 		CellOperationUtil.unmerge(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
 	}
 
+	private Map<String, Float> buildPointMap() {
+		Map<String, Float> pointMap = new HashMap<String, Float>();
+		for (SysUser user : manageService.findUsersByGroupName(backlog.getProject())) {
+			pointMap.put(user.getTrueName(), 0F);
+		}
+		for (int row = 1; row <= spreadsheet.getSelectedSheet().getLastRow(); row++) {
+			String taker = Ranges.range(spreadsheet.getSelectedSheet(), row, 6).getCellEditText();
+			String point = Ranges.range(spreadsheet.getSelectedSheet(), row, 4).getCellEditText();
+			if (!StringUtils.isEmpty(taker) && !StringUtils.isEmpty(point)) {
+				pointMap.put(taker, pointMap.get(taker) + Float.parseFloat(point));
+			}
+			taker = Ranges.range(spreadsheet.getSelectedSheet(), row, 7).getCellEditText();
+			point = Ranges.range(spreadsheet.getSelectedSheet(), row, 3).getCellEditText();
+			if (!StringUtils.isEmpty(taker) && !StringUtils.isEmpty(point)) {
+				pointMap.put(taker, pointMap.get(taker) + Float.parseFloat(point));
+			}
+			point = Ranges.range(spreadsheet.getSelectedSheet(), row, 5).getCellEditText();
+			if (!StringUtils.isEmpty(taker) && !StringUtils.isEmpty(point)) {
+				pointMap.put(taker, pointMap.get(taker) + Float.parseFloat(point));
+			}
+		}
+		return pointMap;
+	}
+
 	public void onClick$point() {
-		System.out.println("point");
+		if (this.buildBacklog()) {
+			PointWindow window = (PointWindow) Executions.createComponents(PLANNING_POINT, null, null);
+			window.setPointMap(buildPointMap());
+			window.initPop();
+			window.doModal();
+		}
 	}
 }

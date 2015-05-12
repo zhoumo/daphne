@@ -1,0 +1,11 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="估点清单" width="400px" height="90px" use="mine.daphne.ui.scrum.planning.PointWindow">
+		<listbox id="showList">
+			<listhead>
+				<listheader label="姓名" width="40%" />
+				<listheader label="总点数" />
+			</listhead>
+		</listbox>
+	</window>
+</zk>
