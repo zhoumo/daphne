@@ -21,6 +21,8 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 
 	public static String SYSTEM_IFRAME = "/content/iframe.zul";
 
+	public static String SYSTEM_RESET = "/content/reset.zul";
+
 	public static String SYSTEM_TIMEOUT = "/content/timeout.zul";
 
 	public static String MANAGE_GROUP = "/content/manage/member/group.zul";

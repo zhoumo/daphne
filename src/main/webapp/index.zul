@@ -5,7 +5,7 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 	<window use="mine.daphne.ui.system.DesktopWindow">
-		<toolbarbutton id="setting" image="images/icon/tool/setting.png" label="设定系统参数" />
+		<toolbarbutton id="reset" image="images/icon/tool/reset.png" label="重置密码" />
 		<toolbarbutton id="quit" image="images/icon/tool/logout.png" label="退出桌面" />
 	</window>
 </zk>

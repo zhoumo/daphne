@@ -1,0 +1,27 @@
+<?page contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="新建" width="300px" height="120px" use="mine.daphne.ui.system.ResetWindow">
+		<borderlayout>
+			<center border="none">
+				<grid>
+					<columns>
+						<column width="30%" align="center" />
+						<column width="70%" />
+					</columns>
+					<rows>
+						<row>
+							<label value="新密码" />
+							<textbox id="password" width="180px" constraint="no empty" />
+						</row>
+					</rows>
+				</grid>
+			</center>
+			<south border="none">
+				<div>
+					<button id="submit" label="保存" />
+					<button id="cancel" label="取消" />
+				</div>
+			</south>
+		</borderlayout>
+	</window>
+</zk>

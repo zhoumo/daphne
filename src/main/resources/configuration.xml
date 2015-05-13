@@ -22,9 +22,13 @@
 				<constraint url="/content/selector/user.zul" />
 			</function>
 		</module>
-		<module name="website" show="网址收藏" roles="scrum-manager">
+		<module name="website" show="网址收藏" roles="scrum-manager,scrum-developer,scrum-tester">
 			<function name="baidu" show="百度">
 				<constraint url="http://www.baidu.com" index="/" />
+				<constraint url="/content/iframe.zul" />
+			</function>
+			<function name="microlens" show="微距">
+				<constraint url="http://192.168.16.233:8080/atlasmaster" index="/" />
 				<constraint url="/content/iframe.zul" />
 			</function>
 		</module>

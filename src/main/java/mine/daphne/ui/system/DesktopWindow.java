@@ -1,12 +1,13 @@
 package mine.daphne.ui.system;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import mine.daphne.model.vo.Menu;
 import mine.daphne.model.vo.UserInfo;
+import mine.daphne.security.ComponentCheck;
 import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.security.core.CommonUtil;
 import mine.daphne.security.model.application.Function;
@@ -24,6 +25,7 @@ import org.zkoss.zk.ui.event.DropEvent;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Toolbarbutton;
 
 @SuppressWarnings("serial")
@@ -31,13 +33,13 @@ public class DesktopWindow extends BaseWindow {
 
 	private CustomDiv toolPanel;
 
-	protected Map<String, String[]> shortcut = new HashMap<String, String[]>();
+	protected Map<String, String[]> shortcut = new TreeMap<String, String[]>();
 
 	protected List<Menu> menu = new ArrayList<Menu>();
 
 	protected String[] portrait;
 
-	private Toolbarbutton setting;
+	private Toolbarbutton reset;
 
 	private Toolbarbutton quit;
 
@@ -151,7 +153,22 @@ public class DesktopWindow extends BaseWindow {
 		this.createDesktopArea();
 		this.createTaskbar();
 		this.createStartPanel();
-		this.appendToolbarbuttons(new Toolbarbutton[] { this.setting, this.quit });
+		this.appendToolbarbuttons(new Toolbarbutton[] { this.reset, this.quit });
+	}
+
+	public void onClick$reset() {
+		ResetWindow window = (ResetWindow) ComponentCheck.createComponents(this, SYSTEM_RESET, this, null);
+		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
+
+			@Override
+			public void onEvent(Event event) throws Exception {
+				Messagebox.show("密码重置成功, 请重新登录.");
+				Sessions.getCurrent().invalidate();
+				Executions.getCurrent().sendRedirect(BaseWindow.SYSTEM_LOGIN);
+			}
+		});
+		window.setSysUser(SessionService.getUserInfoSession().getUser());
+		window.doHighlighted();
 	}
 
 	public void onClick$quit() {

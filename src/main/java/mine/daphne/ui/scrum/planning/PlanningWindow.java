@@ -12,6 +12,7 @@ import java.util.Map;
 import mine.daphne.model.entity.ScrumBacklog;
 import mine.daphne.model.entity.ScrumStory;
 import mine.daphne.model.entity.SysUser;
+import mine.daphne.security.ComponentCheck;
 import mine.daphne.service.JiraService;
 import mine.daphne.service.ManageService;
 import mine.daphne.service.ScrumService;
@@ -22,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.util.media.AMedia;
 import org.zkoss.zk.ui.Component;
-import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.WebApps;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -116,7 +116,7 @@ public class PlanningWindow extends BaseWindow {
 	}
 
 	public void onClick$create() {
-		final CreateWindow window = (CreateWindow) Executions.createComponents(PLANNING_CREATE, null, null);
+		final CreateWindow window = (CreateWindow) ComponentCheck.createComponents(this, PLANNING_CREATE, null, null);
 		window.addEventListener(Events.ON_CHANGE, new EventListener<Event>() {
 
 			@Override
@@ -126,7 +126,7 @@ public class PlanningWindow extends BaseWindow {
 			}
 		});
 		window.initPop();
-		window.doModal();
+		window.doHighlighted();
 	}
 
 	public void onClick$load() {
@@ -250,10 +250,10 @@ public class PlanningWindow extends BaseWindow {
 	}
 
 	public void onClick$point() {
-		PointWindow window = (PointWindow) Executions.createComponents(PLANNING_POINT, null, null);
+		PointWindow window = (PointWindow) ComponentCheck.createComponents(this, PLANNING_POINT, null, null);
 		window.setPointMap(this.buildPointMap());
 		window.initPop();
-		window.doModal();
+		window.doHighlighted();
 	}
 
 	private boolean buildBacklog() {

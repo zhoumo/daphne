@@ -16,7 +16,7 @@ import org.springframework.security.web.util.UrlMatcher;
 
 public class UrlCheck {
 
-	private static List<String> defaultURL = new ArrayList<String>(Arrays.asList(BaseWindow.SYSTEM_LOGIN, BaseWindow.SYSTEM_TIMEOUT));
+	private static List<String> defaultURL = new ArrayList<String>(Arrays.asList(BaseWindow.SYSTEM_LOGIN, BaseWindow.SYSTEM_TIMEOUT, BaseWindow.SYSTEM_RESET));
 
 	public static boolean check(String requestUrl, HttpSession session) {
 		UrlMatcher urlMatcher = new AntUrlPathMatcher();
