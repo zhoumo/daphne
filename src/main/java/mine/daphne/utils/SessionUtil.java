@@ -1,4 +1,4 @@
-package mine.daphne.service;
+package mine.daphne.utils;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import mine.daphne.model.vo.UserInfo;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zul.Window;
 
-public class SessionService {
+public class SessionUtil {
 
 	public static void createUserInfoSession(UserInfo userInfo) {
 		Sessions.getCurrent().setAttribute("userInfo", userInfo);

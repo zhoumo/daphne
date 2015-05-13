@@ -1,4 +1,4 @@
-package mine.daphne.service;
+package mine.daphne.utils;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -15,13 +15,11 @@ import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 import com.google.common.collect.ImmutableList;
 
-public class JiraService {
-
-	private static final String JIRA_URL = "http://jira.funshion.com:8080";
+public class JiraUtil {
 
 	public static JiraRestClient instanceClient(String userName, String password) {
 		try {
-			URI uri = new URI(JIRA_URL);
+			URI uri = new URI(new PropertiesUtil().getProperty("JIRA_URL"));
 			return new AsynchronousJiraRestClientFactory().createWithBasicHttpAuthentication(uri, userName, password);
 		} catch (Exception e) {
 			e.printStackTrace();

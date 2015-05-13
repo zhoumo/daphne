@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mine.daphne.security.ComponentCheck;
-import mine.daphne.service.SessionService;
 import mine.daphne.ui.common.BaseWindow;
+import mine.daphne.utils.SessionUtil;
 import net.sf.json.JSONObject;
 
 import org.zkoss.zk.ui.event.Event;
@@ -61,12 +61,12 @@ public class Shortcut extends Div implements AfterCompose {
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Shortcut shortcut = (Shortcut) event.getTarget();
-				Window window = SessionService.getWindowInSession(shortcut.label.getValue());
+				Window window = SessionUtil.getWindowInSession(shortcut.label.getValue());
 				if (window == null) {
 					if (shortcut.path.startsWith("http://")) {
 						Map<Object, Object> argMap = new HashMap<Object, Object>();
 						if (shortcut.path.endsWith("client")) {
-							argMap.put("url", shortcut.path + "?rbac=" + JSONObject.fromObject(SessionService.getUserInfoSession()).toString());
+							argMap.put("url", shortcut.path + "?rbac=" + JSONObject.fromObject(SessionUtil.getUserInfoSession()).toString());
 						} else {
 							argMap.put("url", shortcut.path);
 						}
@@ -76,9 +76,9 @@ public class Shortcut extends Div implements AfterCompose {
 					}
 					window.setTitle(shortcut.label.getValue());
 					window.doOverlapped();
-					SessionService.createWindowSession(shortcut.label.getValue(), window);
+					SessionUtil.createWindowSession(shortcut.label.getValue(), window);
 				} else {
-					window.setZIndex(SessionService.getZindex());
+					window.setZIndex(SessionUtil.getZindex());
 				}
 			}
 		});

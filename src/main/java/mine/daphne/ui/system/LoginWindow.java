@@ -6,8 +6,8 @@ import mine.daphne.model.entity.SysUser;
 import mine.daphne.model.vo.UserInfo;
 import mine.daphne.security.core.Validator;
 import mine.daphne.service.ManageService;
-import mine.daphne.service.SessionService;
 import mine.daphne.ui.common.BaseWindow;
+import mine.daphne.utils.SessionUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.zkoss.zk.ui.Executions;
@@ -28,8 +28,8 @@ public class LoginWindow extends BaseWindow {
 	private void login(String authority, SysUser user) {
 		UserInfo userInfo = new UserInfo(authority);
 		userInfo.setUser(user);
-		SessionService.createUserInfoSession(userInfo);
-		SessionService.createLoginTimestampSession(new Date());
+		SessionUtil.createUserInfoSession(userInfo);
+		SessionUtil.createLoginTimestampSession(new Date());
 		Executions.sendRedirect(BaseWindow.SYSTEM_DESKTOP);
 	}
 

@@ -7,9 +7,9 @@ import java.util.Map;
 
 import mine.daphne.model.vo.Menu;
 import mine.daphne.security.ComponentCheck;
-import mine.daphne.service.SessionService;
 import mine.daphne.ui.common.BaseWindow;
 import mine.daphne.ui.common.CustomDiv;
+import mine.daphne.utils.SessionUtil;
 import net.sf.json.JSONObject;
 
 import org.zkoss.zk.ui.event.Event;
@@ -80,7 +80,7 @@ public class MenuPanel extends Div implements AfterCompose {
 		hbox.appendChild(this.menuDiv);
 		this.appendChild(hbox);
 		this.setZclass("start_panel_menu");
-		this.setZindex(SessionService.getZindex());
+		this.setZindex(SessionUtil.getZindex());
 		this.addParentMouseEvent(Events.ON_MOUSE_OVER, true);
 		this.addParentMouseEvent(Events.ON_MOUSE_OUT, false);
 		this.menuLeft.setZclass("start_panel_menu_left");
@@ -116,12 +116,12 @@ public class MenuPanel extends Div implements AfterCompose {
 					@Override
 					public void onEvent(Event event) throws Exception {
 						event.getTarget().getPage().getFellow("startPanel").setVisible(false);
-						Window window = SessionService.getWindowInSession(menu.getName());
+						Window window = SessionUtil.getWindowInSession(menu.getName());
 						if (window == null) {
 							if (menu.getValue().toString().startsWith("http://")) {
 								Map<Object, Object> argMap = new HashMap<Object, Object>();
 								if (menu.getValue().toString().endsWith("client")) {
-									argMap.put("url", menu.getValue().toString() + "?rbac=" + JSONObject.fromObject(SessionService.getUserInfoSession()).toString());
+									argMap.put("url", menu.getValue().toString() + "?rbac=" + JSONObject.fromObject(SessionUtil.getUserInfoSession()).toString());
 								} else {
 									argMap.put("url", menu.getValue().toString());
 								}
@@ -131,9 +131,9 @@ public class MenuPanel extends Div implements AfterCompose {
 							}
 							window.setTitle(menu.getName());
 							window.doOverlapped();
-							SessionService.createWindowSession(menu.getName(), window);
+							SessionUtil.createWindowSession(menu.getName(), window);
 						} else {
-							window.setZIndex(SessionService.getZindex());
+							window.setZIndex(SessionUtil.getZindex());
 						}
 					}
 				});

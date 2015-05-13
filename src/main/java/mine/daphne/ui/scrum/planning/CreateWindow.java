@@ -1,6 +1,5 @@
 package mine.daphne.ui.scrum.planning;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.zk.ui.event.Events;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
@@ -12,10 +11,9 @@ import mine.daphne.ui.common.PopWindow;
 @SuppressWarnings("serial")
 public class CreateWindow extends PopWindow {
 
-	private Listbox project, module;
-
-	@Autowired
 	private ManageService manageService;
+
+	private Listbox project, module;
 
 	@Override
 	public void initPop() {

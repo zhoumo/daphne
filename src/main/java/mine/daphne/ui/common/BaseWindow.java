@@ -1,7 +1,7 @@
 package mine.daphne.ui.common;
 
 import mine.daphne.model.vo.UserInfo;
-import mine.daphne.service.SessionService;
+import mine.daphne.utils.SessionUtil;
 
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -46,20 +46,20 @@ public abstract class BaseWindow extends Window implements AfterCompose {
 		this.setClosable(true);
 		this.setBorder("normal");
 		this.setPosition("center,center");
-		this.setZIndex(SessionService.getZindex());
+		this.setZIndex(SessionUtil.getZindex());
 		this.initWindow();
 		this.addEventListener(Events.ON_CLOSE, new EventListener<Event>() {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
 				Window window = (Window) event.getTarget();
-				SessionService.removeWindowSession(window.getTitle());
+				SessionUtil.removeWindowSession(window.getTitle());
 			}
 		});
 	}
 
 	public UserInfo getUserInfo() {
-		return SessionService.getUserInfoSession();
+		return SessionUtil.getUserInfoSession();
 	}
 
 	public boolean hasItemSelected(Object object) {

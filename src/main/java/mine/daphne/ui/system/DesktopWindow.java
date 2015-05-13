@@ -12,11 +12,11 @@ import mine.daphne.security.core.AuthorityParser;
 import mine.daphne.security.core.CommonUtil;
 import mine.daphne.security.model.application.Function;
 import mine.daphne.security.model.application.Module;
-import mine.daphne.service.SessionService;
 import mine.daphne.ui.common.BaseWindow;
 import mine.daphne.ui.common.CustomDiv;
 import mine.daphne.ui.desktop.Shortcut;
 import mine.daphne.ui.desktop.StartPanel;
+import mine.daphne.utils.SessionUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.zkoss.zk.ui.Executions;
@@ -58,7 +58,7 @@ public class DesktopWindow extends BaseWindow {
 
 	private void initDesktop() {
 		this.setBorder(false);
-		UserInfo userInfo = SessionService.getUserInfoSession();
+		UserInfo userInfo = SessionUtil.getUserInfoSession();
 		String authority = (userInfo == null ? "" : userInfo.getAuthority());
 		if (StringUtils.isEmpty(authority)) {
 			onClick$quit();
@@ -68,14 +68,14 @@ public class DesktopWindow extends BaseWindow {
 				this.shortcut.put(function.getName(), new String[] { function.getShow(), CommonUtil.getIndexByFunction(function) });
 			}
 		}
-		for (Module module : AuthorityParser.parseGetModules(SessionService.getUserInfoSession().getAuthority())) {
+		for (Module module : AuthorityParser.parseGetModules(SessionUtil.getUserInfoSession().getAuthority())) {
 			Menu menu = new Menu(module.getShow());
 			this.modelConvert(menu, module.getFunctions());
 			this.menu.add(menu);
 		}
 		String userName = "系统管理员";
-		if (SessionService.getUserInfoSession().getUser() != null) {
-			userName = SessionService.getUserInfoSession().getUser().getTrueName();
+		if (SessionUtil.getUserInfoSession().getUser() != null) {
+			userName = SessionUtil.getUserInfoSession().getUser().getTrueName();
 		}
 		this.portrait = new String[] { "/images/desktop/portrait.png", userName };
 	}
@@ -124,7 +124,7 @@ public class DesktopWindow extends BaseWindow {
 				if (startPanel.isVisible()) {
 					startPanel.setVisible(false);
 				} else {
-					startPanel.setZIndex(SessionService.getZindex());
+					startPanel.setZIndex(SessionUtil.getZindex());
 					startPanel.setVisible(true);
 				}
 			}
@@ -148,7 +148,7 @@ public class DesktopWindow extends BaseWindow {
 
 	@Override
 	public void initWindow() {
-		SessionService.clearWindowSessions();
+		SessionUtil.clearWindowSessions();
 		this.initDesktop();
 		this.createDesktopArea();
 		this.createTaskbar();
@@ -167,7 +167,7 @@ public class DesktopWindow extends BaseWindow {
 				Executions.getCurrent().sendRedirect(BaseWindow.SYSTEM_LOGIN);
 			}
 		});
-		window.setSysUser(SessionService.getUserInfoSession().getUser());
+		window.setSysUser(SessionUtil.getUserInfoSession().getUser());
 		window.doHighlighted();
 	}
 

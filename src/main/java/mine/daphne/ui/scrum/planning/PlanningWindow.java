@@ -13,21 +13,20 @@ import mine.daphne.model.entity.ScrumBacklog;
 import mine.daphne.model.entity.ScrumStory;
 import mine.daphne.model.entity.SysUser;
 import mine.daphne.security.ComponentCheck;
-import mine.daphne.service.JiraService;
 import mine.daphne.service.ManageService;
 import mine.daphne.service.ScrumService;
-import mine.daphne.service.SessionService;
 import mine.daphne.ui.common.BaseWindow;
+import mine.daphne.utils.JiraUtil;
+import mine.daphne.utils.PdfUtil;
+import mine.daphne.utils.SessionUtil;
+import mine.daphne.utils.SheetUtil;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.zkoss.util.media.AMedia;
-import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.WebApps;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
-import org.zkoss.zss.api.AreaRef;
 import org.zkoss.zss.api.CellOperationUtil;
 import org.zkoss.zss.api.Exporters;
 import org.zkoss.zss.api.Importers;
@@ -42,18 +41,18 @@ import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Messagebox;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 @SuppressWarnings("serial")
 public class PlanningWindow extends BaseWindow {
+
+	private ManageService manageService;
+
+	private ScrumService scrumService;
 
 	private Menupopup memberMenu;
 
@@ -65,35 +64,15 @@ public class PlanningWindow extends BaseWindow {
 
 	private SysUser sysUser;
 
-	@Autowired
-	private ManageService manageService;
-
-	@Autowired
-	private ScrumService scrumService;
-
 	private void initSpreadsheet() {
 		userNamesMap = new HashMap<String, String>();
 		userNamesMap.put("", "");
 		for (SysUser user : manageService.findUsersByGroupName(backlog.getProject())) {
 			userNamesMap.put(user.getTrueName(), user.getLoginName());
 			userNamesMap.put(user.getLoginName(), user.getTrueName());
-			Menuitem menuitem = new Menuitem(user.getTrueName());
-			menuitem.addEventListener(Events.ON_CLICK, new EventListener<Event>() {
-
-				@Override
-				public void onEvent(Event event) throws Exception {
-					Menuitem menuitem = (Menuitem) event.getTarget();
-					AreaRef areaRef = spreadsheet.getSelection();
-					Ranges.range(spreadsheet.getSelectedSheet(), areaRef.getRow(), areaRef.getColumn()).setCellEditText(menuitem.getLabel());
-				}
-			});
-			memberMenu.appendChild(menuitem);
+			memberMenu.appendChild(SheetUtil.createMenuitem(user.getTrueName(), spreadsheet));
 		}
-		for (Component component : this.getFellows()) {
-			if (component instanceof Menuitem) {
-				((Menuitem) component).setDisabled(false);
-			}
-		}
+		SheetUtil.enabledMenuitems(this);
 		((Menuitem) this.getFellow("create")).setDisabled(true);
 		((Menuitem) this.getFellow("load")).setDisabled(true);
 		((Menuitem) this.getFellow("print")).setDisabled(true);
@@ -108,7 +87,7 @@ public class PlanningWindow extends BaseWindow {
 
 	@Override
 	public void initWindow() {
-		sysUser = SessionService.getUserInfoSession().getUser();
+		sysUser = SessionUtil.getUserInfoSession().getUser();
 		backlog = scrumService.getBacklogByAssignee(sysUser.getLoginName());
 		if (backlog == null) {
 			((Menuitem) this.getFellow("load")).setDisabled(true);
@@ -167,46 +146,6 @@ public class PlanningWindow extends BaseWindow {
 		}
 	}
 
-	private void validateEmpty(ScrumStory story, String methodName, Range range) throws Exception {
-		CellOperationUtil.clearStyles(range);
-		if (StringUtils.isEmpty(range.getCellEditText().trim())) {
-			throw new Exception();
-		}
-		try {
-			ScrumStory.class.getMethod(methodName, String.class).invoke(story, new Object[] { range.getCellEditText() });
-		} catch (Exception e) {
-			throw new Exception();
-		}
-	}
-
-	private void validateNumber(ScrumStory story, String methodName, Range range) throws Exception {
-		CellOperationUtil.clearStyles(range);
-		try {
-			ScrumStory.class.getMethod(methodName, Float.class).invoke(story, new Object[] { Float.parseFloat(range.getCellEditText()) });
-		} catch (Exception e) {
-			throw new Exception();
-		}
-	}
-
-	private void validateNames(ScrumStory story, String methodName, Range range) throws Exception {
-		CellOperationUtil.clearStyles(range);
-		if (StringUtils.isEmpty(range.getCellEditText().trim())) {
-			return;
-		}
-		String names = "";
-		for (String name : range.getCellEditText().replace("，", ",").split(",")) {
-			if (!userNamesMap.containsKey(name)) {
-				throw new Exception();
-			}
-			names += userNamesMap.get(name) + ",";
-		}
-		try {
-			ScrumStory.class.getMethod(methodName, String.class).invoke(story, new Object[] { names.substring(0, names.length() - 1) });
-		} catch (Exception e) {
-			throw new Exception();
-		}
-	}
-
 	public void onClick$insertLine() {
 		spreadsheet.setMaxVisibleRows(spreadsheet.getMaxVisibleRows() + 1);
 		CellOperationUtil.insertRow(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
@@ -230,22 +169,7 @@ public class PlanningWindow extends BaseWindow {
 		for (SysUser user : manageService.findUsersByGroupName(backlog.getProject())) {
 			pointMap.put(user.getTrueName(), 0F);
 		}
-		for (int row = 1; row <= spreadsheet.getSelectedSheet().getLastRow(); row++) {
-			String taker = Ranges.range(spreadsheet.getSelectedSheet(), row, 6).getCellEditText();
-			String point = Ranges.range(spreadsheet.getSelectedSheet(), row, 4).getCellEditText();
-			if (!StringUtils.isEmpty(taker) && !StringUtils.isEmpty(point)) {
-				pointMap.put(taker, pointMap.get(taker) + Float.parseFloat(point));
-			}
-			taker = Ranges.range(spreadsheet.getSelectedSheet(), row, 7).getCellEditText();
-			point = Ranges.range(spreadsheet.getSelectedSheet(), row, 3).getCellEditText();
-			if (!StringUtils.isEmpty(taker) && !StringUtils.isEmpty(point)) {
-				pointMap.put(taker, pointMap.get(taker) + Float.parseFloat(point));
-			}
-			point = Ranges.range(spreadsheet.getSelectedSheet(), row, 5).getCellEditText();
-			if (!StringUtils.isEmpty(taker) && !StringUtils.isEmpty(point)) {
-				pointMap.put(taker, pointMap.get(taker) + Float.parseFloat(point));
-			}
-		}
+		SheetUtil.buildPointMap(spreadsheet, pointMap);
 		return pointMap;
 	}
 
@@ -263,13 +187,13 @@ public class PlanningWindow extends BaseWindow {
 			story.setDescription(Ranges.range(spreadsheet.getSelectedSheet(), row, 2).getCellEditText());
 			Range range = null;
 			try {
-				this.validateEmpty(story, "setProduct", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 0));
-				this.validateEmpty(story, "setSummary", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 1));
-				this.validateNumber(story, "setDesignPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 3));
-				this.validateNumber(story, "setCodePoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 4));
-				this.validateNumber(story, "setTestPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 5));
-				this.validateNames(story, "setCodeTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 6));
-				this.validateNames(story, "setTestTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 7));
+				SheetUtil.validateEmpty(story, "setProduct", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 0));
+				SheetUtil.validateEmpty(story, "setSummary", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 1));
+				SheetUtil.validateNumber(story, "setDesignPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 3));
+				SheetUtil.validateNumber(story, "setCodePoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 4));
+				SheetUtil.validateNumber(story, "setTestPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 5));
+				SheetUtil.validateNames(story, "setCodeTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 6), userNamesMap);
+				SheetUtil.validateNames(story, "setTestTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 7), userNamesMap);
 				story.setDesignTaker(story.getTestTaker());
 				story.setBacklog(backlog);
 				stories.add(story);
@@ -284,8 +208,8 @@ public class PlanningWindow extends BaseWindow {
 
 	public void onClick$sync() throws IOException {
 		if (this.buildBacklog() && backlog.getStories().size() > 0) {
-			JiraRestClient client = JiraService.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
-			JiraService.createStories(client, backlog);
+			JiraRestClient client = JiraUtil.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
+			JiraUtil.createStories(client, backlog);
 			client.close();
 			scrumService.saveBacklog(backlog);
 			Events.postEvent(Events.ON_CLOSE, this, null);
@@ -301,22 +225,6 @@ public class PlanningWindow extends BaseWindow {
 		Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".xlsx", null, null, file, true));
 	}
 
-	private void createPdfTable(PdfPTable mainTable, ScrumStory story) throws Exception {
-		PdfPTable table = new PdfPTable(1);
-		table.addCell(this.createPdfCell(story.getJiraKey(), 15f, BaseColor.LIGHT_GRAY));
-		table.addCell(this.createPdfCell(story.getSummary(), 100f, BaseColor.WHITE));
-		table.addCell(this.createPdfCell("负责人: " + userNamesMap.get(story.getCodeTaker()) + " " + userNamesMap.get(story.getTestTaker()), 15f, BaseColor.LIGHT_GRAY));
-		mainTable.addCell(table);
-	}
-
-	private PdfPCell createPdfCell(String text, float height, BaseColor color) throws Exception {
-		BaseFont baseFont = BaseFont.createFont("C:\\Windows\\Fonts\\MSYH.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-		PdfPCell cell = new PdfPCell(new Paragraph(text, new Font(baseFont, 8, Font.NORMAL)));
-		cell.setFixedHeight(height);
-		cell.setBackgroundColor(color);
-		return cell;
-	}
-
 	public void onClick$print() throws Exception {
 		File file = new File(new Date().getTime() + ".pdf");
 		Document document = new Document(PageSize.A4, 0, 0, 30, 30);
@@ -325,9 +233,9 @@ public class PlanningWindow extends BaseWindow {
 		PdfPTable mainTable = new PdfPTable(2);
 		mainTable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
 		for (int index = 0; index < backlog.getStories().size();) {
-			this.createPdfTable(mainTable, backlog.getStories().get(index++));
+			PdfUtil.createPdfTable(mainTable, backlog.getStories().get(index++), userNamesMap);
 			if (index < backlog.getStories().size()) {
-				this.createPdfTable(mainTable, backlog.getStories().get(index++));
+				PdfUtil.createPdfTable(mainTable, backlog.getStories().get(index++), userNamesMap);
 			} else {
 				mainTable.addCell("");
 			}
