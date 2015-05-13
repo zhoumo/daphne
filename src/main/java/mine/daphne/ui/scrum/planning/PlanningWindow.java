@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,15 @@ import org.zkoss.zul.Menupopup;
 import org.zkoss.zul.Messagebox;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @SuppressWarnings("serial")
 public class PlanningWindow extends BaseWindow {
@@ -122,7 +132,7 @@ public class PlanningWindow extends BaseWindow {
 		if (backlog.getStories() == null) {
 			return;
 		}
-		initSpreadsheet();
+		this.initSpreadsheet();
 		int index = 1;
 		for (ScrumStory story : backlog.getStories()) {
 			Ranges.range(spreadsheet.getSelectedSheet(), index, 0).setCellEditText(story.getProduct());
@@ -191,49 +201,6 @@ public class PlanningWindow extends BaseWindow {
 		}
 	}
 
-	private boolean buildBacklog() {
-		List<ScrumStory> stories = new ArrayList<ScrumStory>();
-		for (int row = 1; row <= spreadsheet.getSelectedSheet().getLastRow(); row++) {
-			ScrumStory story = new ScrumStory();
-			story.setDescription(Ranges.range(spreadsheet.getSelectedSheet(), row, 2).getCellEditText());
-			Range range = null;
-			try {
-				validateEmpty(story, "setProduct", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 0));
-				validateEmpty(story, "setSummary", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 1));
-				validateNumber(story, "setDesignPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 3));
-				validateNumber(story, "setCodePoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 4));
-				validateNumber(story, "setTestPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 5));
-				validateNames(story, "setCodeTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 6));
-				validateNames(story, "setTestTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 7));
-				story.setDesignTaker(story.getTestTaker());
-				story.setBacklog(backlog);
-				stories.add(story);
-			} catch (Exception e) {
-				CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
-				return false;
-			}
-		}
-		backlog.setStories(stories);
-		return true;
-	}
-
-	public void onClick$sync() throws IOException {
-		if (this.buildBacklog()) {
-			JiraRestClient client = JiraService.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
-			JiraService.createStories(client, backlog);
-			client.close();
-			Messagebox.show("导入成功.");
-		}
-	}
-
-	public void onClick$export() throws IOException {
-		File file = File.createTempFile(Long.toString(System.currentTimeMillis()), "temp");
-		FileOutputStream outputStream = new FileOutputStream(file);
-		Exporters.getExporter().export(spreadsheet.getBook(), outputStream);
-		outputStream.close();
-		Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".xlsx", null, null, file, true));
-	}
-
 	public void onClick$insertLine() {
 		spreadsheet.setMaxVisibleRows(spreadsheet.getMaxVisibleRows() + 1);
 		CellOperationUtil.insertRow(Ranges.range(spreadsheet.getSelectedSheet(), spreadsheet.getSelection()));
@@ -279,9 +246,90 @@ public class PlanningWindow extends BaseWindow {
 	public void onClick$point() {
 		if (this.buildBacklog()) {
 			PointWindow window = (PointWindow) Executions.createComponents(PLANNING_POINT, null, null);
-			window.setPointMap(buildPointMap());
+			window.setPointMap(this.buildPointMap());
 			window.initPop();
 			window.doModal();
+		}
+	}
+
+	private boolean buildBacklog() {
+		List<ScrumStory> stories = new ArrayList<ScrumStory>();
+		for (int row = 1; row <= spreadsheet.getSelectedSheet().getLastRow(); row++) {
+			ScrumStory story = new ScrumStory();
+			story.setDescription(Ranges.range(spreadsheet.getSelectedSheet(), row, 2).getCellEditText());
+			Range range = null;
+			try {
+				this.validateEmpty(story, "setProduct", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 0));
+				this.validateEmpty(story, "setSummary", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 1));
+				this.validateNumber(story, "setDesignPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 3));
+				this.validateNumber(story, "setCodePoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 4));
+				this.validateNumber(story, "setTestPoint", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 5));
+				this.validateNames(story, "setCodeTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 6));
+				this.validateNames(story, "setTestTaker", range = Ranges.range(spreadsheet.getSelectedSheet(), row, 7));
+				story.setDesignTaker(story.getTestTaker());
+				story.setBacklog(backlog);
+				stories.add(story);
+			} catch (Exception e) {
+				CellOperationUtil.applyBorder(range, ApplyBorderType.FULL, BorderType.DOTTED, "#FF0000");
+				return false;
+			}
+		}
+		backlog.setStories(stories);
+		return true;
+	}
+
+	public void onClick$sync() throws IOException {
+		if (this.buildBacklog()) {
+			JiraRestClient client = JiraService.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
+			JiraService.createStories(client, backlog);
+			client.close();
+			Messagebox.show("导入成功.");
+		}
+	}
+
+	public void onClick$export() throws IOException {
+		if (this.buildBacklog()) {
+			File file = File.createTempFile(Long.toString(System.currentTimeMillis()), "temp");
+			FileOutputStream outputStream = new FileOutputStream(file);
+			Exporters.getExporter().export(spreadsheet.getBook(), outputStream);
+			outputStream.close();
+			Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".xlsx", null, null, file, true));
+		}
+	}
+
+	private void createPdfDocument(Document document) throws Exception {
+		PdfPTable table = new PdfPTable(2);
+		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+		table.addCell(this.createPdfTable());
+		table.addCell(this.createPdfTable());
+		document.add(table);
+	}
+
+	private PdfPTable createPdfTable() throws Exception {
+		PdfPTable table = new PdfPTable(1);
+		table.addCell(this.createPdfCell("ADSP - AM - 1234", 15f, BaseColor.LIGHT_GRAY));
+		table.addCell(this.createPdfCell("text", 100f, BaseColor.WHITE));
+		table.addCell(this.createPdfCell("产品经理:周默    负责人:周默/籍京娜", 15f, BaseColor.LIGHT_GRAY));
+		return table;
+	}
+
+	private PdfPCell createPdfCell(String text, float height, BaseColor color) throws Exception {
+		BaseFont baseFont = BaseFont.createFont("C:\\Windows\\Fonts\\MSYH.TTF", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		PdfPCell cell = new PdfPCell(new Paragraph(text, new Font(baseFont, 8, Font.NORMAL)));
+		cell.setFixedHeight(height);
+		cell.setBackgroundColor(color);
+		return cell;
+	}
+
+	public void onClick$print() throws Exception {
+		if (this.buildBacklog()) {
+			File file = new File(new Date().getTime() + ".pdf");
+			Document document = new Document(PageSize.A4, 0, 0, 30, 30);
+			PdfWriter.getInstance(document, new FileOutputStream(file));
+			document.open();
+			this.createPdfDocument(document);
+			document.close();
+			Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".pdf", null, null, file, true));
 		}
 	}
 }

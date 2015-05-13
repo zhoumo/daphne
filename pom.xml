@@ -173,6 +173,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.18</version>
 		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.6</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>daphne</finalName>

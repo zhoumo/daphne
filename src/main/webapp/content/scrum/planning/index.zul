@@ -10,11 +10,12 @@
 				</menupopup>
 			</menu>
 			<menu label="工具">
-				<menupopup>
+				<menupopup style="width:125px">
 					<menuitem id="point" label="估点清单" disabled="true" />
 					<menuseparator />
 					<menuitem id="sync" label="同步到JIRA" disabled="true" />
 					<menuitem id="export" label="导出到Excel" disabled="true" />
+					<menuitem id="print" label="打印Story" disabled="true" />
 				</menupopup>
 			</menu>
 		</menubar>
