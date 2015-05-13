@@ -42,6 +42,7 @@ public class JiraService {
 			builder.setComponentsNames(Arrays.asList(new String[] { story.getBacklog().getModule() }));
 			builder.setDescription(story.getDescription());
 			BasicIssue issue = client.getIssueClient().createIssue(builder.build()).claim();
+			story.setJiraKey(issue.getKey());
 			createSubTask(client, issue.getKey(), story);
 		}
 	}

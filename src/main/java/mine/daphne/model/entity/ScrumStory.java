@@ -22,6 +22,9 @@ public class ScrumStory implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	@Column(name = "jira_key")
+	private String jiraKey;
+
 	@Column
 	private String product;
 
@@ -59,6 +62,14 @@ public class ScrumStory implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getJiraKey() {
+		return jiraKey;
+	}
+
+	public void setJiraKey(String jiraKey) {
+		this.jiraKey = jiraKey;
 	}
 
 	public String getProduct() {

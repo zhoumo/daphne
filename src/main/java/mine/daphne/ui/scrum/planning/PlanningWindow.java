@@ -96,6 +96,7 @@ public class PlanningWindow extends BaseWindow {
 		}
 		((Menuitem) this.getFellow("create")).setDisabled(true);
 		((Menuitem) this.getFellow("load")).setDisabled(true);
+		((Menuitem) this.getFellow("print")).setDisabled(true);
 		try {
 			spreadsheet.setVisible(true);
 			spreadsheet.setContext("contextMenu");
@@ -152,6 +153,11 @@ public class PlanningWindow extends BaseWindow {
 			}
 			Ranges.range(spreadsheet.getSelectedSheet(), index, 7).setCellEditText(testTakers.replace(",", " ").trim().replace(" ", ","));
 			index++;
+		}
+		if (!StringUtils.isEmpty(backlog.getStories().get(0).getJiraKey())) {
+			((Menuitem) this.getFellow("save")).setDisabled(true);
+			((Menuitem) this.getFellow("sync")).setDisabled(true);
+			((Menuitem) this.getFellow("print")).setDisabled(false);
 		}
 	}
 
@@ -244,12 +250,10 @@ public class PlanningWindow extends BaseWindow {
 	}
 
 	public void onClick$point() {
-		if (this.buildBacklog()) {
-			PointWindow window = (PointWindow) Executions.createComponents(PLANNING_POINT, null, null);
-			window.setPointMap(this.buildPointMap());
-			window.initPop();
-			window.doModal();
-		}
+		PointWindow window = (PointWindow) Executions.createComponents(PLANNING_POINT, null, null);
+		window.setPointMap(this.buildPointMap());
+		window.initPop();
+		window.doModal();
 	}
 
 	private boolean buildBacklog() {
@@ -279,38 +283,30 @@ public class PlanningWindow extends BaseWindow {
 	}
 
 	public void onClick$sync() throws IOException {
-		if (this.buildBacklog()) {
+		if (this.buildBacklog() && backlog.getStories().size() > 0) {
 			JiraRestClient client = JiraService.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
 			JiraService.createStories(client, backlog);
 			client.close();
-			Messagebox.show("导入成功.");
+			scrumService.saveBacklog(backlog);
+			Events.postEvent(Events.ON_CLOSE, this, null);
+			Messagebox.show("操作完成.");
 		}
 	}
 
 	public void onClick$export() throws IOException {
-		if (this.buildBacklog()) {
-			File file = File.createTempFile(Long.toString(System.currentTimeMillis()), "temp");
-			FileOutputStream outputStream = new FileOutputStream(file);
-			Exporters.getExporter().export(spreadsheet.getBook(), outputStream);
-			outputStream.close();
-			Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".xlsx", null, null, file, true));
-		}
+		File file = File.createTempFile(Long.toString(System.currentTimeMillis()), "temp");
+		FileOutputStream outputStream = new FileOutputStream(file);
+		Exporters.getExporter().export(spreadsheet.getBook(), outputStream);
+		outputStream.close();
+		Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".xlsx", null, null, file, true));
 	}
 
-	private void createPdfDocument(Document document) throws Exception {
-		PdfPTable table = new PdfPTable(2);
-		table.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
-		table.addCell(this.createPdfTable());
-		table.addCell(this.createPdfTable());
-		document.add(table);
-	}
-
-	private PdfPTable createPdfTable() throws Exception {
+	private void createPdfTable(PdfPTable mainTable, ScrumStory story) throws Exception {
 		PdfPTable table = new PdfPTable(1);
-		table.addCell(this.createPdfCell("ADSP - AM - 1234", 15f, BaseColor.LIGHT_GRAY));
-		table.addCell(this.createPdfCell("text", 100f, BaseColor.WHITE));
-		table.addCell(this.createPdfCell("产品经理:周默    负责人:周默/籍京娜", 15f, BaseColor.LIGHT_GRAY));
-		return table;
+		table.addCell(this.createPdfCell(story.getJiraKey(), 15f, BaseColor.LIGHT_GRAY));
+		table.addCell(this.createPdfCell(story.getSummary(), 100f, BaseColor.WHITE));
+		table.addCell(this.createPdfCell("负责人: " + userNamesMap.get(story.getCodeTaker()) + " " + userNamesMap.get(story.getTestTaker()), 15f, BaseColor.LIGHT_GRAY));
+		mainTable.addCell(table);
 	}
 
 	private PdfPCell createPdfCell(String text, float height, BaseColor color) throws Exception {
@@ -322,14 +318,22 @@ public class PlanningWindow extends BaseWindow {
 	}
 
 	public void onClick$print() throws Exception {
-		if (this.buildBacklog()) {
-			File file = new File(new Date().getTime() + ".pdf");
-			Document document = new Document(PageSize.A4, 0, 0, 30, 30);
-			PdfWriter.getInstance(document, new FileOutputStream(file));
-			document.open();
-			this.createPdfDocument(document);
-			document.close();
-			Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".pdf", null, null, file, true));
+		File file = new File(new Date().getTime() + ".pdf");
+		Document document = new Document(PageSize.A4, 0, 0, 30, 30);
+		PdfWriter.getInstance(document, new FileOutputStream(file));
+		document.open();
+		PdfPTable mainTable = new PdfPTable(2);
+		mainTable.getDefaultCell().setBorder(PdfPCell.NO_BORDER);
+		for (int index = 0; index < backlog.getStories().size();) {
+			this.createPdfTable(mainTable, backlog.getStories().get(index++));
+			if (index < backlog.getStories().size()) {
+				this.createPdfTable(mainTable, backlog.getStories().get(index++));
+			} else {
+				mainTable.addCell("");
+			}
 		}
+		document.add(mainTable);
+		document.close();
+		Filedownload.save(new AMedia(backlog.getProject() + "_" + backlog.getModule() + ".pdf", null, null, file, true));
 	}
 }
