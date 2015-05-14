@@ -10,13 +10,13 @@
 					<hbox align="center" pack="center">
 						<label value="用户名：" zclass="login_font" />
 						<space spacing="1px" />
-						<textbox id="username" width="160px" constraint="no empty" value="zhoumo1" />
+						<textbox id="username" width="160px" constraint="no empty" />
 					</hbox>
 					<separator height="5px" />
 					<hbox align="center" pack="center">
 						<label value="密　码：" zclass="login_font" />
 						<space spacing="1px" />
-						<textbox id="password" width="160px" type="password" value="zhou@1234" />
+						<textbox id="password" width="160px" type="password" />
 					</hbox>
 				</vbox>
 			</hbox>

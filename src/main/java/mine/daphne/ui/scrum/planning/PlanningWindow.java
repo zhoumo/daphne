@@ -67,7 +67,7 @@ public class PlanningWindow extends BaseWindow {
 	private void initSpreadsheet() {
 		userNamesMap = new HashMap<String, String>();
 		userNamesMap.put("", "");
-		for (SysUser user : manageService.findUsersByGroupName(backlog.getProject())) {
+		for (SysUser user : manageService.findUsersByGroupName(backlog.getModule())) {
 			userNamesMap.put(user.getTrueName(), user.getLoginName());
 			userNamesMap.put(user.getLoginName(), user.getTrueName());
 			memberMenu.appendChild(SheetUtil.createMenuitem(user.getTrueName(), spreadsheet));
@@ -81,7 +81,7 @@ public class PlanningWindow extends BaseWindow {
 			spreadsheet.setContext("contextMenu");
 			spreadsheet.setBook(Importers.getImporter().imports(new File(WebApps.getCurrent().getRealPath("/files/backlog.xlsx")), "backlog.xlsx"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("The import failed.", e);
 		}
 	}
 
@@ -206,11 +206,16 @@ public class PlanningWindow extends BaseWindow {
 		return true;
 	}
 
-	public void onClick$sync() throws IOException {
+	public void onClick$sync() {
 		if (this.buildBacklog() && backlog.getStories().size() > 0) {
 			JiraRestClient client = JiraUtil.instanceClient(sysUser.getLoginName(), sysUser.getPassword());
-			JiraUtil.createStories(client, backlog);
-			client.close();
+			try {
+				JiraUtil.createStories(client, backlog);
+				client.close();
+			} catch (Exception e) {
+				Messagebox.show("导入失败，请检查是否重置了JIRA密码.", "错误", Messagebox.OK, Messagebox.ERROR);
+				return;
+			}
 			scrumService.saveBacklog(backlog);
 			Events.postEvent(Events.ON_CLOSE, this, null);
 			Messagebox.show("操作完成.");

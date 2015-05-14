@@ -109,13 +109,13 @@ public class MemberWindow extends BaseWindow {
 		this.createGroupWindow(true, new SysGroup(), this.groupTree.getSelectedCount() != 0 ? this.groupTree.getSelectedItem().getValue() : null);
 	}
 
-	public void onClick$groupDelete() throws InterruptedException {
+	public void onClick$groupDelete() {
 		if (super.hasItemSelected(this.groupTree)) {
 			if (Integer.parseInt(this.groupTree.getSelectedItem().getAttribute("number").toString()) == 0) {
 				this.manageService.delete(this.groupTree.getSelectedItem().getValue());
 				this.initGroupTree();
 			} else {
-				Messagebox.show("当前组中存在用户，不能进行删除！");
+				Messagebox.show("当前组中存在用户，不能进行删除！", "警告", Messagebox.OK, Messagebox.EXCLAMATION);
 			}
 		}
 	}

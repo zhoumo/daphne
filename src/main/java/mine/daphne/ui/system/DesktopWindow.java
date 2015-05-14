@@ -162,7 +162,7 @@ public class DesktopWindow extends BaseWindow {
 
 			@Override
 			public void onEvent(Event event) throws Exception {
-				Messagebox.show("密码重置成功, 请重新登录.");
+				Messagebox.show("密码重置成功，请重新登录.");
 				Sessions.getCurrent().invalidate();
 				Executions.getCurrent().sendRedirect(BaseWindow.SYSTEM_LOGIN);
 			}

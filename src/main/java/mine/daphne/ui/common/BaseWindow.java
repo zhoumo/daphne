@@ -3,6 +3,8 @@ package mine.daphne.ui.common;
 import mine.daphne.model.vo.UserInfo;
 import mine.daphne.utils.SessionUtil;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
@@ -14,6 +16,8 @@ import org.zkoss.zul.Window;
 
 @SuppressWarnings("serial")
 public abstract class BaseWindow extends Window implements AfterCompose {
+
+	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public static String SYSTEM_LOGIN = "/login.zul";
 

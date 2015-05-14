@@ -26,7 +26,7 @@
 			</center>
 			<south border="none">
 				<div>
-					<button id="submit" label="保存" />
+					<button id="submit" label="创建" />
 					<button id="cancel" label="取消" />
 				</div>
 			</south>

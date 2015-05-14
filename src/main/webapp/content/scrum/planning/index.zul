@@ -27,7 +27,7 @@
 			<menuitem id="unmergeCells" label="拆分单元格" image="/images/icon/menu/delete.png" />
 			<menuseparator />
 			<menu label="成员" image="/images/icon/menu/role.png">
-				<menupopup id="memberMenu" />
+				<menupopup id="memberMenu" style="width:100px" />
 			</menu>
 		</menupopup>
 	</window>
