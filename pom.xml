@@ -20,7 +20,7 @@
 		<zk.version>7.0.3</zk.version>
 		<spring.version>3.2.4.RELEASE</spring.version>
 		<spring.security.version>3.0.8.RELEASE</spring.security.version>
-		<hibernate.version>3.4.0.GA</hibernate.version>
+		<hibernate.version>3.5.5-Final</hibernate.version>
 	</properties>
 	<dependencies>
 		<!-- ZK -->
@@ -116,6 +116,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-pool</groupId>
+			<artifactId>commons-pool</artifactId>
+			<version>1.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>

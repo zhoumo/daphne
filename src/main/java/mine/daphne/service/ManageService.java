@@ -30,12 +30,6 @@ public class ManageService extends BaseService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SysGroup> findAllGroup() {
-		String queryString = "from SysGroup order by name";
-		return super.hibernateTemplate.find(queryString);
-	}
-
-	@SuppressWarnings("unchecked")
 	public List<SysGroup> findRootGroup(SysGroup selectedGroup) {
 		String queryString = "from SysGroup where pid is null order by name";
 		Session session = super.hibernateTemplate.getSessionFactory().getCurrentSession();
@@ -58,6 +52,12 @@ public class ManageService extends BaseService {
 			}
 			this.initialize(group.getChildren(), selectedGroup);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<SysGroup> findChildrenGroups(Long pid) {
+		String queryString = "from SysGroup where pid = ? order by name";
+		return super.hibernateTemplate.find(queryString, new Object[] { pid });
 	}
 
 	public List<SysGroup> buildGroupTree() {

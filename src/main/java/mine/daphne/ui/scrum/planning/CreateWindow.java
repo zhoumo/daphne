@@ -17,12 +17,18 @@ public class CreateWindow extends PopWindow {
 
 	@Override
 	public void initPop() {
-		for (SysGroup group : manageService.findAllGroup()) {
+		for (SysGroup group : manageService.findRootGroup(null)) {
 			Listitem item = new Listitem(group.getName());
 			item.setValue(group.getId());
 			project.appendChild(item);
 		}
 		project.setSelectedIndex(0);
+		for (SysGroup group : manageService.findChildrenGroups((Long) project.getSelectedItem().getValue())) {
+			Listitem item = new Listitem(group.getName());
+			item.setValue(group.getId());
+			module.appendChild(item);
+		}
+		module.setSelectedIndex(0);
 	}
 
 	public void onClick$submit() throws Exception {

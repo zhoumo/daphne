@@ -15,11 +15,7 @@
 						</row>
 						<row>
 							<label value="选择模块" />
-							<listbox id="module" mold="select" height="25px" width="120px">
-								<listitem label="AM" selected="true" />
-								<listitem label="DE" />
-								<listitem label="BI" />
-							</listbox>
+							<listbox id="module" mold="select" height="25px" width="120px" />
 						</row>
 					</rows>
 				</grid>

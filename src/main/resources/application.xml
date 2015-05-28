@@ -16,6 +16,11 @@
 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/daphne?useUnicode=true&amp;characterEncoding=UTF-8" />
 		<property name="username" value="root" />
 		<property name="password" value="root" />
+		<property name="maxIdle" value="5" />
+		<property name="maxActive" value="40" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="timeBetweenEvictionRunsMillis" value="3600000" />
+		<property name="minEvictableIdleTimeMillis" value="3600000" />
 	</bean>
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -31,18 +36,6 @@
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.show_sql">false</prop>
 				<prop key="hibernate.format_sql">false</prop>
-				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
-				<prop key='hibernate.query.factory_class'>org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
-				<!-- C3P0 -->
-				<prop key="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</prop>
-				<prop key="hibernate.c3p0.min_size">5</prop>
-				<prop key="hibernate.c3p0.max_size">30</prop>
-				<prop key="hibernate.c3p0.timeout">1800</prop>
-				<prop key="hibernate.c3p0.max_statements">50</prop>
-				<prop key="hibernate.c3p0.idle_test_period">120</prop>
-				<prop key="hibernate.c3p0.acquire_increment">1</prop>
-				<prop key="hibernate.c3p0.testConnectionOnCheckout">true</prop>
-				<prop key="hibernate.c3p0.validate">true</prop>
 			</props>
 		</property>
 	</bean>
