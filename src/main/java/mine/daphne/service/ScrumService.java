@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ScrumService extends BaseService {
 
 	public ScrumBacklog getBacklogByAssignee(String assignee) {
-		List<ScrumBacklog> backlog = query("from ScrumBacklog where assignee = ?", assignee);
+		List<ScrumBacklog> backlog = query("from ScrumBacklog where assignee = ? order by timestamp desc", assignee);
 		if (backlog.size() == 0) {
 			return null;
 		} else {

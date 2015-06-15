@@ -42,7 +42,7 @@ import org.zkoss.zul.Messagebox;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
+import com.itextpdf.text.RectangleReadOnly;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -166,7 +166,7 @@ public class PlanningWindow extends BaseWindow {
 
 	private Map<String, Float> buildPointMap() {
 		Map<String, Float> pointMap = new HashMap<String, Float>();
-		for (SysUser user : manageService.findUsersByGroupName(backlog.getProject())) {
+		for (SysUser user : manageService.findUsersByGroupName(backlog.getModule())) {
 			pointMap.put(user.getTrueName(), 0F);
 		}
 		SheetUtil.buildPointMap(spreadsheet, pointMap);
@@ -232,7 +232,7 @@ public class PlanningWindow extends BaseWindow {
 
 	public void onClick$print() throws Exception {
 		File file = new File(new Date().getTime() + ".pdf");
-		Document document = new Document(PageSize.A4, 0, 0, 30, 30);
+		Document document = new Document(new RectangleReadOnly(842, 595), 0, 0, 5, 0);
 		PdfWriter.getInstance(document, new FileOutputStream(file));
 		document.open();
 		PdfPTable mainTable = new PdfPTable(2);

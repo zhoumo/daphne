@@ -70,6 +70,9 @@ public class DesktopWindow extends BaseWindow {
 		}
 		for (Module module : AuthorityParser.parseGetModules(SessionUtil.getUserInfoSession().getAuthority())) {
 			Menu menu = new Menu(module.getShow());
+			if (this.menu.contains(menu)) {
+				continue;
+			}
 			this.modelConvert(menu, module.getFunctions());
 			this.menu.add(menu);
 		}
